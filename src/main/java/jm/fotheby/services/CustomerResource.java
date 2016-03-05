@@ -27,20 +27,54 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Path("/customers")
-public class CustomerResource {
-   private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
-   private AtomicInteger idCounter = new AtomicInteger();
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-   public CustomerResource() {
+import java.util.List;
+
+@Path("/customers")
+public class CustomerResource
+{
+   private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
+   // private AtomicInteger idCounter = new AtomicInteger();
+
+   private EntityManagerFactory emf;
+   private EntityManager em;
+
+   public CustomerResource()
+   {
+
+      try {
+         this.emf = Persistence.createEntityManagerFactory("$objectdb/db/customer.odb");
+         this.em = emf.createEntityManager();
+
+      } catch (Exception e)
+      {
+         System.out.println(e.getMessage());
+      }
+
    }
 
    @POST
    @Consumes("application/xml")
-   public Response createCustomer(InputStream is) {
-      Customer customer = readCustomer(is);
-      customer.setId(idCounter.incrementAndGet());
-      customerDB.put(customer.getId(), customer);
+   public Response createCustomer(InputStream is)
+   {
+      Customer customer = this.readCustomer(is);
+      // customer.setId(idCounter.incrementAndGet());
+
+      try {
+         em.getTransaction().begin();
+         em.persist(customer);
+         em.getTransaction().commit();
+      } finally {
+         if ( em.getTransaction().isActive() )
+         {
+            em.getTransaction().rollback();
+         }
+      }
+
+      // customerDB.put(customer.getId(), customer);
       System.out.println("Created customer " + customer.getId());
       return Response.created(URI.create("/customers/" + customer.getId())).build();
    }
@@ -49,7 +83,11 @@ public class CustomerResource {
    @Path("{id}")
    @Produces("application/xml")
    public StreamingOutput getCustomer(@PathParam("id") int id) {
-      final Customer customer = customerDB.get(id);
+      // final Customer customer = customerDB.get(id);
+
+      List<Customer> custList = em.createQuery("SELECT g FROM Customer g", Customer.class).getResultList();
+      Customer customer = custList.get(id - 1);
+
       if (customer == null) {
          throw new WebApplicationException(Response.Status.NOT_FOUND);
       }
@@ -65,11 +103,24 @@ public class CustomerResource {
    @Consumes("application/xml")
    public void updateCustomer(@PathParam("id") int id, InputStream is) {
       Customer update = readCustomer(is);
-      Customer current = customerDB.get(id);
+      Customer current = em.find(Customer.class, id);
+
       if (current == null) throw new WebApplicationException(Response.Status.NOT_FOUND);
 
-      current.setFirstName(update.getFirstName());
-      current.setLastName(update.getLastName());
+      try {
+         em.getTransaction().begin();
+         current.setFirstName(update.getFirstName());
+         current.setLastName(update.getLastName());
+         em.getTransaction().commit();
+      } finally {
+         if ( em.getTransaction().isActive() )
+         {
+            em.getTransaction().rollback();
+         }
+      }
+
+      System.out.println(current.toString());
+
    }
 
 
@@ -87,15 +138,22 @@ public class CustomerResource {
          Document doc = builder.parse(is);
          Element root = doc.getDocumentElement();
          Customer cust = new Customer();
-         if (root.getAttribute("id") != null && !root.getAttribute("id").trim().equals(""))
-            cust.setId(Integer.valueOf(root.getAttribute("id")));
+
+         // if ( root.getAttribute("id") != null && !root.getAttribute("id").trim().equals("") )
+         // {
+         //    cust.setId(Integer.valueOf(root.getAttribute("id")));
+         // }
+
          NodeList nodes = root.getChildNodes();
-         for (int i = 0; i < nodes.getLength(); i++) {
+         for (int i = 0; i < nodes.getLength(); i++)
+         {
             Element element = (Element) nodes.item(i);
-            if (element.getTagName().equals("first-name")) {
+            if (element.getTagName().equals("first-name"))
+            {
                cust.setFirstName(element.getTextContent());
             }
-            else if (element.getTagName().equals("last-name")) {
+            else if (element.getTagName().equals("last-name"))
+            {
                cust.setLastName(element.getTextContent());
             }
          }

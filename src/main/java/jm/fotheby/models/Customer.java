@@ -1,15 +1,25 @@
 package jm.fotheby.models;
 
-public class Customer
+import java.io.Serializable;
+import java.sql.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Customer implements Serializable
 {
-  private int id;
+  private static final Long serialVersionUID = 1L;
+
+  @Id @GeneratedValue
+  int id;
   private String firstName;
   private String lastName;
 
-  public void setId(int id)
-  {
-    this.id = id;
-  }
+  // public void setId(int id)
+  // {
+  //   this.id = id;
+  // }
 
   public int getId()
   {
@@ -34,5 +44,11 @@ public class Customer
   public String getLastName()
   {
     return lastName;
+  }
+
+  @Override
+  public String toString()
+  {
+    return this.firstName + " " + this.lastName;
   }
 }
