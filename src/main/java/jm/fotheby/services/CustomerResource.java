@@ -82,9 +82,8 @@ public class CustomerResource
    @GET
    @Path("{id}")
    @Produces("application/xml")
-   public StreamingOutput getCustomer(@PathParam("id") int id) {
-      // final Customer customer = customerDB.get(id);
-
+   public StreamingOutput getCustomer(@PathParam("id") int id)
+   {
       List<Customer> custList = em.createQuery("SELECT g FROM Customer g", Customer.class).getResultList();
       Customer customer = custList.get(id - 1);
 
@@ -97,6 +96,24 @@ public class CustomerResource
          }
       };
    }
+
+   @GET
+   @Produces("application/xml")
+   public StreamingOutput getCustomers()
+   {
+      return new StreamingOutput() {
+         public void write(OutputStream outputStream) throws IOException, WebApplicationException
+         {
+            List<Customer> customerList = em.createQuery("SELECT g FROM Customer g", Customer.class).getResultList();
+
+            for ( Customer customer : customerList)
+            {
+               outputCustomer(outputStream, customer);
+            }
+         }
+      };
+   }
+
 
    @PUT
    @Path("{id}")
