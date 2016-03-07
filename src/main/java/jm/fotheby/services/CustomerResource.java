@@ -57,11 +57,15 @@ public class CustomerResource
    }
 
    @POST
-   @Consumes("application/xml")
-   public Response createCustomer(InputStream is)
+   @Consumes("application/json")
+   // public Response createCustomer(InputStream is)
+   public Response createCustomer(Customer customer)
    {
-      Customer customer = this.readCustomer(is);
-      // customer.setId(idCounter.incrementAndGet());
+      System.out.println("!!!!");
+
+      // Customer customer = new Customer("James", "Mitchell");
+      // Customer customer = this.readCustomer(is);
+      // // customer.setId(idCounter.incrementAndGet());
 
       try {
          em.getTransaction().begin();

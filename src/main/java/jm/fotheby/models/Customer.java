@@ -20,6 +20,13 @@ public class Customer implements Serializable
   // {
   //   this.id = id;
   // }
+  public Customer() {}
+
+  public Customer(String first, String last)
+  {
+    this.firstName = first;
+    this.lastName = last;
+  }
 
   public int getId()
   {
