@@ -1,6 +1,6 @@
 package jm.fotheby.services;
 
-import jm.fotheby.models.Customer;
+import jm.fotheby.entities.Customer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -61,9 +61,6 @@ public class CustomerResource
    // public Response createCustomer(InputStream is)
    public Response createCustomer(Customer customer)
    {
-      System.out.println("!!!!");
-
-      // Customer customer = new Customer("James", "Mitchell");
       // Customer customer = this.readCustomer(is);
       // // customer.setId(idCounter.incrementAndGet());
 
@@ -78,7 +75,6 @@ public class CustomerResource
          }
       }
 
-      // customerDB.put(customer.getId(), customer);
       System.out.println("Created customer " + customer.getId());
       return Response.created(URI.create("/customers/" + customer.getId())).build();
    }

@@ -1,4 +1,4 @@
-// package jm.fotheby.models;
+// package jm.fotheby.entities;
 
 // import java.io.Serializable;
 // import java.sql.Date;
