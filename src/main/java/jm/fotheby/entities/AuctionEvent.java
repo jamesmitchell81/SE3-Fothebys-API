@@ -3,8 +3,9 @@ package jm.fotheby.entities;
 import java.io.Serializable;
 import java.sql.Date;
 
-import javax.persistenance.GeneratedValue;
-import javax.persistenance.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class AuctionEvent implements Serializable

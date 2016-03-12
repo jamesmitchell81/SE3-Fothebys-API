@@ -1,9 +1,11 @@
 package jm.fotheby.entities;
 
 import java.io.Serializable;
-import javax.persistenance.Entity;
-import javax.persistenance.GeneratedValue;
-import javax.persistenance.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import java.util.ArrayList;
 
 @Entity
 public class LotCollection implements Serializable

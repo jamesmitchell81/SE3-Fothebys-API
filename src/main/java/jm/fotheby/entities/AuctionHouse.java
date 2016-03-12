@@ -1,7 +1,7 @@
 package jm.fotheby.entities;
 
 import java.io.Serializable;
-import javax.persistenance.Entity;
+import javax.persistence.Entity;
 
 @Entity
 public class AuctionHouse implements Serializable
