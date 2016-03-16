@@ -29,7 +29,9 @@ public class ClientResourceTest
   {
     // jm.fotheby.entities.Client testClient = new jm.fotheby.entities.Client("Mr", "James", "Mitchell");
     String json = "{ 'title' : 'Mr', 'firstName' : 'James', 'surname' : 'Mitchell' }";
-    Response response = this.client.target("http://localhost:8080/services/clients").request().post(Entity.json(json));
+    Response response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(json));
 
     if (response.getStatus() != HttpStatus.CREATED) throw new RuntimeException("Failed to create resource");
 

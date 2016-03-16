@@ -44,16 +44,13 @@ public class CustomerResource
 
    public CustomerResource()
    {
-
       try {
          this.emf = Persistence.createEntityManagerFactory("$objectdb/db/customer.odb");
          this.em = emf.createEntityManager();
-
       } catch (Exception e)
       {
          System.out.println(e.getMessage());
       }
-
    }
 
    @POST
@@ -137,9 +134,7 @@ public class CustomerResource
       }
 
       System.out.println(current.toString());
-
    }
-
 
    protected void outputCustomer(OutputStream os, Customer cust) throws IOException {
       PrintStream writer = new PrintStream(os);

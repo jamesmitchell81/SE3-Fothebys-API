@@ -34,7 +34,6 @@ public class CustomerResourceTest
     //   .request().post(Entity.xml(xml));
 
     //   if (response.getStatus() != 201) throw new RuntimeException("Failed to create");
-
     //   String location = response.getLocation().toString();
 
     //   System.out.println("Location: " + location);

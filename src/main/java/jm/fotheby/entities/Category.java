@@ -9,18 +9,24 @@ import javax.persistence.Id;
 
 import javax.jdo.annotations.Unique;
 
-// @Entity
+@Entity
 public class Category
 {
+  @Id @GeneratedValue
+  private int id;
 
-
-  // @Unique ?
+  @Unique
   private String name;
   private Set<String> attributes;
 
   public Category()
   {
     this.attributes = new LinkedHashSet<String>();
+  }
+
+  public int getId()
+  {
+    return this.id;
   }
 
   public void setName(String name)
@@ -31,5 +37,20 @@ public class Category
   public void addAttribute(String attrName)
   {
     this.attributes.add(attrName);
+  }
+
+  public void setAttributes(Set<String> attributes)
+  {
+    this.attributes = attributes;
+  }
+
+  public String getName()
+  {
+    return this.name;
+  }
+
+  public Set<String> getAttributes()
+  {
+    return this.attributes;
   }
 }
