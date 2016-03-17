@@ -18,5 +18,4 @@ public class EmailAddress
   {
     this.validated = validated;
   }
-
 }

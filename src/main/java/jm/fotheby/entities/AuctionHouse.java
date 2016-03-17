@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class AuctionHouse implements Serializable
+public class AuctionHouse
 {
   private static final Long serialVersionUID = 1L;
 

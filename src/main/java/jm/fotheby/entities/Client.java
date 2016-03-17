@@ -1,30 +1,40 @@
 package jm.fotheby.entities;
 
-import java.io.Serializable;
-import java.sql.Date;
-
 import javax.persistence.Entity;
+import javax.persistence.Embedded;
 
 @Entity
-public class Client extends Person implements Serializable
+public class Client extends Person
 {
-  private String type;
-  // ... Account details.
-  // ...
-  public Client() {}
+  @Embedded
+  private PaymentDetails accountDetails;
+  @Embedded
+  private Credentials credentials;
 
+  public Client() {}
   public Client(String title, String firstName, String surname)
   {
     super(title, firstName, surname);
   }
 
-  public void setType(String type)
+  public void setAccount(PaymentDetails account)
   {
-    this.type = type; // buyer or seller.
+    this.accountDetails = account;
   }
 
-  public String getType()
+  public void setCredentials(Credentials credentials)
   {
-    return this.type;
+    this.credentials = credentials;
   }
+
+  public PaymentDetails getAccountDetails()
+  {
+    return this.accountDetails;
+  }
+
+  public Credentials getCredentials()
+  {
+    return this.credentials;
+  }
+
 }

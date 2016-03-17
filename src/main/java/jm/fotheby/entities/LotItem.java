@@ -1,11 +1,11 @@
 package jm.fotheby.entities;
 
-import java.io.Serializable;
 import java.sql.Date;
-
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.Embedded;
+import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -64,9 +64,50 @@ public class LotItem
         this.dimensions = dimensions;
     }
 
+  public void setAttributes(Map<String, ItemAttribute> attributes)
+  {
+    this.attributes = attributes;
+  }
+
     public void addAttribute(String key, Map value)
     {
       // category get attrbute of key
       // reject if not exists.
     }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getItemName() {
+    return itemName;
+  }
+
+  public Date getSigningDate() {
+    return signingDate;
+  }
+
+  public DatePeriod getProductionDate() {
+    return productionDate;
+  }
+
+  public String getTextualDescription() {
+    return textualDescription;
+  }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public double getEstimatedPrice() {
+    return estimatedPrice;
+  }
+
+  public ItemDimensions getDimensions() {
+    return dimensions;
+  }
+
+  public Map<String, ItemAttribute> getAttributes() {
+    return attributes;
+  }
 }

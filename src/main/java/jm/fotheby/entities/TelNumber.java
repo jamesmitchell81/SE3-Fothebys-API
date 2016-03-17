@@ -17,6 +17,6 @@ public class TelNumber
   public void setTelNumber(String telNumber)
   {
     // validate.
-
+    this.telNumber = telNumber;
   }
 }

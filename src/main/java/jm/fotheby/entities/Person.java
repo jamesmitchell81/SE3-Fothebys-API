@@ -1,20 +1,14 @@
 package jm.fotheby.entities;
 
-import java.io.Serializable;
-import java.sql.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Embedded;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Person
 {
-  // private static final Long serialVersionUID = 1L;
-
   @Id @GeneratedValue
   private Long id;
   private String title;
@@ -24,11 +18,8 @@ public class Person
   private Address contactAddress;
   @Embedded
   private TelNumber telNumber;
-  ManyToOne
+  @ManyToOne
   private Country country;
-  @Embedded
-  private EmailAddress emailAddress;
-  private String password;
 
   public Person() {}
   public Person(String title, String firstName, String surname)
@@ -36,11 +27,6 @@ public class Person
     this.title = title;
     this.firstName = firstName;
     this.surname = surname;
-  }
-
-  public void setId(int id)
-  {
-    this.id = id;
   }
 
   public void setTitle(String title)
@@ -63,9 +49,41 @@ public class Person
     this.contactAddress = address;
   }
 
-  public int getId()
+  public void setTelNumber(TelNumber telNumber) {
+    this.telNumber = telNumber;
+  }
+
+  public void setCountry(Country country) {
+    this.country = country;
+  }
+
+  public Long getId()
   {
     return this.id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public String getSurname() {
+    return surname;
+  }
+
+  public Address getContactAddress() {
+    return contactAddress;
+  }
+
+  public TelNumber getTelNumber() {
+    return telNumber;
+  }
+
+  public Country getCountry() {
+    return country;
   }
 }
 

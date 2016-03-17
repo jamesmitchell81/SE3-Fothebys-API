@@ -8,7 +8,7 @@ public class ItemDimensions
   private double length;
   private double width;
   private double height;
-  // private String!!! baseMeasure
+  private String baseMeasure;
 
   public ItemDimensions() {}
   public ItemDimensions(double width, double height)
@@ -21,6 +21,22 @@ public class ItemDimensions
   {
     this(width, height);
     this.length = length;
+  }
+
+  public void setLength(double length) {
+    this.length = length;
+  }
+
+  public void setWidth(double width) {
+    this.width = width;
+  }
+
+  public void setHeight(double height) {
+    this.height = height;
+  }
+
+  public void setBaseMeasure(String baseMeasure) {
+    this.baseMeasure = baseMeasure;
   }
 
   public double getWidth()
@@ -38,10 +54,12 @@ public class ItemDimensions
     return this.length;
   }
 
+  public String getBaseMeasure() {
+    return baseMeasure;
+  }
+
   public String getDimensions()
   {
-
-
-
+    return this.width + "; " + this.height + "; " + this.length;
   }
 }
