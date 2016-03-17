@@ -2,12 +2,11 @@ package jm.fotheby.entities;
 
 import java.sql.Date;
 
-// @Embeddable
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class DatePeriod
 {
-
-  // id.
-
   private Date productionDate;
   private String dateDescription;
   private int year;
@@ -15,7 +14,7 @@ public class DatePeriod
   // public DatePeriod(Date date) {}
   public DatePeriod(String dateDescription)
   {
-    // this.parseDate
+    this.dateDescription = dateDescription;
   }
   // public DatePeriod(int year) {}
 
