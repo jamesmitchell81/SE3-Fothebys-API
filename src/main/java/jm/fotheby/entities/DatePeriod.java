@@ -7,15 +7,28 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DatePeriod
 {
-  private Date productionDate;
+  // private Date productionDate;
   private String dateDescription;
-  private int year;
+  // private int year;
+
+  public DatePeriod() {}
 
   // public DatePeriod(Date date) {}
   public DatePeriod(String dateDescription)
   {
     this.dateDescription = dateDescription;
   }
+
+  public void setDateDescription(String dateDescription)
+  {
+    this.dateDescription = dateDescription;
+  }
+
+  public String getDateDescription()
+  {
+    return this.dateDescription;
+  }
+
   // public DatePeriod(int year) {}
 
   // public Date getDate() {}

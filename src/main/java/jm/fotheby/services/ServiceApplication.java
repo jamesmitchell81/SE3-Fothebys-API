@@ -13,6 +13,7 @@ public class ServiceApplication extends Application {
       singletons.add(new CustomerResource());
       singletons.add(new ClientResource());
       singletons.add(new CategoryResource());
+      singletons.add(new LotItemResource());
    }
 
    @Override

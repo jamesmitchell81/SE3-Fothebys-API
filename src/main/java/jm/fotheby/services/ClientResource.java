@@ -32,11 +32,8 @@ public class ClientResource
   public Response createClient(String json)
   {
     Client client = new Client();
-    client.setId(1);
 
-    System.out.println(json);
-
-    return Response.created(URI.create("/clients/" + client.getId())).build();
+    return Response.created(URI.create("/clients/1")).build();
   }
 
 
