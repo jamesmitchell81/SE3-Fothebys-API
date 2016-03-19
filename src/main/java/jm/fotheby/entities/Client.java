@@ -6,10 +6,9 @@ import javax.persistence.Embedded;
 @Entity
 public class Client extends Person
 {
-  @Embedded
-  private PaymentDetails accountDetails;
-  @Embedded
-  private Credentials credentials;
+  @Embedded private PaymentDetails accountDetails;
+  @Embedded private Credentials credentials;
+  @Embedded private TelNumber secondaryTelephoneNumber;
 
   public Client() {}
   public Client(String title, String firstName, String surname)

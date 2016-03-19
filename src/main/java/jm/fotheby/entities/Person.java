@@ -17,7 +17,7 @@ public class Person
   @Embedded
   private Address contactAddress;
   @Embedded
-  private TelNumber telNumber;
+  private TelNumber primaryTelephoneNumber;
   @ManyToOne
   private Country country;
 
@@ -49,8 +49,8 @@ public class Person
     this.contactAddress = address;
   }
 
-  public void setTelNumber(TelNumber telNumber) {
-    this.telNumber = telNumber;
+  public void setprimaryTelephoneNumber(TelNumber telNumber) {
+    this.primaryTelephoneNumber = telNumber;
   }
 
   public void setCountry(Country country) {
@@ -78,8 +78,8 @@ public class Person
     return contactAddress;
   }
 
-  public TelNumber getTelNumber() {
-    return telNumber;
+  public TelNumber getPrimaryTelephoneNumber() {
+    return primaryTelephoneNumber;
   }
 
   public Country getCountry() {

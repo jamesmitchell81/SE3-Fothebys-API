@@ -1,9 +1,7 @@
 package jm.fotheby.entities;
 
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-
 
 @Embeddable
 public class Credentials
@@ -11,17 +9,20 @@ public class Credentials
   @Embedded
   private EmailAddress emailAddress;
   @Embedded
-  private TelNumber telNumber;
+  private TelNumber authorisedMobileNumber;
   private String password;
+
+  // access-level
+  // authorisation-Status.
 
   public void setEmailAddress(EmailAddress emailAddress)
   {
     this.emailAddress = emailAddress;
   }
 
-  public void setTelNumber(TelNumber telNumber)
+  public void setAuthorisedMobileNumber(TelNumber telNumber)
   {
-    this.telNumber = telNumber;
+    this.authorisedMobileNumber = telNumber;
   }
 
   public void setPassword(String password)
@@ -34,9 +35,9 @@ public class Credentials
     return this.emailAddress;
   }
 
-  public TelNumber telNumber()
+  public TelNumber getAuthorisedMobileNumber()
   {
-    return this.telNumber;
+    return this.authorisedMobileNumber;
   }
 
   public String getPassword()

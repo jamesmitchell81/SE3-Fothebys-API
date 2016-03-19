@@ -19,10 +19,12 @@ public class LotItem
   @Embedded private ItemDimensions dimensions;
 
   private String itemName;
-  private Date signingDate;
+  private Date signingDate; // x
   private String textualDescription;
   // @Embedded private CurrencyValue estimatedPrice;
-  private double estimatedPrice;
+  private double estimatedPrice; // x
+  private double reservePrice; // x
+  private double salePrice; // x
   private Map<String, Map> attributes;
 
   public void setItemName(String itemName)
