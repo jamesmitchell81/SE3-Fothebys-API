@@ -63,16 +63,17 @@ public class CategoryResource
       {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/category.odb");
         EntityManager em = emf.createEntityManager();
+        JSONArray out = new JSONArray();
+        PrintStream writer = new PrintStream(ops);
 
         List<Category> categoryList = em.createQuery("SELECT c FROM Category c", Category.class).getResultList();
 
         for ( Category category : categoryList)
         {
-          JSONObject out = new JSONObject(category);
-          PrintStream writer = new PrintStream(ops);
-
-          writer.println(out.toString());
+          JSONObject cat = new JSONObject(category);
+          out.put(cat);
         }
+        writer.println(out.toString());
       }
     };
   }

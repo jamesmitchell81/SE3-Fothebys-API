@@ -69,8 +69,8 @@ public class LotItemResourceTest
   @Test
   public void getAllLotItems()
   {
-    String items = client.target("http://localhost:8080/services/lot-item").request().get(String.class);
-    System.out.println(items);
+    // String items = client.target("http://localhost:8080/services/lot-item").request().get(String.class);
+    // System.out.println(items);
   }
 
   @After

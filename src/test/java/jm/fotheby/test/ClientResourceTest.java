@@ -38,6 +38,16 @@ public class ClientResourceTest
 
   }
 
+  @Test
+  public void getAddressTemplate()
+  {
+    String template = this.client.target("http://localhost:8080/services/clients/address-template")
+                                   .request()
+                                   .get(String.class);
+
+    System.out.println(template);
+  }
+
   @After
   public void clearDown()
   {

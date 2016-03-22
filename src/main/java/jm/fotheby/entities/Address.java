@@ -6,22 +6,10 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class Address
 {
-  private String name;
   private String firstLine;
   private String secondLine;
   private String townCity;
   private String postalCode;
-
-  @ManyToOne
-  private Country country;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 
   public String getFirstLine() {
     return firstLine;
@@ -55,11 +43,11 @@ public class Address
     this.postalCode = postalCode;
   }
 
-  public Country getCountry() {
-    return country;
-  }
+  // public Country getCountry() {
+  //   return country;
+  // }
 
-  public void setCountry(Country country) {
-    this.country = country;
-  }
+  // public void setCountry(Country country) {
+  //   this.country = country;
+  // }
 }

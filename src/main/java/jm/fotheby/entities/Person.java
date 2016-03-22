@@ -9,17 +9,14 @@ import javax.persistence.Id;
 @Entity
 public class Person
 {
-  @Id @GeneratedValue
-  private Long id;
+  @Id @GeneratedValue private Long id;
   private String title;
   private String firstName;
   private String surname;
-  @Embedded
-  private Address contactAddress;
-  @Embedded
-  private TelNumber primaryTelephoneNumber;
-  @ManyToOne
-  private Country country;
+  private String telNumber;
+  @Embedded private Address contactAddress;
+
+  @ManyToOne private Country country;
 
   public Person() {}
   public Person(String title, String firstName, String surname)
@@ -49,8 +46,12 @@ public class Person
     this.contactAddress = address;
   }
 
-  public void setprimaryTelephoneNumber(TelNumber telNumber) {
-    this.primaryTelephoneNumber = telNumber;
+  // public void settelNumber(TelNumber telNumber) {
+  //   this.telNumber = telNumber;
+  // }
+
+  public void setTelNumber(String telNumber) {
+    this.telNumber = telNumber;
   }
 
   public void setCountry(Country country) {
@@ -78,8 +79,12 @@ public class Person
     return contactAddress;
   }
 
-  public TelNumber getPrimaryTelephoneNumber() {
-    return primaryTelephoneNumber;
+  // public TelNumber gettelNumber() {
+  //   return telNumber;
+  // }
+
+  public String getTelNumber() {
+    return telNumber;
   }
 
   public Country getCountry() {

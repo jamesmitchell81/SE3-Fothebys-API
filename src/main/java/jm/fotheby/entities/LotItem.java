@@ -25,7 +25,7 @@ public class LotItem
   private double estimatedPrice; // x
   private double reservePrice; // x
   private double salePrice; // x
-  private Map<String, Map> attributes;
+  // private Map<String, Map> attributes;
 
   public void setItemName(String itemName)
   {
@@ -68,10 +68,10 @@ public class LotItem
     this.dimensions = dimensions;
   }
 
-  public void setAttributes(Map<String, Map> attributes)
-  {
-    this.attributes = attributes;
-  }
+  // public void setAttributes(Map<String, Map> attributes)
+  // {
+  //   this.attributes = attributes;
+  // }
 
   public void addAttribute(String key, Map value)
   {
@@ -119,8 +119,8 @@ public class LotItem
     return dimensions;
   }
 
-  public Map<String, Map> getAttributes()
-  {
-    return attributes;
-  }
+  // public Map<String, Map> getAttributes()
+  // {
+  //   return attributes;
+  // }
 }
