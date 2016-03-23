@@ -14,6 +14,7 @@ public class Person
   private String firstName;
   private String surname;
   private String telNumber;
+  private String emailAddress;
   @Embedded private Address contactAddress;
 
   @ManyToOne private Country country;
@@ -46,12 +47,13 @@ public class Person
     this.contactAddress = address;
   }
 
-  // public void settelNumber(TelNumber telNumber) {
-  //   this.telNumber = telNumber;
-  // }
-
   public void setTelNumber(String telNumber) {
     this.telNumber = telNumber;
+  }
+
+  public void setEmailAddress(String emailAddress)
+  {
+    this.emailAddress = emailAddress;
   }
 
   public void setCountry(Country country) {
@@ -79,12 +81,13 @@ public class Person
     return contactAddress;
   }
 
-  // public TelNumber gettelNumber() {
-  //   return telNumber;
-  // }
-
   public String getTelNumber() {
     return telNumber;
+  }
+
+  public String getEmailAddress()
+  {
+    return this.emailAddress;
   }
 
   public Country getCountry() {

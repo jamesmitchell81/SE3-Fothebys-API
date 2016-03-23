@@ -12,51 +12,63 @@ public class PaymentDetails
   private String issueNo;
   private String securityCode;
 
-  public String getNameOnCard() {
+  public String getNameOnCard()
+  {
     return nameOnCard;
   }
 
-  public void setNameOnCard(String nameOnCard) {
+  public void setNameOnCard(String nameOnCard)
+  {
     this.nameOnCard = nameOnCard;
   }
 
-  public String getCardNumber() {
+  public String getCardNumber()
+  {
     return cardNumber;
   }
 
-  public void setCardNumber(String cardNumber) {
+  public void setCardNumber(String cardNumber)
+  {
     this.cardNumber = cardNumber;
   }
 
-  public String getExpiry() {
+  public String getExpiry()
+  {
     return expiry;
   }
 
-  public void setExpiry(String expiry) {
+  public void setExpiry(String expiry)
+  {
     this.expiry = expiry;
   }
 
-  public String getType() {
+  public String getType()
+  {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(String type)
+  {
     this.type = type;
   }
 
-  public String getIssueNo() {
+  public String getIssueNo()
+  {
     return issueNo;
   }
 
-  public void setIssueNo(String issueNo) {
+  public void setIssueNo(String issueNo)
+  {
     this.issueNo = issueNo;
   }
 
-  public String getSecurityCode() {
+  public String getSecurityCode()
+  {
     return securityCode;
   }
 
-  public void setSecurityCode(String securityCode) {
+  public void setSecurityCode(String securityCode)
+  {
     this.securityCode = securityCode;
   }
 
