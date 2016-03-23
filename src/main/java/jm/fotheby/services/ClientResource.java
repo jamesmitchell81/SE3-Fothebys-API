@@ -35,6 +35,7 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.PersistenceException;
 
 // JSON
@@ -115,7 +116,6 @@ public class ClientResource
                                       @QueryParam("surname") String surname,
                                       @QueryParam("telNumber") String telNumber)
   {
-    String james = "James";
     HashMap<String, String> data = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
 
@@ -123,19 +123,26 @@ public class ClientResource
     data.put("surname", surname);
     data.put("telNumber", telNumber);
 
-    query.append("SELECT c.id, c.title, c.firstName, c.");
-
-    query.append("FROM Clients c ");
-    query.append("WHERE ");
-
-    System.out.println(query.toString());
+    query.append("SELECT NEW jm.fotheby.entities.ClientSearchResult(c.id, c.title, c.firstName, c.surname, c.contactAddress.firstLine) ");
+    query.append("FROM Client c ");
+    // query.append("WHERE ");
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
+        JSONArray out = new JSONArray();
         PrintStream writer = new PrintStream(ops);
 
-        writer.println(james);
+        TypedQuery<ClientSearchResult> tquery = em.createQuery(query.toString(), ClientSearchResult.class);
+        List<ClientSearchResult> results = tquery.getResultList();
+
+        for ( ClientSearchResult result : results )
+        {
+          JSONObject c = new JSONObject(result);
+          out.put(c);
+        }
+
+        writer.println(out.toString());
       }
     };
   }

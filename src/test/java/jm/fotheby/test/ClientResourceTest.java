@@ -55,6 +55,7 @@ public class ClientResourceTest
     System.out.println(response.getStatus());
   }
 
+  @Ignore
   @Test
   public void getAllClients()
   {
