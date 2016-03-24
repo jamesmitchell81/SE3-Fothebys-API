@@ -15,6 +15,9 @@ import java.util.List;
 // JAX-RS
 import java.net.URI;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
@@ -23,6 +26,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.WebApplicationException;
 
@@ -109,18 +113,14 @@ public class ClientResource
   @Path("/search-client")
   @Consumes("application/json")
   @Produces("application/json")
-  public StreamingOutput clientSearch(@QueryParam("emailAddress") String emailAddress,
-                                      @QueryParam("surname") String surname,
-                                      @QueryParam("telNumber") String telNumber)
+  public StreamingOutput clientSearch(@Context UriInfo queryString)
   {
-    HashMap<String, String> data = new HashMap<String, String>();
-
-    data.put("emailAddress", emailAddress);
-    data.put("surname", surname);
-    data.put("telNumber", telNumber);
+    MultivaluedMap<String, String> data = queryString.getQueryParameters();
+    String emailAddress = data.getFirst("emailAddress");
+    String surname = data.getFirst("surname");
+    String telNumber = data.getFirst("telNumber");
 
     CriteriaBuilder cb = em.getCriteriaBuilder();
-
     ParameterExpression<String> emailParam = cb.parameter(String.class);
     ParameterExpression<String> surnameParam = cb.parameter(String.class);
     ParameterExpression<String> telParam = cb.parameter(String.class);
@@ -134,17 +134,18 @@ public class ClientResource
                                                                    client.get("firstName"),
                                                                    client.get("surname"),
                                                                    client.get("contactAddress").get("firstLine"));
-
     cq.select(selection).where(
-        cb.equal(client.get("emailAddress"), emailParam),
-        cb.equal(client.get("surname"), surnameParam),
-        cb.equal(client.get("telNumber"), telParam)
+      cb.or(
+          cb.equal(client.get("emailAddress"), emailParam),
+          cb.equal(client.get("surname"), surnameParam),
+          cb.equal(client.get("telNumber"), telParam)
+        )
       );
 
     TypedQuery<ClientSearchResult> query = em.createQuery(cq);
-    query.setParameter(emailParam, emailAddress);
-    query.setParameter(surnameParam, surname);
-    query.setParameter(telParam, telNumber);
+    query.setParameter(emailParam, emailAddress.trim()); // setParameters..encodes.
+    query.setParameter(surnameParam, surname.trim());
+    query.setParameter(telParam, telNumber.trim());
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

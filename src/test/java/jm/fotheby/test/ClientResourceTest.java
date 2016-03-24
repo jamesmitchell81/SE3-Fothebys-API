@@ -84,6 +84,21 @@ public class ClientResourceTest
 
   }
 
+  @Test
+  public void testClientSearchPartialOptions()
+  {
+    try {
+      String email = java.net.URLEncoder.encode("james.mitchell81@live.co.uk", "UTF-8");
+      String data = "?emailAddress=" + email;
+      String search = this.client.target("http://localhost:8080/services/clients/search-client" + data)
+                                 .request()
+                                 .get(String.class);
+      System.out.println(search);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
   @After
   public void clearDown()
   {
