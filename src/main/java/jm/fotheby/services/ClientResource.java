@@ -32,11 +32,8 @@ import java.io.PrintStream;
 import java.io.IOException;
 
 // JPA
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
+import javax.persistence.criteria.*;
 
 // JSON
 import org.json.*;
@@ -117,15 +114,37 @@ public class ClientResource
                                       @QueryParam("telNumber") String telNumber)
   {
     HashMap<String, String> data = new HashMap<String, String>();
-    StringBuilder query = new StringBuilder();
 
     data.put("emailAddress", emailAddress);
     data.put("surname", surname);
     data.put("telNumber", telNumber);
 
-    query.append("SELECT NEW jm.fotheby.entities.ClientSearchResult(c.id, c.title, c.firstName, c.surname, c.contactAddress.firstLine) ");
-    query.append("FROM Client c ");
-    // query.append("WHERE ");
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+
+    ParameterExpression<String> emailParam = cb.parameter(String.class);
+    ParameterExpression<String> surnameParam = cb.parameter(String.class);
+    ParameterExpression<String> telParam = cb.parameter(String.class);
+
+    CriteriaQuery<ClientSearchResult> cq = cb.createQuery(ClientSearchResult.class);
+    Root<Client> client = cq.from(Client.class);
+
+    CompoundSelection<ClientSearchResult> selection = cb.construct(ClientSearchResult.class,
+                                                                   client.get("id"),
+                                                                   client.get("title"),
+                                                                   client.get("firstName"),
+                                                                   client.get("surname"),
+                                                                   client.get("contactAddress").get("firstLine"));
+
+    cq.select(selection).where(
+        cb.equal(client.get("emailAddress"), emailParam),
+        cb.equal(client.get("surname"), surnameParam),
+        cb.equal(client.get("telNumber"), telParam)
+      );
+
+    TypedQuery<ClientSearchResult> query = em.createQuery(cq);
+    query.setParameter(emailParam, emailAddress);
+    query.setParameter(surnameParam, surname);
+    query.setParameter(telParam, telNumber);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -133,8 +152,7 @@ public class ClientResource
         JSONArray out = new JSONArray();
         PrintStream writer = new PrintStream(ops);
 
-        TypedQuery<ClientSearchResult> tquery = em.createQuery(query.toString(), ClientSearchResult.class);
-        List<ClientSearchResult> results = tquery.getResultList();
+        List<ClientSearchResult> results = query.getResultList();
 
         for ( ClientSearchResult result : results )
         {
