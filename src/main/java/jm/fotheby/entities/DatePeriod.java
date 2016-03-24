@@ -7,9 +7,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DatePeriod
 {
-  // private Date productionDate;
-  private String dateDescription;
-  // private int year;
+  private Date productionDate;
+  private String d;
+  private int year;
+  private int yearBetweenStart;
+  private int yearBetweenEnd;
 
   public DatePeriod() {}
 
