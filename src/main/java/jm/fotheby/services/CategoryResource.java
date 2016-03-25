@@ -35,18 +35,21 @@ import org.json.*;
 public class CategoryResource
 {
 
+  private EntityManager em;
+
+  public CategoryResource(EntityManager em)
+  {
+    this.em = em;
+  }
+
   @POST
   @Consumes("application/json")
   public Response createNewCategory(Category category)
   {
-    // Category category = this.getCategory(json);
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/category.odb");
-    EntityManager em = emf.createEntityManager();
-
     try {
-      em.getTransaction().begin();
-      em.persist(category);
-      em.getTransaction().commit();
+      this.em.getTransaction().begin();
+      this.em.persist(category);
+      this.em.getTransaction().commit();
     } catch (PersistenceException pe) {
       return Response.status(422).build();
     }
@@ -58,15 +61,15 @@ public class CategoryResource
   @Produces("application/json")
   public StreamingOutput getCategories()
   {
+    JSONArray out = new JSONArray();
+
+    List<Category> categoryList = this.em.createQuery("SELECT c FROM Category c", Category.class)
+                                         .getResultList();
+
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/category.odb");
-        EntityManager em = emf.createEntityManager();
-        JSONArray out = new JSONArray();
         PrintStream writer = new PrintStream(ops);
-
-        List<Category> categoryList = em.createQuery("SELECT c FROM Category c", Category.class).getResultList();
 
         for ( Category category : categoryList)
         {
@@ -84,22 +87,16 @@ public class CategoryResource
   public Response updateCategory(@PathParam("id") int id, Category update)
   {
 
-    System.out.println(update.getId());
-
     try {
-      EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/category.odb");
-      EntityManager em = emf.createEntityManager();
+      Category current = this.em.find(Category.class, id);
 
-      Category current = em.find(Category.class, id);
-
-      em.getTransaction().begin();
+      this.em.getTransaction().begin();
       current.setName(update.getName());
       current.setAttributes(update.getAttributes());
-      em.getTransaction().commit();
+      this.em.getTransaction().commit();
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
-
       return Response.serverError().build();
     }
 

@@ -34,19 +34,23 @@ import org.json.*;
 public class LotItemResource
 {
 
-  public LotItemResource() {}
+  private EntityManager em;
+
+
+  public LotItemResource(EntityManager em)
+  {
+    this.em = em;
+  }
 
   @POST
   @Consumes("application/json")
   public Response createLotItem(LotItem item)
   {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/lot-item.odb");
-    EntityManager em = emf.createEntityManager();
 
     try {
-      em.getTransaction().begin();
-      em.persist(item);
-      em.getTransaction().commit();
+      this.em.getTransaction().begin();
+      this.em.persist(item);
+      this.em.getTransaction().commit();
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
@@ -62,12 +66,11 @@ public class LotItemResource
   @Produces("application/json")
   public StreamingOutput getLotItems()
   {
+    List<LotItem> items = em.createQuery("SELECT i FROM LotItem i", LotItem.class).getResultList();
+
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/lot-item.odb");
-        EntityManager em = emf.createEntityManager();
-        List<LotItem> items = em.createQuery("SELECT i FROM LotItem i", LotItem.class).getResultList();
 
         for ( LotItem item : items)
         {

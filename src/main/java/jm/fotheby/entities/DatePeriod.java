@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
 public class DatePeriod
 {
   private Date productionDate;
-  private String d;
+  private String dateDescription;
   private int year;
   private int yearBetweenStart;
   private int yearBetweenEnd;

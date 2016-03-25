@@ -25,7 +25,6 @@ public class ClientResourceTest
     this.client = ClientBuilder.newClient();
   }
 
-  @Ignore
   @Test
   public void createUnregisteredClientTest()
   {
@@ -51,15 +50,18 @@ public class ClientResourceTest
                             .request()
                             .post(Entity.json(client.toString()));
 
-    if (response.getStatus() != HttpStatus.CREATED) throw new RuntimeException("Failed to create resource");
     System.out.println(response.getStatus());
+
+    if (response.getStatus() != HttpStatus.OK) throw new RuntimeException("Failed to create resource");
   }
 
   @Ignore
   @Test
   public void getAllClients()
   {
-    String clients = this.client.target("http://localhost:8080/services/clients").request().get(String.class);
+    String clients = this.client.target("http://localhost:8080/services/clients")
+                                .request()
+                                .get(String.class);
 
     System.out.println(clients);
   }

@@ -9,8 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.annotation.Annotation;
 
 import java.lang.StringBuilder;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 // JAX-RS
 import java.net.URI;
@@ -26,6 +25,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.DefaultValue;
 
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.WebApplicationException;
@@ -48,15 +48,16 @@ public class ClientResource
   private EntityManagerFactory emf;
   private EntityManager em;
 
-  public ClientResource()
+  public ClientResource(EntityManager em)
   {
-    this.emf = Persistence.createEntityManagerFactory("$objectdb/db/client.odb");
-    this.em = emf.createEntityManager();
+    // this.emf = Persistence.createEntityManagerFactory("$objectdb/db/client.odb");
+    // this.em = emf.createEntityManager();
+    this.em = em;
   }
 
-// post.
   @POST
   @Consumes("application/json")
+  @Produces("application/json")
   public Response createClient(Client client)
   {
 
@@ -113,14 +114,30 @@ public class ClientResource
   @Path("/search-client")
   @Consumes("application/json")
   @Produces("application/json")
-  public StreamingOutput clientSearch(@Context UriInfo queryString)
+  public StreamingOutput clientSearch(@DefaultValue("") @QueryParam("emailAddress") String emailAddress,
+                                      @DefaultValue("") @QueryParam("surname") String surname,
+                                      @DefaultValue("") @QueryParam("telNumber") String telNumber)
   {
-    MultivaluedMap<String, String> data = queryString.getQueryParameters();
-    String emailAddress = data.getFirst("emailAddress");
-    String surname = data.getFirst("surname");
-    String telNumber = data.getFirst("telNumber");
+    // HashSet<String> whitelist = new HashSet();
+    // whitelist.add("emailAddress")
+    // whitelist.add("surname");
+    // whitelist.add("telNumber");
+
+    // MultivaluedMap<String, String> data = queryString.getQueryParameters();
+    // HashMap<String, String> input = new HashMap();
+    // Iterator iterator = data.keySet().iterator();
+
+    // while ( iterator.hasNext() )
+    // {
+    //   String key = (String)iterator.next();
+    //   if ( whitelist.contains(key) && data.getFirst(key) != "" )
+    //   {
+    //     input.put(key, data.getFirst(key));
+    //   }
+    // }
 
     CriteriaBuilder cb = em.getCriteriaBuilder();
+
     ParameterExpression<String> emailParam = cb.parameter(String.class);
     ParameterExpression<String> surnameParam = cb.parameter(String.class);
     ParameterExpression<String> telParam = cb.parameter(String.class);
@@ -134,16 +151,17 @@ public class ClientResource
                                                                    client.get("firstName"),
                                                                    client.get("surname"),
                                                                    client.get("contactAddress").get("firstLine"));
-    cq.select(selection).where(
-      cb.or(
-          cb.equal(client.get("emailAddress"), emailParam),
-          cb.equal(client.get("surname"), surnameParam),
-          cb.equal(client.get("telNumber"), telParam)
-        )
-      );
+
+    Predicate[] or = new Predicate[3];
+    or[0] = cb.equal(client.get("emailAddress"), emailParam);
+    or[1] = cb.equal(client.get("surname"), surnameParam);
+    or[2] = cb.equal(client.get("telNumber"), telParam);
+
+    cq.select(selection);
+    cq.where(cb.or(or));
 
     TypedQuery<ClientSearchResult> query = em.createQuery(cq);
-    query.setParameter(emailParam, emailAddress.trim()); // setParameters..encodes.
+    query.setParameter(emailParam, emailAddress.trim());
     query.setParameter(surnameParam, surname.trim());
     query.setParameter(telParam, telNumber.trim());
 
@@ -152,7 +170,6 @@ public class ClientResource
       {
         JSONArray out = new JSONArray();
         PrintStream writer = new PrintStream(ops);
-
         List<ClientSearchResult> results = query.getResultList();
 
         for ( ClientSearchResult result : results )

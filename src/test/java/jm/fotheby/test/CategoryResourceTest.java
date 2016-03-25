@@ -55,6 +55,7 @@ public class CategoryResourceTest
     System.out.println(categories);
   }
 
+  @Ignore
   @Test
   public void testUpdateCategory()
   {
@@ -78,6 +79,7 @@ public class CategoryResourceTest
     this.testGetAllCategories();
   }
 
+  @Ignore
   @Test
   public void testDuplicateEntry()
   {

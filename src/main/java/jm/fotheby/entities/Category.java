@@ -15,9 +15,9 @@ public class Category
   @Id @GeneratedValue
   private int id;
 
-  @Unique
-  private String name;
+  @Unique private String name;
   private Set<String> attributes;
+  private Set<String> classifications;
 
   public Category()
   {
