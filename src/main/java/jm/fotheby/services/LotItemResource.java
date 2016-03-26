@@ -33,14 +33,9 @@ import org.json.*;
 @Path("/lot-item")
 public class LotItemResource
 {
-
   private EntityManager em;
 
-
-  public LotItemResource(EntityManager em)
-  {
-    this.em = em;
-  }
+  public LotItemResource(EntityManager em) { this.em = em; }
 
   @POST
   @Consumes("application/json")

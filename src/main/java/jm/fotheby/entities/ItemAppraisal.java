@@ -9,36 +9,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Embedded;
 
 @Entity
-public class ItemAppraisal
+public class ItemAppraisal // extends.
 {
-  @Id @GeneratedValue private Long id;
-  // private appraisal request.
+  // @Id @GeneratedValue private Long id;
   @ManyToOne private Client client;
-  @ManyToOne private Category category;
   @ManyToOne private Expert expert;
-
-  // e.g. could be an abstract and a nude painting.
-  @ManyToOne private Set<Classification> classifications;
-
-  @Embedded private DatePeriod productionDate;
-  @Embedded private ItemDimensions dimensions;
-
-  private String itemName;
-  private String artist;
-  private double estimatedPrice;
-  private String textualDescription;
-  private String provenanceDetails;
+  private Date appraisalDate;
   private String additionalNotes;
-  private boolean authenticated = false;
+  private boolean agreement;
 
   public void setClient(Client client)
   {
     this.client = client;
-  }
-
-  public void setCategory(Category category)
-  {
-    this.category = category;
   }
 
   public void setExpert(Expert expert)
@@ -46,38 +28,43 @@ public class ItemAppraisal
     this.expert = expert;
   }
 
-  public void setClassifications(Set<Classification> classifications)
+  public void setAppraisalDate(Date appraisalDate)
   {
-    this.classifications = classifications;
+    this.appraisalDate = appraisalDate;
   }
 
-  public void setItemName(String itemName)
+  private String setAdditionNotes(String additionalNotes)
   {
-    this.itemName = itemName;
+    this.additionalNotes = additionalNotes;
   }
 
-  public void setArtist(String artist)
+  private void setAgreement(boolean agreement)
   {
-    this.artist = artist;
+    this.agreement = agreement;
   }
 
-  public void setEstimatedPrice(double estimatedPrice)
+  public Client getClient()
   {
-    this.estimatedPrice = estimatedPrice;
+    return client;
   }
 
-  public void setTextualDescription(String textualDescription)
+  public Expert getExpert()
   {
-    this.textualDescription = textualDescription;
+    return this.expert;
   }
 
-  public void setProvenanceDetails(String provenanceDetails)
+  public Date getAppraisalDate()
   {
-
+    this.appraisalDate = appraisalDate;
   }
 
-  public void addClassification(Classification classifications)
+  private String getAdditionNotes()
   {
-    this.classifications.add(classifications);
+    return this.additionalNotes;
+  }
+
+  private boolean getAgreement()
+  {
+    return this.agreement;
   }
 }

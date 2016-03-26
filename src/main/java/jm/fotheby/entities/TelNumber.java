@@ -19,4 +19,9 @@ public class TelNumber
     // validate.
     this.telNumber = telNumber;
   }
+
+  public void setValidated(boolean validated)
+  {
+    this.validated = validated;
+  }
 }
