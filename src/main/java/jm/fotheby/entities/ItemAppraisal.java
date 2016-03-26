@@ -1,6 +1,7 @@
 package jm.fotheby.entities;
 
 import java.util.Set;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class ItemAppraisal // extends.
     this.appraisalDate = appraisalDate;
   }
 
-  private String setAdditionNotes(String additionalNotes)
+  private void setAdditionNotes(String additionalNotes)
   {
     this.additionalNotes = additionalNotes;
   }
@@ -55,7 +56,7 @@ public class ItemAppraisal // extends.
 
   public Date getAppraisalDate()
   {
-    this.appraisalDate = appraisalDate;
+    return this.appraisalDate;
   }
 
   private String getAdditionNotes()

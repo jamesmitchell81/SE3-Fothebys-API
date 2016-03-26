@@ -1,12 +1,17 @@
 package jm.fotheby.entities;
 
+import java.util.Map;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.Version;
 import javax.persistence.Embedded;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToMany;
 
 import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 
@@ -18,7 +23,7 @@ import javax.persistence.Id;
 public class Item
 {
   @Id @GeneratedValue
-  @Column(name='ITEM_ID')
+  @Column(name="ITEM_ID")
   private Long id;
 
   @Version
@@ -31,16 +36,15 @@ public class Item
   @JoinTable(
     name="ITEM_CLASSIFICATIONS",
     joinColumns={@JoinColumn(name="ITEM_ID")},
-    inverseJoinColumn={@JoinColumn(name="CLASSIFICATION_ID")}
+    inverseJoinColumns={@JoinColumn(name="CLASSIFICATION_ID")}
   )
   private List<Classification> classifications;
 
   @OneToMany(orphanRemoval=true)
-  @JoinColumn(name="REFERENCE_ID" referencedColumnName="ITEM_ID")
-  private List<ItemImages> images;
+  @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
+  private List<ItemImage> images;
 
   private String itemName;
-  private String artist;
   @Embedded
   private DatePeriod productionDate;
   private String textualDescription;
@@ -52,12 +56,17 @@ public class Item
 
   private Map<String, ItemAttribute> attributes;
 
+  public Long getId()
+  {
+    return this.id;
+  }
+
   public void setCategory(Category category)
   {
     this.category = category;
   }
 
-  public void setClassifications(Set<Classification> classifications)
+  public void setClassifications(List<Classification> classifications)
   {
     this.classifications = classifications;
   }
@@ -67,7 +76,7 @@ public class Item
     this.classifications.add(classifications);
   }
 
-  public void setImages(List<ItemImages> images)
+  public void setImages(List<ItemImage> images)
   {
     this.images = images;
   }
@@ -80,11 +89,6 @@ public class Item
   public void setItemName(String itemName)
   {
     this.itemName = itemName;
-  }
-
-  public void setArtist(String artist)
-  {
-    this.artist = artist;
   }
 
   public void setProductionDate(DatePeriod productionDate)
@@ -117,7 +121,7 @@ public class Item
     this.authenticated = authenticated;
   }
 
-  public void setAttributes(Map<String, ItemAttribute) attributes)
+  public void setAttributes(Map<String, ItemAttribute> attributes)
   {
     // check category allows attribute.
     this.attributes = attributes;
@@ -144,7 +148,7 @@ public class Item
     return this.classifications.get(id);
   }
 
-  public List<ItemImages> getImages()
+  public List<ItemImage> getImages()
   {
     return this.images;
   }
@@ -159,11 +163,6 @@ public class Item
     return this.itemName;
   }
 
-  public String getArtist()
-  {
-    return this.artist;
-  }
-
   public DatePeriod getProductionDate()
   {
     return this.productionDate;
@@ -176,7 +175,7 @@ public class Item
 
   public ItemDimensions getItemDimensions()
   {
-    this.dimensions = dimensions;
+    return this.dimensions;
   }
 
   public double setEstimatedPrice()
@@ -200,7 +199,7 @@ public class Item
     return this.attributes;
   }
 
-  public void getAttribute(String key)
+  public ItemAttribute getAttribute(String key)
   {
     return this.attributes.get(key);
   }

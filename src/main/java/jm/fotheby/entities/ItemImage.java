@@ -1,6 +1,7 @@
 package jm.fotheby.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Column;
 
 @Entity
 public class ItemImage

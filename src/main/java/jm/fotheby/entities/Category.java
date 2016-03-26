@@ -17,11 +17,10 @@ public class Category
 
   @Unique private String name;
   private Set<String> attributes;
-  private Set<String> classifications;
 
   public Category()
   {
-    this.attributes = new LinkedHashSet<String>();
+    // this.attributes = new LinkedHashSet<String>();
   }
 
   public int getId()

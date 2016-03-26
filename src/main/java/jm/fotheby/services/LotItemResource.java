@@ -54,7 +54,8 @@ public class LotItemResource
     // Category c = item.getCategory();
     // System.out.println("! " + c.getId());
 
-    return Response.created(URI.create("/lot-items/" + item.getId())).build();
+    // return Response.created(URI.create("/lot-items/" + item.getId())).build();
+    return Response.created(URI.create("/lot-items/1")).build();
   }
 
   @GET
