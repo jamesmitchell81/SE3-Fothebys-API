@@ -1,7 +1,6 @@
 package jm.fotheby.entities;
 
 import java.util.Set;
-import java.util.LinkedHashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,13 +14,8 @@ public class Category
   @Id @GeneratedValue
   private int id;
 
-  @Unique private String name;
+  @Unique private String name = "";
   private Set<String> attributes;
-
-  public Category()
-  {
-    // this.attributes = new LinkedHashSet<String>();
-  }
 
   public int getId()
   {

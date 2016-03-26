@@ -48,7 +48,7 @@ public class CategoryResourceTest
     response.close();
   }
 
-  // @Test
+  @Test
   public void testGetAllCategories()
   {
     String categories = client.target("http://localhost:8080/services/category").request().get(String.class);

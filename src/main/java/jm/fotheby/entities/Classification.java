@@ -15,20 +15,20 @@ public class Classification
   private int id;
 
   @Unique
-  private String classification;
-
-  public void setClassification(String classification)
-  {
-    this.classification = classification;
-  }
+  private String name;
 
   public int getId()
   {
     return id;
   }
 
-  public String getClassification()
+  public void setName(String classification)
   {
-    return this.classification;
+    this.name = name;
+  }
+
+  public String getName()
+  {
+    return this.name;
   }
 }

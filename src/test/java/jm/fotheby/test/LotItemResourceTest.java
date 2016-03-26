@@ -27,7 +27,6 @@ public class LotItemResourceTest
     this.client = ClientBuilder.newClient();
   }
 
-  @Ignore
   @Test
   public void testCreateLotItem()
   {
@@ -35,12 +34,14 @@ public class LotItemResourceTest
     root.put("itemName", "Test Item");
     root.put("textualDescription", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
     root.put("estimatedPrice", 1.054);
+    root.put("provenanceDetails", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
+    root.put("authenticated", true);
 
     JSONObject productionDate = new JSONObject();
     productionDate.put("dateDescription", "18th Century");
 
     JSONObject category = new JSONObject();
-    category.put("name", "Drawing");
+    category.put("name", "Drawings");
 
     JSONObject attributes = new JSONObject();
     HashMap<String, String> attribute = new HashMap<String, String>();
@@ -53,17 +54,33 @@ public class LotItemResourceTest
     dimensions.put("width",  20);
     dimensions.put("height", 30);
 
+    JSONObject classifications = new JSONObject();
+    JSONArray classification = new JSONArray();
+    JSONObject c1 = new JSONObject();
+    c1.put("name", "nude");
+    JSONObject c2 = new JSONObject();
+    c2.put("name", "abstract");
+
+    classification.put(c1);
+    classification.put(c2);
+    classifications.put("classifications", classification);
+
     root.put("productionDate", productionDate);
-    root.put("category", category);
-    root.put("attributes", attributes);
+    // root.put("category", category);
+    // root.put("attributes", attributes);
     root.put("dimensions", dimensions);
+    root.put("classifications", classifications);
+
+    System.out.println(root.toString());
 
     Response response = this.client.target("http://localhost:8080/services/lot-item")
                             .request()
                             .post(Entity.json(root.toString()));
 
+    // System.out.println(response.getStatus());
+
     // assertTrue(HttpStatus.CREATED == response.getStatus());
-    response.close();
+    // response.close();
   }
 
   @Test

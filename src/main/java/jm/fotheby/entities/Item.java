@@ -1,5 +1,7 @@
 package jm.fotheby.entities;
 
+import jm.fotheby.services.CategoryResource;
+
 import java.util.Map;
 import java.util.List;
 
@@ -61,9 +63,14 @@ public class Item
     return this.id;
   }
 
+  public Long getVersion()
+  {
+    return this.version;
+  }
+
   public void setCategory(Category category)
   {
-    this.category = category;
+    this.category = CategoryResource.find(category.getName());
   }
 
   public void setClassifications(List<Classification> classifications)
@@ -101,7 +108,7 @@ public class Item
     this.textualDescription = textualDescription;
   }
 
-  public void setItemDimensions(ItemDimensions dimensions)
+  public void setDimensions(ItemDimensions dimensions)
   {
     this.dimensions = dimensions;
   }
@@ -173,7 +180,7 @@ public class Item
     return this.textualDescription;
   }
 
-  public ItemDimensions getItemDimensions()
+  public ItemDimensions getDimensions()
   {
     return this.dimensions;
   }

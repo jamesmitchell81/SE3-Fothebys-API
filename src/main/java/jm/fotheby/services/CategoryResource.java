@@ -23,10 +23,7 @@ import java.io.PrintStream;
 import java.io.IOException;
 
 // JPA
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 
 // JSON
 import org.json.*;
@@ -62,7 +59,6 @@ public class CategoryResource
   public StreamingOutput getCategories()
   {
     JSONArray out = new JSONArray();
-
     List<Category> categoryList = this.em.createQuery("SELECT c FROM Category c", Category.class)
                                          .getResultList();
 
@@ -115,6 +111,22 @@ public class CategoryResource
       category.addAttribute(attributes.get(i).toString());
 
     return category;
+  }
+
+  public static Category find(int id)
+  {
+    EntityManager em = Persistence.createEntityManagerFactory("$objectdb/db/category.odb").createEntityManager();
+    return em.find(Category.class, id);
+  }
+
+  public static Category find(String name)
+  {
+    EntityManager em = Persistence.createEntityManagerFactory("$objectdb/db/category.odb").createEntityManager();
+    TypedQuery<Category> query = em.createQuery("SELECT DISTINCT c FROM Category c WHERE name = '" + name + "'", Category.class);
+    query.setParameter("name", name);
+    List<Category> list = query.getResultList();
+
+    return list.size() == 0 ? new Category() : list.get(0);
   }
 
 }

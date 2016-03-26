@@ -19,6 +19,7 @@ import javax.ws.rs.WebApplicationException;
 
 // IO
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.IOException;
 
@@ -39,8 +40,12 @@ public class LotItemResource
 
   @POST
   @Consumes("application/json")
-  public Response createLotItem(LotItem item)
+  public Response createLotItem(Item item)
   {
+
+    // get classifications ...
+    // get images ...
+    // get attributes.
 
     try {
       this.em.getTransaction().begin();
@@ -51,10 +56,6 @@ public class LotItemResource
       return Response.status(422).build();
     }
 
-    // Category c = item.getCategory();
-    // System.out.println("! " + c.getId());
-
-    // return Response.created(URI.create("/lot-items/" + item.getId())).build();
     return Response.created(URI.create("/lot-items/1")).build();
   }
 

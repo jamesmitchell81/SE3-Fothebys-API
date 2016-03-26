@@ -25,6 +25,7 @@ public class ClientResourceTest
     this.client = ClientBuilder.newClient();
   }
 
+  @Ignore
   @Test
   public void createUnregisteredClientTest()
   {

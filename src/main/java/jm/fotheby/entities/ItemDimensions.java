@@ -2,6 +2,8 @@ package jm.fotheby.entities;
 
 import javax.persistence.Embeddable;
 
+import org.json.*;
+
 @Embeddable
 public class ItemDimensions
 {
@@ -23,19 +25,31 @@ public class ItemDimensions
     this.length = length;
   }
 
-  public void setLength(double length) {
+  public ItemDimensions(JSONObject json)
+  {
+    this.width =  json.has("width")  ? json.getInt("width") : 0;
+    this.height = json.has("height") ? json.getInt("height") : 0;
+    this.length = json.has("length") ? json.getInt("length") : 0;
+    this.baseMeasure = json.has("baseMeasure") ? json.getString("baseMeasure") : "";
+  }
+
+  public void setLength(double length)
+  {
     this.length = length;
   }
 
-  public void setWidth(double width) {
+  public void setWidth(double width)
+  {
     this.width = width;
   }
 
-  public void setHeight(double height) {
+  public void setHeight(double height)
+  {
     this.height = height;
   }
 
-  public void setBaseMeasure(String baseMeasure) {
+  public void setBaseMeasure(String baseMeasure)
+  {
     this.baseMeasure = baseMeasure;
   }
 
