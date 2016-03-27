@@ -1,36 +1,12 @@
 package jm.fotheby.services;
 
-// me
 import jm.fotheby.entities.*;
 
-// JAX-RS
 import java.net.URI;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.WebApplicationException;
-
-// IO
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-
-// JPA
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
-
-// dependancies
+import javax.ws.rs.core.*;
+import javax.ws.rs.*;
+import java.io.*;
+import javax.persistence.*;
 import org.json.*;
 
 @Path("/item-images")

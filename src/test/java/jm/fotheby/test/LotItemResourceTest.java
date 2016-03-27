@@ -3,6 +3,7 @@ package jm.fotheby.test;
 import jm.fotheby.util.HttpStatus;
 
 import java.util.HashMap;
+import java.time.LocalDate;
 
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -37,8 +38,11 @@ public class LotItemResourceTest
     root.put("provenanceDetails", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
     root.put("authenticated", true);
 
+    LocalDate date = LocalDate.of(2015, 6, 22);
     JSONObject productionDate = new JSONObject();
     productionDate.put("dateDescription", "18th Century");
+    productionDate.put("productionDate", date.toString());
+    productionDate.put("year", 2015);
 
     JSONObject category = new JSONObject();
     category.put("name", "Drawings");
@@ -67,7 +71,7 @@ public class LotItemResourceTest
 
     root.put("productionDate", productionDate);
     // root.put("category", category);
-    // root.put("attributes", attributes);
+    root.put("attributes", attributes);
     root.put("dimensions", dimensions);
     root.put("classifications", classifications);
 
@@ -86,8 +90,8 @@ public class LotItemResourceTest
   @Test
   public void getAllLotItems()
   {
-    // String items = client.target("http://localhost:8080/services/lot-item").request().get(String.class);
-    // System.out.println(items);
+    String items = client.target("http://localhost:8080/services/lot-item").request().get(String.class);
+    System.out.println(items);
   }
 
   @After

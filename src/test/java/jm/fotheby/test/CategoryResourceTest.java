@@ -110,6 +110,7 @@ public class CategoryResourceTest
   public void initBaseCategories()
   {
     String location;
+    Response response;
 
     JSONObject root = new JSONObject();
     root.put("name", "Drawings");
@@ -122,7 +123,7 @@ public class CategoryResourceTest
 
     root.put("attributes", attributes);
 
-    Response response = this.client.target("http://localhost:8080/services/category")
+    response = this.client.target("http://localhost:8080/services/category")
                             .request()
                             .post(Entity.json(root.toString()));
 

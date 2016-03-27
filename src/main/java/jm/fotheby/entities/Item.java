@@ -70,7 +70,7 @@ public class Item
 
   public void setCategory(Category category)
   {
-    this.category = CategoryResource.find(category.getName());
+    this.category = category;
   }
 
   public void setClassifications(List<Classification> classifications)

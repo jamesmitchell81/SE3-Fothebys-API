@@ -12,7 +12,6 @@ public class ItemDimensions
   private double height;
   private String baseMeasure;
 
-  public ItemDimensions() {}
   public ItemDimensions(double width, double height)
   {
     this.width = width;
