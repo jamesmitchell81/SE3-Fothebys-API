@@ -14,9 +14,11 @@ import org.json.*;
 @Path("/classifications")
 public class ClassificationResource
 {
-  private EntityManager em;
+  private ClassificationDAO dao;
 
-  public ClassificationResource(EntityManager em) { this.em = em; }
+  public ClassificationResource(EntityManager em) {
+    this.dao = new ClassificationDAO(em);
+  }
 
   @POST
   @Consumes("application/json")
@@ -24,15 +26,13 @@ public class ClassificationResource
   {
 
     try {
-      this.em.getTransaction().begin();
-      this.em.persist(classification);
-      this.em.getTransaction().commit();
+      this.dao.insert(classification)
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
     }
 
-    return Response.created(URI.create("/classifications/" + classification.getId())).build();
+    return Response.created(URI.create("/classifications/1")).build();
   }
 
 }
