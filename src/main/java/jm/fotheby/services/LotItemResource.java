@@ -31,72 +31,12 @@ import javax.persistence.PersistenceException;
 
 import org.json.*;
 
-@Path("/lot-item")
+@Path("/lot-items")
 public class LotItemResource
 {
   private EntityManager em;
 
   public LotItemResource(EntityManager em) { this.em = em; }
-
-  public Item buildItem(String json)
-  {
-    Item item = new Item();
-    JSONObject obj = new JSONObject(json);
-
-    if ( obj.has("catergory") )
-    {
-      Category category = CategoryResource.find(obj.getJSONObject("catergory").getString("name"));
-      item.setCategory(category);
-    }
-
-    if ( obj.has("classifications") )
-    {
-
-    }
-
-    if ( obj.has("attributes") )
-    {
-
-    }
-
-    if ( obj.has("itemName") )
-    {
-      item.setItemName(obj.getString("itemName"));
-    }
-
-    if ( obj.has("productionDate") )
-    {
-      DatePeriod dp = new DatePeriod(obj.getJSONObject("productionDate"));
-      item.setProductionDate(dp);
-    }
-
-    if ( obj.has("textualDescription") )
-    {
-      item.setTextualDescription("textualDescription");
-    }
-
-    if ( obj.has("dimensions") )
-    {
-      ItemDimensions dimensions = new ItemDimensions(obj.getJSONObject("dimensions"));
-      item.setDimensions(dimensions);
-    }
-
-    if ( obj.has("provenanceDetails") )
-    {
-      item.setProvenanceDetails(obj.getString("provenanceDetails"));
-    }
-
-    if ( obj.has("authenticated") )
-    {
-      item.setAuthenticated(obj.getBoolean("authenticated"));
-    }
-
-    if ( obj.has("estimatedPrice") )
-    {
-      item.setEstimatedPrice(obj.getDouble("estimatedPrice"));
-    }
-    return item;
-  }
 
   @POST
   @Consumes("application/json")
@@ -140,5 +80,72 @@ public class LotItemResource
     };
   }
 
+  @POST
+  @Path("add-classification")
+  @Consumes("application/json")
+  public Response addClassification(Classification classification)
+  {
+
+  }
+
+  private Item buildItem(String json)
+  {
+    Item item = new Item();
+    JSONObject obj = new JSONObject(json);
+
+    if ( obj.has("catergory") )
+    {
+      Category category = CategoryResource.find(obj.getJSONObject("catergory").getString("name"));
+      item.setCategory(category);
+    }
+
+    if ( obj.has("classifications") )
+    {
+
+    }
+
+    if ( obj.has("attributes") )
+    {
+
+    }
+
+    if ( obj.has("dimensions") )
+    {
+      ItemDimensions dimensions = new ItemDimensions(obj.getJSONObject("dimensions"));
+      item.setDimensions(dimensions);
+    }
+
+    if ( obj.has("productionDate") )
+    {
+      DatePeriod dp = new DatePeriod(obj.getJSONObject("productionDate"));
+      item.setProductionDate(dp);
+    }
+
+    if ( obj.has("itemName") )
+    {
+      item.setItemName(obj.getString("itemName"));
+    }
+
+    if ( obj.has("textualDescription") )
+    {
+      item.setTextualDescription("textualDescription");
+    }
+
+    if ( obj.has("provenanceDetails") )
+    {
+      item.setProvenanceDetails(obj.getString("provenanceDetails"));
+    }
+
+    if ( obj.has("authenticated") )
+    {
+      item.setAuthenticated(obj.getBoolean("authenticated"));
+    }
+
+    if ( obj.has("estimatedPrice") )
+    {
+      item.setEstimatedPrice(obj.getDouble("estimatedPrice"));
+    }
+    return item;
+  }
 
 }

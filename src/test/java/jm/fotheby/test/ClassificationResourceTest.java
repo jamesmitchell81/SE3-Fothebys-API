@@ -35,8 +35,6 @@ public class ClassificationResourceTest
                                    .post(Entity.json(classification.toString()));
 
 
-    // test
-
   }
 
   @After
