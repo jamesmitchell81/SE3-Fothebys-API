@@ -11,9 +11,9 @@ public class ItemAttribute<T>
     this.value = value;
   }
 
-  private void setValue(T value) { this.value = value; }
-  private T getValue() { return this.value; }
+  public void setValue(T value) { this.value = value; }
+  public T getValue() { return this.value; }
 
-  private void setName(String name) { this.name = name; }
-  private String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+  public String getName() { return this.name; }
 }

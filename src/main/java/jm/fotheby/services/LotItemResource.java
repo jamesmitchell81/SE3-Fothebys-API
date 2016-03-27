@@ -1,37 +1,19 @@
 package jm.fotheby.services;
 
-// me
 import jm.fotheby.entities.*;
+import jm.fotheby.persistence.*;
 
-import java.util.List;
+import java.lang.reflect.Field;
 
-// JAX-RS
+import java.util.*;
 import java.net.URI;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.WebApplicationException;
-
-// IO
-import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-
-// JPA
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
-
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.*;
+import javax.persistence.*;
 import org.json.*;
 
-@Path("/lot-items")
+@Path("/lot-item")
 public class LotItemResource
 {
   private EntityManager em;
@@ -80,28 +62,30 @@ public class LotItemResource
     };
   }
 
-  @POST
-  @Path("add-classification")
-  @Consumes("application/json")
-  public Response addClassification(Classification classification)
-  {
-
-  }
-
   private Item buildItem(String json)
   {
     Item item = new Item();
     JSONObject obj = new JSONObject(json);
 
-    if ( obj.has("catergory") )
+    if ( obj.has("category") )
     {
-      Category category = CategoryResource.find(obj.getJSONObject("catergory").getString("name"));
+      Category category = CategoryResource.find(obj.getJSONObject("category").getString("name"));
       item.setCategory(category);
     }
 
     if ( obj.has("classifications") )
     {
+      JSONArray classifications = obj.getJSONArray("classifications");
+      ClassificationDAO clsDAO = new ClassificationDAO();
+      List<Classification> list = new ArrayList<Classification>();
 
+      for ( int i = 0; i < classifications.length(); i++ )
+      {
+        Classification classification = clsDAO.get(classifications.getJSONObject(i));
+        list.add(classification);
+      }
+
+      item.setClassifications(list);
     }
 
     if ( obj.has("attributes") )

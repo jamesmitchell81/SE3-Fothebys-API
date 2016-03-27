@@ -51,7 +51,10 @@ public class CategoryResourceTest
   @Test
   public void testGetAllCategories()
   {
-    String categories = client.target("http://localhost:8080/services/category").request().get(String.class);
+    String categories = client.target("http://localhost:8080/services/category")
+                              .request()
+                              .get(String.class);
+
     System.out.println(categories);
   }
 

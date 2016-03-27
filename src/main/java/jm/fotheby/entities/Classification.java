@@ -22,7 +22,7 @@ public class Classification
     return id;
   }
 
-  public void setName(String classification)
+  public void setName(String name)
   {
     this.name = name;
   }

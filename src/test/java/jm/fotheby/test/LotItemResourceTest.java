@@ -47,10 +47,18 @@ public class LotItemResourceTest
     JSONObject category = new JSONObject();
     category.put("name", "Drawings");
 
-    JSONObject attributes = new JSONObject();
-    HashMap<String, String> attribute = new HashMap<String, String>();
+    JSONArray attributes = new JSONArray();
+    JSONObject attribute = new JSONObject();
     attribute.put("Medium", "Pencil");
-    attributes.put("Medium", attribute);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("Artist", "Mattisse");
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("Framed", true);
+    attributes.put(attribute);
 
     JSONObject dimensions = new JSONObject();
     dimensions.put("baseMeasure", "CM");
@@ -60,20 +68,19 @@ public class LotItemResourceTest
 
     JSONObject classifications = new JSONObject();
     JSONArray classification = new JSONArray();
+
     JSONObject c1 = new JSONObject();
     c1.put("name", "nude");
     JSONObject c2 = new JSONObject();
     c2.put("name", "abstract");
-
     classification.put(c1);
     classification.put(c2);
-    classifications.put("classifications", classification);
 
     root.put("productionDate", productionDate);
-    // root.put("category", category);
+    root.put("category", category);
     root.put("attributes", attributes);
     root.put("dimensions", dimensions);
-    root.put("classifications", classifications);
+    root.put("classifications", classification);
 
     System.out.println(root.toString());
 
@@ -90,7 +97,10 @@ public class LotItemResourceTest
   @Test
   public void getAllLotItems()
   {
-    String items = client.target("http://localhost:8080/services/lot-item").request().get(String.class);
+    String items = client.target("http://localhost:8080/services/lot-item")
+                         .request()
+                         .get(String.class);
+
     System.out.println(items);
   }
 

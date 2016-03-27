@@ -1,7 +1,6 @@
 package jm.fotheby.entities;
 
-import jm.fotheby.services.CategoryResource;
-
+import java.util.Set;
 import java.util.Map;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class Item
   private boolean authenticated = false;
   private double estimatedPrice;
 
-  private Map<String, ItemAttribute> attributes;
+  private Map<String, ?> attributes;
 
   public Long getId()
   {
@@ -76,11 +75,6 @@ public class Item
   public void setClassifications(List<Classification> classifications)
   {
     this.classifications = classifications;
-  }
-
-  public void addClassification(Classification classifications)
-  {
-    this.classifications.add(classifications);
   }
 
   public void setImages(List<ItemImage> images)
@@ -128,15 +122,10 @@ public class Item
     this.authenticated = authenticated;
   }
 
-  public void setAttributes(Map<String, ItemAttribute> attributes)
+  public void setAttributes(Map<String, ?> attributes)
   {
     // check category allows attribute.
     this.attributes = attributes;
-  }
-
-  public void addAttribute(String key, ItemAttribute value)
-  {
-    this.attributes.put(key, value);
   }
 
   public Category getCategory()
@@ -147,12 +136,6 @@ public class Item
   public List<Classification> getClassifications()
   {
     return this.classifications;
-  }
-
-  public Classification getClassification(int id)
-  {
-    // check out of range
-    return this.classifications.get(id);
   }
 
   public List<ItemImage> getImages()
@@ -200,15 +183,8 @@ public class Item
     return this.authenticated;
   }
 
-  public Map<String, ItemAttribute> getAttributes()
+  public Map<String, ?> getAttributes()
   {
-    // check category allows attribute.
     return this.attributes;
   }
-
-  public ItemAttribute getAttribute(String key)
-  {
-    return this.attributes.get(key);
-  }
-
 }
