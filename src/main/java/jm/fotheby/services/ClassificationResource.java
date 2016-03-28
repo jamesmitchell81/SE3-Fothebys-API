@@ -17,7 +17,8 @@ public class ClassificationResource
 {
   private ClassificationDAO dao;
 
-  public ClassificationResource(EntityManager em) {
+  public ClassificationResource(EntityManager em)
+  {
     this.dao = new ClassificationDAO(em);
   }
 
