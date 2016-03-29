@@ -25,13 +25,13 @@ public class LotItemResource
   public Response createLotItem(String json)
   {
     Item item = this.buildItem(json);
-    // get classifications ...
-    // get images ...
-    // get attributes.
+
+    JSONObject obj = new JSONObject(item);
+    System.out.println(obj.toString());
 
     try {
       this.em.getTransaction().begin();
-      // this.em.persist(item);
+      this.em.persist(item);
       this.em.getTransaction().commit();
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
@@ -69,7 +69,8 @@ public class LotItemResource
 
     if ( obj.has("category") )
     {
-      Category category = CategoryResource.find(obj.getJSONObject("category").getString("name"));
+      CategoryDAO catDAO = new CategoryDAO();
+      Category category = catDAO.get(obj.getJSONObject("category"));
       item.setCategory(category);
     }
 
@@ -90,7 +91,17 @@ public class LotItemResource
 
     if ( obj.has("attributes") )
     {
+      Map<String, String> attributes = new HashMap<String, String>();
+      JSONArray attrs = obj.getJSONArray("attributes");
 
+      for ( int i = 0; i < attrs.length(); i++ )
+      {
+        String name = attrs.getJSONObject(i).getString("name");
+        String value = attrs.getJSONObject(i).getString("value");
+        attributes.put(name, value);
+      }
+
+      item.setAttributes(attributes);
     }
 
     if ( obj.has("dimensions") )
@@ -129,6 +140,7 @@ public class LotItemResource
     {
       item.setEstimatedPrice(obj.getDouble("estimatedPrice"));
     }
+
     return item;
   }
 

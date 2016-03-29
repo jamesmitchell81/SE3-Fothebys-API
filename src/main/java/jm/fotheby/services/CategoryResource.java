@@ -1,6 +1,7 @@
 package jm.fotheby.services;
 
 import jm.fotheby.entities.Category;
+import jm.fotheby.persistence.CategoryDAO;
 
 import java.util.List;
 import java.net.URI;

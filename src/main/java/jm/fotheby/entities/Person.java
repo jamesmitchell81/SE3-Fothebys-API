@@ -1,23 +1,21 @@
 package jm.fotheby.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Person
 {
-  @Id @GeneratedValue private Long id;
-  private String title;
-  private String firstName;
-  private String surname;
-  private String telNumber;
-  private String emailAddress;
-  @Embedded private Address contactAddress;
+  @Id @GeneratedValue protected Long id;
+  protected String title;
+  protected String firstName;
+  protected String surname;
+  protected String telNumber;
+  protected String emailAddress;
+  @Embedded protected Address contactAddress;
 
-  @ManyToOne private Country country;
+  @ManyToOne protected Country country;
 
   public Person() {}
   public Person(String title, String firstName, String surname)
@@ -47,7 +45,8 @@ public class Person
     this.contactAddress = address;
   }
 
-  public void setTelNumber(String telNumber) {
+  public void setTelNumber(String telNumber)
+  {
     this.telNumber = telNumber;
   }
 

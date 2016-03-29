@@ -28,6 +28,7 @@ public class LotItemResourceTest
     this.client = ClientBuilder.newClient();
   }
 
+  @Ignore
   @Test
   public void testCreateLotItem()
   {
@@ -49,15 +50,18 @@ public class LotItemResourceTest
 
     JSONArray attributes = new JSONArray();
     JSONObject attribute = new JSONObject();
-    attribute.put("Medium", "Pencil");
+    attribute.put("name", "Medium");
+    attribute.put("value", "Pencil");
     attributes.put(attribute);
 
     attribute = new JSONObject();
-    attribute.put("Artist", "Mattisse");
+    attribute.put("name", "Mattisse");
+    attribute.put("value", "Mattisse");
     attributes.put(attribute);
 
     attribute = new JSONObject();
-    attribute.put("Framed", true);
+    attribute.put("name", "Framed");
+    attribute.put("value", "Yes");
     attributes.put(attribute);
 
     JSONObject dimensions = new JSONObject();
@@ -66,7 +70,6 @@ public class LotItemResourceTest
     dimensions.put("width",  20);
     dimensions.put("height", 30);
 
-    JSONObject classifications = new JSONObject();
     JSONArray classification = new JSONArray();
 
     JSONObject c1 = new JSONObject();

@@ -22,6 +22,7 @@ public class ClassificationResourceTest
     this.client = ClientBuilder.newClient();
   }
 
+  @Ignore
   @Test
   public void getClassificiations()
   {
@@ -32,6 +33,7 @@ public class ClassificationResourceTest
     System.out.println(response);
   }
 
+  @Ignore
   @Test
   public void getClassificiationById()
   {

@@ -11,11 +11,8 @@ import javax.jdo.annotations.Unique;
 @Table(name="CLASSIFICATION")
 public class Classification
 {
-  @Id @GeneratedValue
-  private int id;
-
-  @Unique
-  private String name;
+  @Id @GeneratedValue private int id;
+  @Unique private String name;
 
   public int getId()
   {

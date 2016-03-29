@@ -69,8 +69,6 @@ public class ClientResource
       return Response.status(422).build();
     }
 
-    System.out.println(client.getId());
-
     // return Response.created(URI.create("/clients/" + client.getId())).build();
     return Response.ok(client).build();
   }

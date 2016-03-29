@@ -19,12 +19,18 @@ public class ServiceApplication extends Application {
       EntityManager itemDB = Persistence.createEntityManagerFactory("$objectdb/db/item.odb").createEntityManager();
       EntityManager imageDB = Persistence.createEntityManagerFactory("$objectdb/db/image.odb").createEntityManager();
       EntityManager classDB = Persistence.createEntityManagerFactory("$objectdb/db/classification.odb").createEntityManager();
+      EntityManager expertDB = Persistence.createEntityManagerFactory("$objectdb/db/expert.odb").createEntityManager();
+      EntityManager countryDB = Persistence.createEntityManagerFactory("$objectdb/db/country.odb").createEntityManager();
+      EntityManager locationDB = Persistence.createEntityManagerFactory("$objectdb/db/location.odb").createEntityManager();
 
       singletons.add(new ClientResource(clientDB));
       singletons.add(new CategoryResource(categoryDB));
       singletons.add(new LotItemResource(itemDB));
       singletons.add(new ItemImageResource(imageDB));
       singletons.add(new ClassificationResource(classDB));
+      singletons.add(new ExpertResource(expertDB));
+      singletons.add(new CountryResource(countryDB));
+      singletons.add(new LocationResource(locationDB));
    }
 
    @Override

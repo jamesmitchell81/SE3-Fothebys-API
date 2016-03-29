@@ -48,6 +48,7 @@ public class CategoryResourceTest
     response.close();
   }
 
+  @Ignore
   @Test
   public void testGetAllCategories()
   {

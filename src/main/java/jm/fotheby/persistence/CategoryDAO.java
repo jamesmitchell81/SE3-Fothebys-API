@@ -45,6 +45,14 @@ public class CategoryDAO
                   .getResultList();
   }
 
+  public Category get(String name)
+  {
+    TypedQuery<Category> query = em.createQuery("SELECT DISTINCT c FROM Category c WHERE name = :name", Category.class);
+    query.setParameter("name", name);
+    List<Category> list = query.getResultList();
+    return list.get(0);
+  }
+
   public Category get(int id)
   {
     return this.em.find(Category.class, id);
@@ -65,14 +73,6 @@ public class CategoryDAO
     }
 
     return category;
-  }
-
-  public Category get(String name)
-  {
-    TypedQuery<Category> query = em.createQuery("SELECT DISTINCT c FROM Category c WHERE name = '" + name + "'", Category.class);
-    query.setParameter("name", name);
-    List<Category> list = query.getResultList();
-    return list.get(0);
   }
 
 }

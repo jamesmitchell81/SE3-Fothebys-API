@@ -1,38 +1,45 @@
 package jm.fotheby.entities;
 
 import java.sql.Date;
-import javax.persistence.Entity;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Employee extends Person
 {
-  private String location;
-  private String role;
-  @Embedded private Credentials credentials;
-  private Date startDate;
+  @ManyToOne
+  protected Location location;
+  protected String role;
+  @Embedded protected Credentials credentials;
+  protected Date startDate;
 
-  public String getLocation() {
+  public Location getLocation()
+  {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(Location location)
+  {
     this.location = location;
   }
 
-  public String getRole() {
+  public String getRole()
+  {
     return role;
   }
 
-  public void setRole(String role) {
+  public void setRole(String role)
+  {
     this.role = role;
   }
 
-  public Credentials getCredentials() {
+  public Credentials getCredentials()
+  {
     return credentials;
   }
 
-  public void setCredentials(Credentials credentials) {
+  public void setCredentials(Credentials credentials)
+  {
     this.credentials = credentials;
   }
 }

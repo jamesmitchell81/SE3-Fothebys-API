@@ -42,7 +42,6 @@ public class ClassificationDAO
   public Classification get(JSONObject json)
   {
     Classification classification = new Classification();
-    System.out.println(json.toString());
 
     if ( json.has("name") )
     {

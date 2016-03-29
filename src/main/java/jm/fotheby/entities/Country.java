@@ -1,14 +1,25 @@
 package jm.fotheby.entities;
 
-import javax.persistence.Entity;
+import java.util.List;
+import javax.persistence.*;
+
+import javax.jdo.annotations.Unique;
 
 @Entity
 public class Country
 {
-  private String name;
-  private String currency;
-  private String timezone;
-  private String callingCode;
+  @Id @GeneratedValue private Long id;
+
+  @Unique private String name;
+  private List<String> currency;
+  private List<String> timezones;
+  private String shortCode;
+  private String region;
+
+  public Long getId()
+  {
+    return id;
+  }
 
   public String getName()
   {
@@ -20,33 +31,43 @@ public class Country
     this.name = name;
   }
 
-  public String getCurrency()
+  public List<String> getCurrency()
   {
     return currency;
   }
 
-  public void setCurrency(String currency)
+  public void setCurrency(List<String> currency)
   {
     this.currency = currency;
   }
 
-  public String getTimezone()
+  public List<String> getTimezones()
   {
-    return timezone;
+    return timezones;
   }
 
-  public void setTimezone(String timezone)
+  public void setTimezones(List<String> timezones)
   {
-    this.timezone = timezone;
+    this.timezones = timezones;
   }
 
-  public String getCallingCode()
+  public void setShortCode(String shortCode)
   {
-    return callingCode;
+    this.shortCode = shortCode;
   }
 
-  public void setCallingCode(String callingCode)
+  public String getShortCode()
   {
-    this.callingCode = callingCode;
+    return this.shortCode;
+  }
+
+  public void setRegion(String region)
+  {
+    this.region = region;
+  }
+
+  public String getRegion()
+  {
+    return this.region;
   }
 }
