@@ -132,7 +132,7 @@ public class ExpertResourceTest
     System.out.println(response.getStatus());
   }
 
-  @Ignore
+  // @Ignore
   @Test
   public void getExpertsTest()
   {

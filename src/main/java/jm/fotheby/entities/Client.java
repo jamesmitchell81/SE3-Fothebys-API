@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Embedded;
 
 @Entity
+@DiscriminatorValue("CLIENT")
+@Table(name="CLIENT")
 public class Client extends Person
 {
   @Embedded private PaymentDetails accountDetails;

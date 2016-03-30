@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.persistence.InheritanceType;
 
 @Entity
+@DiscriminatorColumn(name="PERSON_TYPE")
 @Inheritance(strategy=InheritanceType.JOINED)
+@Table(name="PERSON")
 public class Person
 {
   @Id @GeneratedValue protected Long id;
@@ -14,7 +16,6 @@ public class Person
   protected String telNumber;
   protected String emailAddress;
   @Embedded protected Address contactAddress;
-
   @ManyToOne protected Country country;
 
   public Person() {}

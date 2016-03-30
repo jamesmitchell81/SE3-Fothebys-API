@@ -49,77 +49,7 @@ public class ClassificationResourceTest
   @Test
   public void initClassifications()
   {
-    // landscape, seascape, portrait, figure, still life, nude, animal, abstract, or other
 
-    JSONObject json = new JSONObject();
-    Response response;
-
-    json.put("name", "landscape");
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "seascape");
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "portrait");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "figure");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "still life");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "nude");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "animal");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-    response.close();
-
-    json = new JSONObject();
-    json.put("name", "abstract");
-
-    response = this.client.target("http://localhost:8080/services/classification")
-                          .request()
-                          .post(Entity.json(json.toString()));
-
-    response.close();
   }
 
   @After

@@ -4,7 +4,9 @@ import java.sql.Date;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("EMPLOYEE")
+@Inheritance(strategy=InheritanceType.JOINED)
+@Table("EMPLOYEE")
 public class Employee extends Person
 {
   @ManyToOne
