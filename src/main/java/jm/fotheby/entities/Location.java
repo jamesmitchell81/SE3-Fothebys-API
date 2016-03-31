@@ -6,7 +6,8 @@ import javax.jdo.annotations.Unique;
 @Entity
 public class Location
 {
-  @Id @GeneratedValue private int id;
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private int id;
   @Unique private String name;
   @Embedded private Address address;
   @ManyToOne private Country country;

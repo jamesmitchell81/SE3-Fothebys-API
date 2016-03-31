@@ -82,7 +82,9 @@ public class ExpertResourceTest
     JSONObject obj = new JSONObject(response);
     int id = obj.has("id") ? obj.getInt("id") : 0;
 
-    System.out.println(obj.toString());
+    // System.out.println(obj.toString());
+    System.out.println(response);
+
 
     assertTrue(id == 1);
   }

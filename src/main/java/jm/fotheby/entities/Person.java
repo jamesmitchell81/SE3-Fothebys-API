@@ -9,7 +9,8 @@ import javax.persistence.InheritanceType;
 @Table(name="PERSON")
 public class Person
 {
-  @Id @GeneratedValue protected Long id;
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  protected Long id;
   protected String title;
   protected String firstName;
   protected String surname;

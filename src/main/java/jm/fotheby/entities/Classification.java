@@ -1,9 +1,6 @@
 package jm.fotheby.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import javax.jdo.annotations.Unique;
 
@@ -11,7 +8,8 @@ import javax.jdo.annotations.Unique;
 @Table(name="CLASSIFICATION")
 public class Classification
 {
-  @Id @GeneratedValue private int id;
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private int id;
   @Unique private String name;
 
   public int getId()

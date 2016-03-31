@@ -1,6 +1,6 @@
 package jm.fotheby.entities;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -10,25 +10,15 @@ public class Expert extends Employee
 {
   @ManyToOne
   private Category category;
-
-  // @ManyToMany(fetch=FetchType.EAGER)
-  // @JoinTable(
-  //   name="EXPERT_CLASSIFICATIONS",
-  //   joinColumns={@JoinColumn(name="EXPERT_ID")},
-  //   inverseJoinColumns={@JoinColumn(name="CLASSIFICATION_ID")}
-  // )
-  // private List<Classification> specialties;
-
-  private Set<Integer> specialties;
+  private List<Integer> specialties;
 
   public void setCategory(Category category)
   {
     this.category = category;
-    System.out.println("!" + category.getId());
   }
 
   // public void setSpecialties(List<Classification> specialties)
-  public void setSpecialties(Set<Integer> specialties)
+  public void setSpecialties(List<Integer> specialties)
   {
     this.specialties = specialties;
   }
@@ -39,7 +29,7 @@ public class Expert extends Employee
   }
 
   // public List<Classification> getSpecialties()
-  public Set<Integer> getSpecialties()
+  public List<Integer> getSpecialties()
   {
     return this.specialties;
   }

@@ -132,7 +132,7 @@ public class ExpertResource
 
       JSONArray specialties = obj.getJSONArray("specialties");
       ClassificationDAO clsDAO = new ClassificationDAO();
-      HashSet<Integer> list = new HashSet<Integer>();
+      List<Integer> list = new ArrayList<Integer>();
 
       System.out.println(specialties.toString());
 

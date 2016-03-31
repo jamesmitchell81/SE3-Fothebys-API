@@ -8,7 +8,8 @@ import javax.jdo.annotations.Unique;
 @Entity
 public class Country
 {
-  @Id @GeneratedValue private Long id;
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private Long id;
 
   @Unique private String name;
   private List<String> currency;

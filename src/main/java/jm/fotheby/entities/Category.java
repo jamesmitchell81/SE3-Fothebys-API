@@ -1,17 +1,14 @@
 package jm.fotheby.entities;
 
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import javax.jdo.annotations.Unique;
 
 @Entity
 public class Category
 {
-  @Id @GeneratedValue
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
   private int id;
 
   @Unique private String name = "";
