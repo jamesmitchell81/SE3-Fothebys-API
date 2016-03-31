@@ -21,12 +21,6 @@ import org.json.*;
 @Path("/location")
 public class LocationResource
 {
-  private LocationDAO dao;
-
-  public LocationResource(EntityManager em)
-  {
-    this.dao = new LocationDAO(em);
-  }
 
   @POST
   @Consumes("application/json")
@@ -39,7 +33,8 @@ public class LocationResource
     Location location = this.buildLocation(obj);
 
     try {
-      this.dao.insert(location);
+      LocationDAO dao = new LocationDAO();
+      dao.insert(location);
     } catch (PersistenceException e) {
       return Response.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
@@ -59,7 +54,8 @@ public class LocationResource
     Location location = this.buildLocation(obj);
 
     try {
-      this.dao.update(id, location);
+      LocationDAO dao = new LocationDAO();
+      dao.update(id, location);
     } catch (PersistenceException e) {
       return Response.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
@@ -72,7 +68,8 @@ public class LocationResource
   @Produces("application/json")
   public StreamingOutput getLocation(@PathParam("id") int id)
   {
-    Location location = this.dao.get(id);
+    LocationDAO dao = new LocationDAO();
+    Location location = dao.get(id);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -89,7 +86,8 @@ public class LocationResource
   @Produces("application/json")
   public StreamingOutput getLocation(@PathParam("name") String name)
   {
-    Location location = this.dao.get(name);
+    LocationDAO dao = new LocationDAO();
+    Location location = dao.get(name);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -105,7 +103,8 @@ public class LocationResource
   @Produces("application/json")
   public StreamingOutput getLocations()
   {
-    List<Location> locations = this.dao.get();
+    LocationDAO dao = new LocationDAO();
+    List<Location> locations = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

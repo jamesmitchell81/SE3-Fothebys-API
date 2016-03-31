@@ -1,36 +1,34 @@
 package jm.fotheby.persistence;
 
-import jm.fotheby.entities.Expert;
+import jm.fotheby.entities.*;
+import jm.fotheby.util.*;
+
 import javax.persistence.*;
 import java.util.*;
+import org.json.*;
 
 public class ExpertDAO
 {
-  private EntityManager em;
-
-  public ExpertDAO()
-  {
-    this.em = Persistence.createEntityManagerFactory("$objectdb/db/expert.odb")
-                         .createEntityManager();
-  }
-
-  public ExpertDAO(EntityManager em)
-  {
-    this.em = em;
-  }
-
   public void insert(Expert expert) throws PersistenceException
   {
-    this.em.getTransaction().begin();
-    this.em.persist(expert);
-    this.em.getTransaction().commit();
+    Database db = new Database();
+    db.connect();
+
+    db.getEntityManager().getTransaction().begin();
+    db.getEntityManager().persist(expert);
+    db.getEntityManager().getTransaction().commit();
+
+    db.close();
   }
 
   public void update(int id, Expert update) throws PersistenceException
   {
     Expert current = this.get(id);
 
-    this.em.getTransaction().begin();
+    Database db = new Database();
+    db.connect();
+
+    db.getEntityManager().getTransaction().begin();
 
     current.setLocation(update.getLocation());
     current.setCategory(update.getCategory());
@@ -43,22 +41,29 @@ public class ExpertDAO
     current.setTelNumber(update.getTelNumber());
     current.setRole(update.getRole());
 
-    this.em.getTransaction().commit();
+    db.getEntityManager().getTransaction().commit();
+
+    db.close();
   }
 
   public List<Expert> get()
   {
-    return this.em.createQuery("SELECT e FROM Expert e", Expert.class)
-                  .getResultList();
+    Database db = new Database();
+    db.connect();
+
+    List<Expert> list = db.getEntityManager().createQuery("SELECT e FROM Expert e", Expert.class).getResultList();
+
+    db.close();
+    return list;
   }
 
   public Expert get(int id) throws IllegalArgumentException
   {
-    // TypedQuery<Expert> query = em.createQuery("SELECT DISTINCT e FROM Expert e WHERE id = :id", Expert.class);
-    // query.setParameter("id", id);
-    // List<Expert> list = query.getResultList();
-    // return list.get(0);
-    return this.em.find(Expert.class, id);
+    Database db = new Database();
+    db.connect();
+    Expert expert = db.getEntityManager().find(Expert.class, id);
+    db.close();
+    return expert;
   }
 
   // public List<Expert> get(Classification cls)

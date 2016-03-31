@@ -2,6 +2,7 @@ package jm.fotheby.services;
 
 import jm.fotheby.entities.Country;
 import jm.fotheby.persistence.CountryDAO;
+import jm.fotheby.util.HttpStatus;
 
 import java.util.List;
 import java.net.URI;
@@ -16,11 +17,18 @@ import org.json.*;
 public class CountryResource
 {
 
-  private CountryDAO dao;
-
-  public CountryResource(EntityManager em)
+  @POST
+  @Consumes("application/json")
+  public Response createCountry(Country country)
   {
-    this.dao = new CountryDAO(em);
+    try {
+      CountryDAO dao = new CountryDAO();
+      dao.insert(country);
+    } catch ( Exception e) {
+      return Response.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
+
+    return Response.created(URI.create("/country/1")).build();
   }
 
   @GET
@@ -28,7 +36,8 @@ public class CountryResource
   @Produces("application/json")
   public StreamingOutput getCountry(@PathParam("id") int id)
   {
-    Country country = this.dao.get(id);
+    CountryDAO dao = new CountryDAO();
+    Country country = dao.get(id);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -44,8 +53,8 @@ public class CountryResource
   @Produces("application/json")
   public StreamingOutput getAllCountries()
   {
-
-    List<Country> countries = this.dao.get();
+    CountryDAO dao = new CountryDAO();
+    List<Country> countries = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

@@ -132,7 +132,7 @@ public class ExpertResourceTest
     System.out.println(response.getStatus());
   }
 
-  // @Ignore
+  @Ignore
   @Test
   public void getExpertsTest()
   {
@@ -140,12 +140,12 @@ public class ExpertResourceTest
                                  .request()
                                  .get(String.class);
 
-    JSONArray arr = new JSONArray(response);
+    // JSONArray arr = new JSONArray(response);
 
-    for ( int i = 0; i < arr.length(); i++ )
-    {
-      System.out.println(arr.getJSONObject(i).toString());
-    }
+    // for ( int i = 0; i < arr.length(); i++ )
+    // {
+    //   System.out.println(arr.getJSONObject(i).toString());
+    // }
   }
 
   @After

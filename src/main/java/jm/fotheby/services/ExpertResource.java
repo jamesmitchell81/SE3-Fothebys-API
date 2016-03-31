@@ -5,6 +5,8 @@ import jm.fotheby.persistence.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import java.util.List;
 import java.net.URI;
@@ -19,26 +21,22 @@ import org.json.*;
 @Path("/expert")
 public class ExpertResource
 {
-  private ExpertDAO dao;
-
-  public ExpertResource(EntityManager em)
-  {
-    this.dao = new ExpertDAO(em);
-  }
-
   @POST
   @Consumes("application/json")
   public Response createNewExpert(String json)
   {
     Expert expert = this.buildExpert(json);
 
+    JSONObject exp = new JSONObject();
+    System.out.println(exp.toString());
+
     try {
-      this.dao.insert(expert);
+      ExpertDAO dao = new ExpertDAO();
+      dao.insert(expert);
     } catch (PersistenceException pe) {
+      System.out.println(pe.getMessage());
       return Response.status(422).build();
     }
-
-    System.out.println(expert.getId());
 
     return Response.created(URI.create("/expert/" + expert.getId())).build();
   }
@@ -51,7 +49,8 @@ public class ExpertResource
     Expert expert = new Expert();
 
     try {
-      expert = this.dao.get(id);
+      ExpertDAO dao = new ExpertDAO();
+      expert = dao.get(id);
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
     }
@@ -71,7 +70,8 @@ public class ExpertResource
   @Produces("application/json")
   public StreamingOutput getExperts()
   {
-    List<Expert> list = this.dao.get();
+    ExpertDAO dao = new ExpertDAO();
+    List<Expert> list = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -97,7 +97,8 @@ public class ExpertResource
     Expert update = this.buildExpert(expert);
 
     try {
-      this.dao.update(id, update);
+      ExpertDAO dao = new ExpertDAO();
+      dao.update(id, update);
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.serverError().build();
@@ -110,6 +111,8 @@ public class ExpertResource
   {
     JSONObject obj = new JSONObject(json);
     Expert expert = new Expert();
+
+    System.out.println(obj.toString());
 
     try {
       JSONObject addr = obj.getJSONObject("contactAddress");
@@ -129,13 +132,15 @@ public class ExpertResource
 
       JSONArray specialties = obj.getJSONArray("specialties");
       ClassificationDAO clsDAO = new ClassificationDAO();
-      List<Classification> list = new ArrayList<Classification>();
+      HashSet<Integer> list = new HashSet<Integer>();
+
+      System.out.println(specialties.toString());
 
       for ( int i = 0; i < specialties.length(); i++ )
       {
         Classification classification = clsDAO.get(specialties.getJSONObject(i));
         System.out.println(classification.getId());
-        list.add(classification);
+        list.add((Integer)classification.getId());
       }
 
       expert.setLocation(location);
@@ -151,6 +156,7 @@ public class ExpertResource
 
     } catch (Exception e) {
       // e.printStackTrace();
+      System.out.println(e.getMessage());
     }
 
     return expert;

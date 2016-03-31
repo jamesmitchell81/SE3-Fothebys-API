@@ -45,13 +45,6 @@ public class ClassificationResourceTest
 
   }
 
-  @Ignore
-  @Test
-  public void initClassifications()
-  {
-
-  }
-
   @After
   public void cleanUp()
   {

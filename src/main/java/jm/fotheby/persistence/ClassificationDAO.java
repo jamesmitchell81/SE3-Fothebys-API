@@ -1,6 +1,8 @@
 package jm.fotheby.persistence;
 
 import jm.fotheby.entities.Classification;
+import jm.fotheby.util.*;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -8,35 +10,33 @@ import org.json.*;
 
 public class ClassificationDAO
 {
-  private EntityManager em;
-
-  public ClassificationDAO()
-  {
-    this.em = Persistence.createEntityManagerFactory("$objectdb/db/classification.odb")
-                         .createEntityManager();
-  }
-
-  public ClassificationDAO(EntityManager em)
-  {
-    this.em = em;
-  }
-
   public void insert(Classification classification) throws PersistenceException
   {
-    this.em.getTransaction().begin();
-    this.em.persist(classification);
-    this.em.getTransaction().commit();
+    Database db = new Database();
+    db.connect();
+
+    db.getEntityManager().getTransaction().begin();
+    db.getEntityManager().persist(classification);
+    db.getEntityManager().getTransaction().commit();
   }
 
   public List<Classification> get()
   {
-    return this.em.createQuery("SELECT c FROM Classification c", Classification.class)
+    Database db = new Database();
+    db.connect();
+    List<Classification> list = db.getEntityManager().createQuery("SELECT c FROM Classification c", Classification.class)
                   .getResultList();
+    db.close();
+    return list;
   }
 
   public Classification get(int id)
   {
-    return this.em.find(Classification.class, id);
+    Database db = new Database();
+    db.connect();
+    Classification cls = db.getEntityManager().find(Classification.class, id);
+    db.close();
+    return cls;
   }
 
   public Classification get(JSONObject json)
@@ -58,10 +58,14 @@ public class ClassificationDAO
 
   public Classification get(String name)
   {
-    TypedQuery<Classification> query = em.createQuery("SELECT DISTINCT c FROM Classification c WHERE name = '" + name + "'", Classification.class);
+    Database db = new Database();
+    db.connect();
+    TypedQuery<Classification> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Classification c WHERE name = '" + name + "'", Classification.class);
     query.setParameter("name", name);
     List<Classification> list = query.getResultList();
-    return list.get(0);
+    Classification cls = list.get(0);
+    db.close();
+    return cls;
   }
 }
 

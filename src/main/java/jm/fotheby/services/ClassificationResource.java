@@ -15,12 +15,6 @@ import org.json.*;
 @Path("/classification")
 public class ClassificationResource
 {
-  private ClassificationDAO dao;
-
-  public ClassificationResource(EntityManager em)
-  {
-    this.dao = new ClassificationDAO(em);
-  }
 
   @POST
   @Consumes("application/json")
@@ -28,9 +22,9 @@ public class ClassificationResource
   {
 
     try {
-      this.dao.insert(classification);
+      ClassificationDAO dao = new ClassificationDAO();
+      dao.insert(classification);
     } catch (PersistenceException e) {
-      System.out.println(e.getMessage());
       return Response.status(422).build();
     }
 
@@ -42,7 +36,8 @@ public class ClassificationResource
   @Produces("application/json")
   public StreamingOutput getClassification(@PathParam("id") int id)
   {
-    Classification cls = this.dao.get(id);
+    ClassificationDAO dao = new ClassificationDAO();
+    Classification cls = dao.get(id);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -58,7 +53,8 @@ public class ClassificationResource
   @Produces("application/json")
   public StreamingOutput getClassifications()
   {
-    List<Classification> classifications = this.dao.get();
+    ClassificationDAO dao = new ClassificationDAO();
+    List<Classification> classifications = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

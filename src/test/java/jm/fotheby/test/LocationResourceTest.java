@@ -88,7 +88,7 @@ public class LocationResourceTest
     response.close();
   }
 
-  // @Ignore
+  @Ignore
   @Test
   public void getLocationByIdTest()
   {

@@ -1,6 +1,7 @@
 package jm.fotheby.persistence;
 
 import jm.fotheby.entities.*;
+import jm.fotheby.util.*;
 
 import java.util.List;
 import javax.persistence.*;
@@ -9,33 +10,26 @@ import org.json.*;
 
 public class LocationDAO
 {
-
-  private EntityManager em;
-
-  public LocationDAO()
-  {
-    this.em = Persistence.createEntityManagerFactory("$objectdb/db/location.odb")
-                         .createEntityManager();
-  }
-
-  public LocationDAO(EntityManager em)
-  {
-    this.em = em;
-  }
-
-
   public void insert(Location location) throws PersistenceException
   {
-    this.em.getTransaction().begin();
-    this.em.persist(location);
-    this.em.getTransaction().commit();
+    Database db = new Database();
+    db.connect();
+
+    db.getEntityManager().getTransaction().begin();
+    db.getEntityManager().persist(location);
+    db.getEntityManager().getTransaction().commit();
+
+    db.close();
   }
 
   public void update(int id, Location location)  throws PersistenceException
   {
     Location current = this.get(id);
 
-    this.em.getTransaction().begin();
+    Database db = new Database();
+    db.connect();
+
+    db.getEntityManager().getTransaction().begin();
 
     current.setName(location.getName());
     current.setAddress(location.getAddress());
@@ -43,25 +37,42 @@ public class LocationDAO
     current.setTelNumber(location.getTelNumber());
     current.setCapacity(location.getCapacity());
 
-    this.em.getTransaction().commit();
+    db.getEntityManager().getTransaction().commit();
+
+    db.close();
   }
 
   public List<Location> get()
   {
-    return this.em.createQuery("SELECT l FROM Location l", Location.class)
-                  .getResultList();
+    Database db = new Database();
+    db.connect();
+    List<Location> list = db.getEntityManager().createQuery("SELECT l FROM Location l", Location.class)
+                                 .getResultList();
+    db.close();
+    return list;
   }
 
   public Location get(int id)
   {
-    return this.em.find(Location.class, id);
+    Database db = new Database();
+    db.connect();
+    Location location = db.getEntityManager().find(Location.class, id);
+    db.close();
+    return location;
   }
 
   public Location get(String name)
   {
-    TypedQuery<Location> query = this.em.createQuery("SELECT DISTINCT l FROM Location l WHERE name = :name", Location.class);
+    Database db = new Database();
+    db.connect();
+    TypedQuery<Location> query = db.getEntityManager().createQuery("SELECT DISTINCT l FROM Location l WHERE name = :name", Location.class);
     query.setParameter("name", name);
     List<Location> list = query.getResultList();
-    return list.get(0);
+    Location location = list.get(0);
+    db.close();
+    return location;
   }
 }
+
+
+

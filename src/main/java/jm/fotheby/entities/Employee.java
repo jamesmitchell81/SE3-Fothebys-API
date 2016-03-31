@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("EMPLOYEE")
+@DiscriminatorColumn(name="EMPLOYEE_TYPE")
 @Inheritance(strategy=InheritanceType.JOINED)
-@Table("EMPLOYEE")
+@Table(name="EMPLOYEE")
 public class Employee extends Person
 {
-  @ManyToOne
-  protected Location location;
+  @ManyToOne protected Location location;
   protected String role;
   @Embedded protected Credentials credentials;
   protected Date startDate;

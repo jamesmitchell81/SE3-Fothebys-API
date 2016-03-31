@@ -16,20 +16,13 @@ import org.json.*;
 @Path("/category")
 public class CategoryResource
 {
-
-  private CategoryDAO dao;
-
-  public CategoryResource(EntityManager em)
-  {
-    this.dao = new CategoryDAO(em);
-  }
-
   @POST
   @Consumes("application/json")
   public Response createNewCategory(Category category)
   {
     try {
-      this.dao.insert(category);
+      CategoryDAO dao = new CategoryDAO();
+      dao.insert(category);
     } catch (PersistenceException pe) {
       return Response.status(422).build();
     }
@@ -42,7 +35,8 @@ public class CategoryResource
   public StreamingOutput getCategories()
   {
     JSONArray out = new JSONArray();
-    List<Category> categoryList = this.dao.get();
+    CategoryDAO dao = new CategoryDAO();
+    List<Category> categoryList = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -65,7 +59,8 @@ public class CategoryResource
   public Response updateCategory(@PathParam("id") int id, Category update)
   {
     try {
-      this.dao.update(id, update);
+      CategoryDAO dao = new CategoryDAO();
+      dao.update(id, update);
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return Response.serverError().build();

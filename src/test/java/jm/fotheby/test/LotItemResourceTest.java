@@ -97,6 +97,7 @@ public class LotItemResourceTest
     // response.close();
   }
 
+  @Ignore
   @Test
   public void getAllLotItems()
   {

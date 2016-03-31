@@ -1,6 +1,8 @@
 package jm.fotheby.persistence;
 
 import jm.fotheby.entities.Country;
+import jm.fotheby.util.Database;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -9,51 +11,74 @@ import org.json.*;
 public class CountryDAO
 {
 
-  private EntityManager em;
-
-  public CountryDAO()
+  public void insert(Country country) throws PersistenceException
   {
-    this.em = Persistence.createEntityManagerFactory("$objectdb/db/country.odb")
-                         .createEntityManager();
-  }
+    Database db = new Database();
+    db.connect();
 
-  public CountryDAO(EntityManager em)
-  {
-    this.em = em;
+    db.getEntityManager().getTransaction().begin();
+    db.getEntityManager().persist(country);
+    db.getEntityManager().getTransaction().commit();
+
+    db.close();
   }
 
   public List<Country> get()
   {
-    return this.em.createQuery("SELECT c FROM Country c", Country.class)
+    Database db = new Database();
+    db.connect();
+    List<Country> list = db.getEntityManager().createQuery("SELECT c FROM Country c", Country.class)
                   .getResultList();
+    db.close();
+    return list;
   }
 
   public Country get(int id)
   {
-    return this.em.find(Country.class, id);
+    Database db = new Database();
+    db.connect();
+    Country country = db.getEntityManager().find(Country.class, id);
+    db.close();
+    return country;
   }
 
   public Country get(String name)
   {
-    TypedQuery<Country> query = em.createQuery("SELECT DISTINCT c FROM Country c WHERE name = '" + name + "'", Country.class);
+    Database db = new Database();
+    db.connect();
+    TypedQuery<Country> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Country c WHERE name = '" + name + "'", Country.class);
     query.setParameter("name", name);
     List<Country> list = query.getResultList();
-    return list.get(0);
+    Country country = list.get(0);
+    db.close();
+    return country;
   }
 
   public Country getByShortCode(String shortCode)
   {
-    TypedQuery<Country> query = em.createQuery("SELECT DISTINCT c FROM Country c WHERE shortCode = :shortCode", Country.class);
+    Country country = new Country();
+    Database db = new Database();
+    db.connect();
+
+    TypedQuery<Country> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Country c WHERE shortCode = :shortCode", Country.class);
     query.setParameter("shortCode", shortCode);
     List<Country> list = query.getResultList();
-    return list.get(0);
+    country = list.get(0);
+
+    db.close();
+
+    return country;
   }
 
   public List<Country> getCountriesByRegion(String region)
   {
-    TypedQuery<Country> query = em.createQuery("SELECT DISTINCT c FROM Country c WHERE region = :region", Country.class);
+    Database db = new Database();
+    db.connect();
+    TypedQuery<Country> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Country c WHERE region = :region", Country.class);
     query.setParameter("region", region);
-    return query.getResultList();
+    List<Country> list = query.getResultList();
+    db.close();
+    return list;
   }
 
   public Country get(JSONObject json)
@@ -62,7 +87,7 @@ public class CountryDAO
 
     if ( json.has("name") )
     {
-      country = this.get(json.getString("name"));
+      return this.get(json.getString("name"));
     }
 
     if ( json.has("id") )

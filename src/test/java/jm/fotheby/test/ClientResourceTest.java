@@ -67,6 +67,7 @@ public class ClientResourceTest
     System.out.println(clients);
   }
 
+  @Ignore
   @Test
   public void testClientSearch()
   {
@@ -87,6 +88,7 @@ public class ClientResourceTest
 
   }
 
+  @Ignore
   @Test
   public void testClientSearchPartialOptions()
   {

@@ -1,37 +1,34 @@
 package jm.fotheby.entities;
 
-import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
+@DiscriminatorValue("EXPERT")
 @Table(name="EXPERT")
-public class Expert implements Person, Employee
+public class Expert extends Employee
 {
-  @Id @GeneratedValue private int id;
-  @Embedded private PersonalDetails personalDetails;
-  // Personal Details. // implements person.
-    // Title, FirstName, surname, TelNumber, EmailAddress
-  @Embedded private EmployeeDetails employeeDetails;
-  // Employee. .. implements employee.
-    // Role, Location, Credetials, StartDate
-
   @ManyToOne
   private Category category;
 
-  @ManyToMany
-  @JoinTable(
-    name="EXPERT_CLASSIFICATIONS",
-    joinColumns={@JoinColumn(name="EXPERT_ID")},
-    inverseJoinColumns={@JoinColumn(name="CLASSIFICATION_ID")}
-  )
-  private List<Classification> specialties;
+  // @ManyToMany(fetch=FetchType.EAGER)
+  // @JoinTable(
+  //   name="EXPERT_CLASSIFICATIONS",
+  //   joinColumns={@JoinColumn(name="EXPERT_ID")},
+  //   inverseJoinColumns={@JoinColumn(name="CLASSIFICATION_ID")}
+  // )
+  // private List<Classification> specialties;
+
+  private Set<Integer> specialties;
 
   public void setCategory(Category category)
   {
     this.category = category;
+    System.out.println("!" + category.getId());
   }
 
-  public void setSpecialties(List<Classification> specialties)
+  // public void setSpecialties(List<Classification> specialties)
+  public void setSpecialties(Set<Integer> specialties)
   {
     this.specialties = specialties;
   }
@@ -41,9 +38,9 @@ public class Expert implements Person, Employee
     return this.category;
   }
 
-  public List<Classification> getSpecialties()
+  // public List<Classification> getSpecialties()
+  public Set<Integer> getSpecialties()
   {
     return this.specialties;
-
   }
 }

@@ -1,14 +1,35 @@
+package jm.fotheby.test;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
+
+import jm.fotheby.entities.*;
+import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.lang.StringBuilder;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
+
+import javax.persistence.*;
+
+import org.json.*;
+import java.util.*;
 
 public class InitTest
 {
+  Client client;
+
   @Before
   public void setUp()
   {
-
+    this.client = ClientBuilder.newClient();
   }
 
   @After
@@ -17,13 +38,14 @@ public class InitTest
 
   }
 
+  @Ignore
   @Test
   public void testName()
   {
     this.initCategory();
     this.initClassification();
     this.initCountries();
-    this.initLocations();
+    this.initLocation();
   }
 
   public void initCategory()
@@ -214,11 +236,6 @@ public class InitTest
 
   public void initCountries()
   {
-    EntityManager em = Persistence.createEntityManagerFactory("$objectdb/db/country.odb").createEntityManager();
-
-    // String countries = this.client.target("https://restcountries.eu/rest/v1/all")
-    //                        .request().get(String.class);
-
     String countries = "";
 
     try {
@@ -285,41 +302,34 @@ public class InitTest
         }
       }
 
-      try {
-        em.getTransaction().begin();
-        em.persist(c);
-        em.getTransaction().commit();
-      } catch (PersistenceException e) {
-        System.out.println(e.getMessage());
-      }
-    }
+      JSONObject json = new JSONObject(c);
 
-    List<Country> allcountries = em.createQuery("SELECT c FROM Country c", Country.class).getResultList();
-
-    System.out.println(allcountries.size());
-
-
-    for ( Country count : allcountries )
-    {
-      JSONObject j = new JSONObject(count);
-      System.out.println(j.toString());
-    }
+      Response response = this.client.target("http://localhost:8080/services/countries")
+                          .request()
+                          .post(Entity.json(json.toString()));
+      response.close();
+    } // end for
 
   }
 
   public void initLocation()
   {
-    JSONObject root = new JSONObject();
+    Response response;
+    JSONObject root;
+    JSONObject country;
+    JSONObject address;
+
+    root = new JSONObject();
     root.put("name", "London");
     root.put("capacity", 500);
     root.put("telNumber", "020 7946 0929");
 
-    JSONObject country = new JSONObject();
+    country = new JSONObject();
     country.put("shortCode", "GBR");
 
     root.put("country", country);
 
-    JSONObject address = new JSONObject();
+    address = new JSONObject();
     address.put("firstLine", "Fotheby's London");
     address.put("secondLine", "24 Carnaby Street");
     address.put("townCity", "London");
@@ -327,11 +337,62 @@ public class InitTest
 
     root.put("address", address);
 
-    Response response = this.client.target("http://localhost:8080/services/location")
+    response = this.client.target("http://localhost:8080/services/location")
                             .request()
                             .post(Entity.json(root.toString()));
 
     System.out.println(response.getStatus());
+
+    response.close();
+
+    root = new JSONObject();
+    root.put("name", "Paris");
+    root.put("capacity", 400);
+    root.put("telNumber", "020 7236 0129");
+
+    country = new JSONObject();
+    country.put("shortCode", "FRA");
+
+    root.put("country", country);
+
+    address = new JSONObject();
+    address.put("firstLine", "Fotheby's Paris");
+    address.put("secondLine", "24 La Carnaby Street");
+    address.put("townCity", "Paris");
+    address.put("postalCode", "PF 7DB");
+
+    root.put("address", address);
+
+    response = this.client.target("http://localhost:8080/services/location")
+                            .request()
+                            .post(Entity.json(root.toString()));
+
+    response.close();
+
+    root = new JSONObject();
+    root.put("name", "New York");
+    root.put("capacity", 350);
+    root.put("telNumber", "020 7946 0929");
+
+    country = new JSONObject();
+    country.put("shortCode", "USA");
+
+    root.put("country", country);
+
+    address = new JSONObject();
+    address.put("firstLine", "Fotheby's New York");
+    address.put("secondLine", "24 Carnaby Street");
+    address.put("townCity", "Manhattern");
+    address.put("postalCode", "W1F 7DB");
+
+    root.put("address", address);
+
+   response = this.client.target("http://localhost:8080/services/location")
+                            .request()
+                            .post(Entity.json(root.toString()));
+
+    response.close();
+
   }
 
 
