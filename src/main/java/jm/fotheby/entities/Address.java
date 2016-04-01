@@ -6,40 +6,48 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class Address
 {
-  private String firstLine;
-  private String secondLine;
-  private String townCity;
-  private String postalCode;
+  private String firstLine = "";
+  private String secondLine = "";
+  private String townCity = "";
+  private String postalCode = "";
 
-  public String getFirstLine() {
+  public String getFirstLine()
+  {
     return firstLine;
   }
 
-  public void setFirstLine(String firstLine) {
+  public void setFirstLine(String firstLine)
+  {
     this.firstLine = firstLine;
   }
 
-  public String getSecondLine() {
+  public String getSecondLine()
+  {
     return secondLine;
   }
 
-  public void setSecondLine(String secondLine) {
+  public void setSecondLine(String secondLine)
+  {
     this.secondLine = secondLine;
   }
 
-  public String getTownCity() {
+  public String getTownCity()
+  {
     return townCity;
   }
 
-  public void setTownCity(String townCity) {
+  public void setTownCity(String townCity)
+  {
     this.townCity = townCity;
   }
 
-  public String getPostalCode() {
+  public String getPostalCode()
+  {
     return postalCode;
   }
 
-  public void setPostalCode(String postalCode) {
+  public void setPostalCode(String postalCode)
+  {
     this.postalCode = postalCode;
   }
 }

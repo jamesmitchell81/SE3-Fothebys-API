@@ -31,6 +31,24 @@ public class CategoryResource
   }
 
   @GET
+  @Path("{id}")
+  @Produces("application/json")
+  public StreamingOutput getCategory(@PathParam("id") int id)
+  {
+    CategoryDAO dao = new CategoryDAO();
+    Category category = dao.get(id);
+
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        PrintStream writer = new PrintStream(ops);
+        JSONObject cat = new JSONObject(category);
+        writer.println(cat.toString());
+      }
+    };
+  }
+
+  @GET
   @Produces("application/json")
   public StreamingOutput getCategories()
   {

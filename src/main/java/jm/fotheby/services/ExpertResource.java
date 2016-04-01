@@ -89,6 +89,17 @@ public class ExpertResource
     };
   }
 
+  @GET
+  @Path("/search")
+  @Produces("application/json")
+  public StreamingOutput searchExperts(@QueryParam("data") String data)
+  {
+    System.out.println(data);
+
+    return this.getExperts();
+  }
+
+
   @PUT
   @Path("{id}")
   @Consumes("application/json")

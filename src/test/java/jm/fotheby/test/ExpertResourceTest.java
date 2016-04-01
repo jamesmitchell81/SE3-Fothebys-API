@@ -73,6 +73,17 @@ public class ExpertResourceTest
 
   @Ignore
   @Test
+  public void expertSearchTest()
+  {
+    String response = this.client.target("http://localhost:8080/services/expert/search?data=james")
+                                 .request()
+                                 .get(String.class);
+
+    // System.out.println(response);
+  }
+
+  @Ignore
+  @Test
   public void getExpertByIdTest()
   {
     String response = this.client.target("http://localhost:8080/services/expert/1")
