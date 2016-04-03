@@ -1,12 +1,16 @@
 package jm.fotheby.services;
 
 import jm.fotheby.entities.*;
+import jm.fotheby.util.Database;
+
+import java.util.Base64;
 
 import java.net.URI;
 import javax.ws.rs.core.*;
 import javax.ws.rs.*;
 import java.io.*;
 import javax.persistence.*;
+
 import org.json.*;
 
 @Path("/item-images")
@@ -14,7 +18,7 @@ public class ItemImageResource
 {
   private EntityManager em;
 
-  public ItemImageResource(EntityManager em) { this.em = em; }
+  public ItemImageResource() {}
 
   // Reference: http://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-array-in-java
   private byte[] readImage(InputStream ipstream, int length)
@@ -44,40 +48,86 @@ public class ItemImageResource
     return out.toByteArray();
   }
 
-
-  // Reference: https://github.com/svanimpe/jaxrs-images/blob/master/src/java/resources/ImageService.java
   @POST
-  @Path("{itemReference}/{filename}")
-  @Consumes({"image/png", "image/jpg"})
-  public Response createItemImage(InputStream ipstream,
-                                  @HeaderParam("Content-Type") String filetype,
-                                  @HeaderParam("Content-Length") int size,
-                                  @PathParam("itemReference") Long itemReference,
-                                  @PathParam("filename") String filename)
+  @Consumes("*/*")
+  // public Response createImage(InputStream ipstream,
+  //                             @HeaderParam("Content-Type") String filetype,
+  //                             @HeaderParam("Content-Length") int size)
+  public Response createImage(String input,
+                              @HeaderParam("Content-Type") String filetype,
+                              @HeaderParam("Content-Length") long size)
   {
-    System.out.println(size);
 
-    // if not item reference
-    //  return badRequest.
+    byte[] decoded = Base64.getDecoder().decode(input);
+    Image image = new Image();
+
+    // System.out.println(image);
     try {
-      // byte[] image = IOUtils.toByteArray(ipstream);
-      byte[] image = this.readImage(ipstream, size);
+      // byte[] image = this.readImage(ipstream, size);
+      image.setFilename("james");
+      image.setSize(size);
+      image.setImage(decoded);
 
-      ItemImage itemImage = new ItemImage(itemReference);
-      itemImage.setImage(image);
-      itemImage.setFilename(filename);
+      Database db = new Database();
+      db.connect();
 
-      em.getTransaction().begin();
-      em.persist(itemImage);
-      em.getTransaction().commit();
+      db.getEntityManager().getTransaction().begin();
+      db.getEntityManager().persist(image);
+      db.getEntityManager().getTransaction().commit();
+
+      db.close();
     } catch (PersistenceException e) {
-
       System.out.println(e.getMessage());
       return Response.status(422).build();
     }
 
-    // return Response.created(URI.create("/lot-items/" + item.getId())).build();
-    return Response.created(URI.create("/item-images/reference/filename/ext")).build();
+    // need to return the id of the stored image.
+    return Response.created(URI.create("/item-images/" + image.getId())).build();
   }
+
+  @GET
+  @Path("{id}")
+  @Produces("application/json")
+  public StreamingOutput getImage(@PathParam("id") long id)
+  {
+    Database db = new Database();
+    db.connect();
+    Image image = db.getEntityManager().find(Image.class, id);
+    db.close();
+    String encoded = Base64.getEncoder().encodeToString(image.getImage());
+
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        PrintStream writer = new PrintStream(ops);
+        JSONObject data = new JSONObject();
+
+        data.put("id", image.getId());
+        data.put("filename", image.getFilename());
+        data.put("data", encoded);
+
+        writer.println(data.toString());
+      }
+    };
+  }
+
+  @DELETE
+  @Path("{id}")
+  public Response deleteImage(@PathParam("id") int id)
+  {
+    Database db = new Database();
+    db.connect();
+
+    Image image = db.getEntityManager().find(Image.class, id);
+
+    db.getEntityManager().getTransaction().begin();
+    db.getEntityManager().remove(image);
+    db.getEntityManager().getTransaction().commit();
+    db.close();
+
+    return Response.ok().build();
+  }
+
+
 
 }

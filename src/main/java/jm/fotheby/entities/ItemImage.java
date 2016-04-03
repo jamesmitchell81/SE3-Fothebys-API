@@ -1,18 +1,16 @@
 package jm.fotheby.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Column;
+import javax.persistence.*;
 
 @Entity
 public class ItemImage
 {
   @Column(name="REFERENCE_ID")
   private Long itemReference;
-
-  private String filename;
   private String altText;
 
-  private byte[] image;
+  @ManyToOne
+  private Image image;
 
   private int displayWidth;
   private int displayHeight;
@@ -29,17 +27,12 @@ public class ItemImage
     return this.itemReference;
   }
 
-  public void setFilename(String filename)
-  {
-    this.filename = filename;
-  }
-
   public void setAltText(String altText)
   {
     this.altText = altText;
   }
 
-  public void setImage(byte[] image)
+  public void setImage(Image image)
   {
     this.image = image;
   }
@@ -56,17 +49,12 @@ public class ItemImage
     this.frameY = frameY;
   }
 
-  public String getFilename()
-  {
-    return this.filename;
-  }
-
   public String getAltText()
   {
     return this.altText;
   }
 
-  public byte[] getImage()
+  public Image getImage()
   {
     return this.image;
   }

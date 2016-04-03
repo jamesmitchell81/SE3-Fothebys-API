@@ -17,7 +17,7 @@ public class ServiceApplication extends Application {
       // singletons.add(new ClientResource());
       singletons.add(new CategoryResource());
       // singletons.add(new LotItemResource());
-      // singletons.add(new ItemImageResource());
+      singletons.add(new ItemImageResource());
       singletons.add(new ClassificationResource());
       singletons.add(new ExpertResource());
       singletons.add(new CountryResource());
