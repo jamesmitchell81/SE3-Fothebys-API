@@ -66,6 +66,11 @@ public class Person
     return this.id;
   }
 
+  public String getFullName()
+  {
+    return this.title + " " + this.firstName + " " + this.surname;
+  }
+
   public String getTitle() {
     return title;
   }
