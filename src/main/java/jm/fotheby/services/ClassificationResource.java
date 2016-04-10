@@ -60,12 +60,14 @@ public class ClassificationResource
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
         PrintStream writer = new PrintStream(ops);
+        JSONArray out = new JSONArray();
 
         for ( Classification classification : classifications)
         {
-          JSONObject out = new JSONObject(classification);
-          writer.println(out.toString());
+          JSONObject cls = new JSONObject(classification);
+          out.put(cls);
         }
+        writer.println(out.toString());
       }
     };
   }

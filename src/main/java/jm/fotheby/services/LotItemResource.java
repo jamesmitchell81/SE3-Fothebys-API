@@ -2,6 +2,7 @@ package jm.fotheby.services;
 
 import jm.fotheby.entities.*;
 import jm.fotheby.persistence.*;
+import jm.fotheby.util.*;
 
 import java.lang.reflect.Field;
 
@@ -16,10 +17,6 @@ import org.json.*;
 @Path("/lot-item")
 public class LotItemResource
 {
-  private EntityManager em;
-
-  public LotItemResource(EntityManager em) { this.em = em; }
-
   @POST
   @Consumes("application/json")
   public Response createLotItem(String json)
@@ -29,10 +26,13 @@ public class LotItemResource
     JSONObject obj = new JSONObject(item);
     System.out.println(obj.toString());
 
+    Database db = new Database();
+    db.connect();
+
     try {
-      this.em.getTransaction().begin();
-      this.em.persist(item);
-      this.em.getTransaction().commit();
+      db.getEntityManager().getTransaction().begin();
+      db.getEntityManager().persist(item);
+      db.getEntityManager().getTransaction().commit();
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
@@ -45,7 +45,10 @@ public class LotItemResource
   @Produces("application/json")
   public StreamingOutput getLotItems()
   {
-    List<Item> items = em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+    Database db = new Database();
+    db.connect();
+
+    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

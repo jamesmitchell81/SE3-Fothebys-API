@@ -13,27 +13,12 @@ import java.util.*;
 
 // JAX-RS
 import java.net.URI;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.core.*;
+import javax.ws.rs.*;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.DefaultValue;
-
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.WebApplicationException;
 
 // IO
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
+import java.io.*;
 
 // JPA
 import javax.persistence.*;
@@ -45,21 +30,14 @@ import org.json.*;
 @Path("/clients")
 public class ClientResource
 {
-  private EntityManagerFactory emf;
-  private EntityManager em;
-
-  public ClientResource(EntityManager em)
-  {
-    // this.emf = Persistence.createEntityManagerFactory("$objectdb/db/client.odb");
-    // this.em = emf.createEntityManager();
-    this.em = em;
-  }
 
   @POST
   @Consumes("application/json")
-  @Produces("application/json")
   public Response createClient(Client client)
   {
+    Database db = new Database();
+    db.connect();
+    EntityManager em = db.getEntityManager();
 
     try {
       em.getTransaction().begin();
@@ -68,9 +46,7 @@ public class ClientResource
     } catch (PersistenceException e) {
       return Response.status(422).build();
     }
-
-    // return Response.created(URI.create("/clients/" + client.getId())).build();
-    return Response.ok(client).build();
+    return Response.created(URI.create("/clients/" + client.getId())).build();
   }
 
   @GET
@@ -90,6 +66,11 @@ public class ClientResource
   @Produces("application/json")
   public StreamingOutput getClients()
   {
+
+    Database db = new Database();
+    db.connect();
+    EntityManager em = db.getEntityManager();
+
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
@@ -133,6 +114,10 @@ public class ClientResource
     //     input.put(key, data.getFirst(key));
     //   }
     // }
+
+    Database db = new Database();
+    db.connect();
+    EntityManager em = db.getEntityManager();
 
     CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -179,18 +164,6 @@ public class ClientResource
         writer.println(out.toString());
       }
     };
-  }
-
-
-  @GET
-  @Path("/address-template")
-  @Produces("application/json")
-  public String getAddressTemplate()
-  {
-    Person p = new Person();
-    FormTemplate ft = new FormTemplate();
-    Class cls = p.getClass();
-    return ft.getTemplate(cls).toString();
   }
 
 }

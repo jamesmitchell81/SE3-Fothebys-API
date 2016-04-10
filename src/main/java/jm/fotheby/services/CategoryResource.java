@@ -10,12 +10,12 @@ import javax.ws.rs.*;
 import java.io.*;
 import javax.persistence.*;
 
-// JSON
 import org.json.*;
 
 @Path("/category")
 public class CategoryResource
 {
+
   @POST
   @Consumes("application/json")
   public Response createNewCategory(Category category)
