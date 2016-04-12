@@ -55,8 +55,14 @@ public class CategoryResource
   public StreamingOutput getCategories()
   {
     CategoryDAO dao = new CategoryDAO();
+    JSONArray out = new JSONArray();
+    List<Category> list = dao.get();
 
-    JSONArray out = dao.getJSON();
+    for ( Category category : list)
+    {
+      JSONObject cat = new JSONObject(category);
+      out.put(cat);
+    }
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

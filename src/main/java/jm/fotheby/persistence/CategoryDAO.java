@@ -10,7 +10,6 @@ import org.json.*;
 
 public class CategoryDAO
 {
-
   public void insert(Category category) throws PersistenceException
   {
     Database db = new Database();
@@ -43,26 +42,8 @@ public class CategoryDAO
     db.connect();
     List<Category> list = db.getEntityManager().createQuery("SELECT c FROM Category c", Category.class)
                                                .getResultList();
-    db.close();
+
     return list;
-  }
-
-  public JSONArray getJSON()
-  {
-    Database db = new Database();
-    JSONArray output = new JSONArray();
-    db.connect();
-    List<Category> list = db.getEntityManager().createQuery("SELECT c FROM Category c", Category.class)
-                                               .getResultList();
-
-    for ( Category category : list)
-    {
-      JSONObject cat = new JSONObject(category);
-      output.put(cat);
-    }
-
-    db.close();
-    return output;
   }
 
   public Category get(String name)
@@ -73,7 +54,6 @@ public class CategoryDAO
     query.setParameter("name", name);
     List<Category> list = query.getResultList();
     Category cat = list.get(0);
-    db.close();
     return cat;
   }
 
@@ -82,7 +62,6 @@ public class CategoryDAO
     Database db = new Database();
     db.connect();
     Category cat = db.getEntityManager().find(Category.class, id);
-    db.close();
     return cat;
   }
 
