@@ -38,14 +38,14 @@ public class InitTest
 
   }
 
-  @Ignore
+  // @Ignore
   @Test
   public void testName()
   {
     this.initCategory();
     this.initClassification();
     this.initCountries();
-    this.initLocation();
+    // this.initLocation();
   }
 
   public void initCategory()
@@ -57,10 +57,33 @@ public class InitTest
     root.put("name", "Drawings");
 
     JSONArray attributes = new JSONArray();
-    attributes.put("Artist");
-    attributes.put("Medium");
-    attributes.put("Material");
-    attributes.put("Weight");
+    JSONObject attribute = new JSONObject();
+    attribute.put("name", "Artist");
+    attribute.put("type", "Text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Medium");
+    attribute.put("type", "Text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Material");
+    attribute.put("type", "Text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Weight");
+    attribute.put("type", "Text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
 
     root.put("attributes", attributes);
 
@@ -78,10 +101,26 @@ public class InitTest
     root.put("name", "Paintings");
 
     attributes = new JSONArray();
-    attributes.put("Artist");
-    attributes.put("Medium");
-    attributes.put("Material");
-    attributes.put("Weight");
+    attribute = new JSONObject();
+    attribute.put("name", "Artist");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Medium");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Framed");
+    attribute.put("type", "true/false");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
 
     root.put("attributes", attributes);
 
@@ -99,10 +138,26 @@ public class InitTest
     root.put("name", "Photographic Images");
 
     attributes = new JSONArray();
-    attributes.put("Artist");
-    attributes.put("Medium");
-    attributes.put("Material");
-    attributes.put("Weight");
+    attribute = new JSONObject();
+    attribute.put("name", "Artist");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Type");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Framed");
+    attribute.put("type", "true/false");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
 
     root.put("attributes", attributes);
 
@@ -120,10 +175,26 @@ public class InitTest
     root.put("name", "Sculptures");
 
     attributes = new JSONArray();
-    attributes.put("Artist");
-    attributes.put("Medium");
-    attributes.put("Material");
-    attributes.put("Weight");
+    attribute = new JSONObject();
+    attribute.put("name", "Artist");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Material");
+    attribute.put("type", "text");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Weight");
+    attribute.put("type", "number");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
 
     root.put("attributes", attributes);
 
@@ -141,10 +212,27 @@ public class InitTest
     root.put("name", "Carvings");
 
     attributes = new JSONArray();
-    attributes.put("Artist");
-    attributes.put("Medium");
-    attributes.put("Material");
-    attributes.put("Weight");
+
+    attribute = new JSONObject();
+    attribute.put("name", "Artist");
+    attribute.put("type", "number");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Material");
+    attribute.put("type", "number");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
+
+    attribute = new JSONObject();
+    attribute.put("name", "Weight");
+    attribute.put("type", "number");
+    attribute.put("required", true);
+    attribute.put("active", true);
+    attributes.put(attribute);
 
     root.put("attributes", attributes);
 
@@ -162,7 +250,6 @@ public class InitTest
   public void initClassification()
   {
     // landscape, seascape, portrait, figure, still life, nude, animal, abstract, or other
-
     JSONObject json = new JSONObject();
     Response response;
 
