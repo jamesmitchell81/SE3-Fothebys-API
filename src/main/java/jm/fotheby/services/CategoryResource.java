@@ -2,8 +2,10 @@ package jm.fotheby.services;
 
 import jm.fotheby.entities.Category;
 import jm.fotheby.persistence.CategoryDAO;
+import jm.fotheby.util.Database;
 
 import java.util.List;
+import java.util.Set;
 import java.net.URI;
 import javax.ws.rs.core.*;
 import javax.ws.rs.*;
@@ -52,20 +54,14 @@ public class CategoryResource
   @Produces("application/json")
   public StreamingOutput getCategories()
   {
-    JSONArray out = new JSONArray();
     CategoryDAO dao = new CategoryDAO();
-    List<Category> categoryList = dao.get();
+
+    JSONArray out = dao.getJSON();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
         PrintStream writer = new PrintStream(ops);
-
-        for ( Category category : categoryList)
-        {
-          JSONObject cat = new JSONObject(category);
-          out.put(cat);
-        }
         writer.println(out.toString());
       }
     };

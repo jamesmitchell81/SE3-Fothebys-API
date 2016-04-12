@@ -47,6 +47,24 @@ public class CategoryDAO
     return list;
   }
 
+  public JSONArray getJSON()
+  {
+    Database db = new Database();
+    JSONArray output = new JSONArray();
+    db.connect();
+    List<Category> list = db.getEntityManager().createQuery("SELECT c FROM Category c", Category.class)
+                                               .getResultList();
+
+    for ( Category category : list)
+    {
+      JSONObject cat = new JSONObject(category);
+      output.put(cat);
+    }
+
+    db.close();
+    return output;
+  }
+
   public Category get(String name)
   {
     Database db = new Database();
