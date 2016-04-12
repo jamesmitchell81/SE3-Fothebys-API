@@ -25,7 +25,7 @@ public class ExpertResourceTest
     this.client = ClientBuilder.newClient();
   }
 
-  // @Ignore
+  @Ignore
   @Test
   public void testAddExpert()
   {

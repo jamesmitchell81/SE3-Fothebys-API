@@ -26,6 +26,7 @@ public class CategoryResource
       CategoryDAO dao = new CategoryDAO();
       dao.insert(category);
     } catch (PersistenceException pe) {
+      System.out.println(pe.getMessage());
       return Response.status(422).build();
     }
 
@@ -88,19 +89,4 @@ public class CategoryResource
 
     return Response.noContent().build();
   }
-
-  private Category createCategory(String json)
-  {
-    Category category = new Category();
-    JSONObject input = new JSONObject(json);
-    String name = input.get("name").toString();
-    JSONArray attributes = input.getJSONArray("attributes");
-    category.setName(name);
-
-    for ( int i = 0; i < attributes.length(); i++ )
-      category.addAttribute(attributes.get(i).toString());
-
-    return category;
-  }
-
 }

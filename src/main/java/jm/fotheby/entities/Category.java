@@ -12,11 +12,17 @@ public class Category
   private int id;
 
   @Unique private String name = "";
-  private Set<String> attributes;
+  @ElementCollection(fetch=FetchType.EAGER)
+  private Set<AttributeDefinition> attributes;
 
   public int getId()
   {
     return this.id;
+  }
+
+  public void setId(int id)
+  {
+    this.id = id;
   }
 
   public void setName(String name)
@@ -24,12 +30,12 @@ public class Category
     this.name = name;
   }
 
-  public void addAttribute(String attrName)
+  public void addAttribute(AttributeDefinition attribute)
   {
-    this.attributes.add(attrName);
+    this.attributes.add(attribute);
   }
 
-  public void setAttributes(Set<String> attributes)
+  public void setAttributes(Set<AttributeDefinition> attributes)
   {
     this.attributes = attributes;
   }
@@ -39,7 +45,7 @@ public class Category
     return this.name;
   }
 
-  public Set<String> getAttributes()
+  public Set<AttributeDefinition> getAttributes()
   {
     return this.attributes;
   }
