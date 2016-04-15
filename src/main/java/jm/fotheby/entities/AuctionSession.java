@@ -1,6 +1,5 @@
 package jm.fotheby.entities;
 
-import java.io.Serializable;
 import java.sql.Time;
 
 import javax.persistence.Entity;
@@ -8,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class AuctionSession implements Serializable
+public class AuctionSession
 {
   @Id @GeneratedValue
   private int id;

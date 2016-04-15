@@ -103,8 +103,8 @@ public class LotItemResource
         String value = attrs.getJSONObject(i).getString("value");
         attributes.put(name, value);
       }
-
-      item.setAttributes(attributes);
+      System.out.println("FIX SET ATTRIBUTES");
+      // item.setAttributes(attributes);
     }
 
     if ( obj.has("dimensions") )

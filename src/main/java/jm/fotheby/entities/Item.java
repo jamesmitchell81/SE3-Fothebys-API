@@ -42,7 +42,7 @@ public class Item
   private boolean authenticated = false;
   private double estimatedPrice;
 
-  private Map<String, String> attributes;
+  private Set<ItemAttribute> attributes;
 
   public Long getId()
   {
@@ -109,7 +109,7 @@ public class Item
     this.authenticated = authenticated;
   }
 
-  public void setAttributes(Map<String, String> attributes)
+  public void setAttributes(Set<ItemAttribute> attributes)
   {
     // check category allows attribute.
     this.attributes = attributes;
@@ -170,7 +170,7 @@ public class Item
     return this.authenticated;
   }
 
-  public Map<String, String> getAttributes()
+  public Set<ItemAttribute> getAttributes()
   {
     return this.attributes;
   }

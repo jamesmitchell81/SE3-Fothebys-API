@@ -9,7 +9,6 @@ public class Client extends Person
 {
   @Embedded private PaymentDetails accountDetails;
   @Embedded private Credentials credentials;
-  @Embedded private String secondaryTelephoneNumber;
   private boolean registered = false;
 
   public Client() {}

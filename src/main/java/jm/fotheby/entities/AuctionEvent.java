@@ -8,15 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class AuctionEvent implements Serializable
+public class AuctionEvent
 {
-  private static final Long serialVersionUID = 1L;
-
   @Id @GeneratedValue
   private int id;
 
   private AuctionSession session;
   private LotCollection collection;
   private Date date;
-  private AuctionHouse location;
+  private Location location;
 }
