@@ -85,6 +85,7 @@ public class ItemImageResource
   @Produces("application/json")
   public StreamingOutput getImage(@PathParam("id") long id)
   {
+
     Database db = new Database();
     db.connect();
     Image image = db.getEntityManager().find(Image.class, id);
@@ -100,6 +101,7 @@ public class ItemImageResource
         data.put("id", image.getId());
         data.put("filename", image.getFilename());
         data.put("data", encoded);
+        data.put("extension", image.getExtension());
 
         writer.println(data.toString());
       }

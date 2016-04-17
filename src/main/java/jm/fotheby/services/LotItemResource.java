@@ -38,8 +38,34 @@ public class LotItemResource
       return Response.status(422).build();
     }
 
-    return Response.created(URI.create("/lot-items/1")).build();
+    return Response.created(URI.create("/lot-items/" + item.getId())).build();
   }
+
+  @GET
+  @Path("{id}")
+  @Produces("application/json")
+  public StreamingOutput getLotItem(@PathParam("id") long id)
+  {
+    Database db = new Database();
+    db.connect();
+
+    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();
+
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        PrintStream writer = new PrintStream(ops);
+
+        for ( Item item : items)
+        {
+          JSONObject out = new JSONObject(item);
+
+          writer.println(out.toString());
+        }
+      }
+    };
+  }
+
 
   @GET
   @Produces("application/json")

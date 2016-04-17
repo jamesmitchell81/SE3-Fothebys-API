@@ -68,7 +68,6 @@ public class ExpertResourceTest
                                    .post(Entity.json(expert.toString()));
 
     assertTrue(response.getStatus() == HttpStatus.CREATED);
-
   }
 
   @Ignore

@@ -38,14 +38,15 @@ public class InitTest
 
   }
 
-  // @Ignore
+  @Ignore
   @Test
   public void testName()
   {
     this.initCategory();
     this.initClassification();
     this.initCountries();
-    // this.initLocation();
+    this.initLocation();
+    this.initExpert();
   }
 
   public void initCategory()
@@ -482,6 +483,45 @@ public class InitTest
 
   }
 
+  public void initExpert()
+  {
+    JSONObject expert = new JSONObject();
+    expert.put("title", "Mr.");
+    expert.put("firstName", "James");
+    expert.put("surname", "Mitchell");
+    expert.put("emailAddress", "james.mitchell@logo.co.uk");
+    expert.put("telNumber", "07729 388 158");
+    expert.put("role", "expert");
 
+    JSONObject address = new JSONObject();
+    address.put("firstLine", "2 The Avenue");
+    address.put("secondLine", "Abington");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN1 5HL");
+
+    expert.put("contactAddress", address);
+
+    JSONObject location = new JSONObject();
+    location.put("id", 1);
+
+    JSONObject category = new JSONObject();
+    category.put("id", 1);
+
+    JSONArray classification = new JSONArray();
+    JSONObject c1 = new JSONObject();
+    c1.put("id", 1);
+    JSONObject c2 = new JSONObject();
+    c2.put("id", 2);
+    classification.put(c1);
+    classification.put(c2);
+
+    expert.put("location", location);
+    expert.put("category", category);
+    expert.put("specialties", classification);
+
+    Response response = this.client.target("http://localhost:8080/services/expert")
+                                   .request()
+                                   .post(Entity.json(expert.toString()));
+  }
 
 }
