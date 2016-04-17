@@ -33,6 +33,11 @@ public class Image
     this.size = size;
   }
 
+  public void setExtension(String extension)
+  {
+    this.extension = extension;
+  }
+
   public byte[] getImage()
   {
     return this.image;

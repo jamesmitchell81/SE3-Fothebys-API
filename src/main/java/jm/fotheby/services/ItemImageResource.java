@@ -50,31 +50,26 @@ public class ItemImageResource
 
   @POST
   @Consumes("*/*")
-  // public Response createImage(InputStream ipstream,
-  //                             @HeaderParam("Content-Type") String filetype,
-  //                             @HeaderParam("Content-Length") int size)
   public Response createImage(String input,
                               @HeaderParam("Content-Type") String filetype,
                               @HeaderParam("Content-Length") long size)
   {
-
-    byte[] decoded = Base64.getDecoder().decode(input);
+    JSONObject obj = new JSONObject(input);
+    String imageData = obj.get("data").toString();
+    byte[] decoded = Base64.getDecoder().decode(imageData);
     Image image = new Image();
 
-    // System.out.println(image);
     try {
-      // byte[] image = this.readImage(ipstream, size);
-      image.setFilename("james");
+      image.setFilename(obj.get("filename").toString());
+      image.setExtension(obj.get("extension").toString());
       image.setSize(size);
       image.setImage(decoded);
 
       Database db = new Database();
       db.connect();
-
       db.getEntityManager().getTransaction().begin();
       db.getEntityManager().persist(image);
       db.getEntityManager().getTransaction().commit();
-
       db.close();
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
@@ -115,15 +110,18 @@ public class ItemImageResource
   @Path("{id}")
   public Response deleteImage(@PathParam("id") int id)
   {
-    Database db = new Database();
-    db.connect();
-
-    Image image = db.getEntityManager().find(Image.class, id);
-
-    db.getEntityManager().getTransaction().begin();
-    db.getEntityManager().remove(image);
-    db.getEntityManager().getTransaction().commit();
-    db.close();
+    try {
+      Database db = new Database();
+      db.connect();
+      Image image = db.getEntityManager().find(Image.class, id);
+      db.getEntityManager().getTransaction().begin();
+      db.getEntityManager().remove(image);
+      db.getEntityManager().getTransaction().commit();
+      db.close();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+      return Response.status(422).build();
+    }
 
     return Response.ok().build();
   }
