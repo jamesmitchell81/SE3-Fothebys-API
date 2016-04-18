@@ -17,7 +17,7 @@ public class ItemImage
   private int frameX;
   private int frameY;
 
-  public ItemImage(Long itemReference)
+  public void setItemReference(Long itemReference)
   {
     this.itemReference = itemReference;
   }

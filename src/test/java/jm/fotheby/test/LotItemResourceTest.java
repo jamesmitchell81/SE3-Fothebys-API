@@ -1,8 +1,11 @@
 package jm.fotheby.test;
 
 import jm.fotheby.util.HttpStatus;
+import jm.fotheby.persistence.*;
+import jm.fotheby.entities.*;
+import jm.fotheby.util.*;
 
-import java.util.HashMap;
+import java.util.*;
 import java.time.LocalDate;
 
 import org.junit.After;
@@ -28,7 +31,7 @@ public class LotItemResourceTest
     this.client = ClientBuilder.newClient();
   }
 
-  @Ignore
+  // @Ignore
   @Test
   public void testCreateLotItem()
   {
@@ -55,7 +58,7 @@ public class LotItemResourceTest
     attributes.put(attribute);
 
     attribute = new JSONObject();
-    attribute.put("name", "Mattisse");
+    attribute.put("name", "Artist");
     attribute.put("value", "Mattisse");
     attributes.put(attribute);
 
@@ -71,13 +74,33 @@ public class LotItemResourceTest
     dimensions.put("height", 30);
 
     JSONArray classification = new JSONArray();
-
     JSONObject c1 = new JSONObject();
     c1.put("name", "nude");
     JSONObject c2 = new JSONObject();
     c2.put("name", "abstract");
     classification.put(c1);
     classification.put(c2);
+
+    // Images.
+    ArrayList<ItemImage> imgList = new ArrayList();
+    ItemImage itemImage = new ItemImage();
+    Database db = new Database();
+    db.connect();
+    Image image = db.getEntityManager().find(Image.class, 0);
+    itemImage.setImage(image);
+    imgList.add(itemImage);
+
+    itemImage = new ItemImage();
+    image = db.getEntityManager().find(Image.class, 1);
+    itemImage.setImage(image);
+    imgList.add(itemImage);
+    itemImage = new ItemImage();
+    image = db.getEntityManager().find(Image.class, 2);
+    itemImage.setImage(image);
+    imgList.add(itemImage);
+    JSONArray itemImages = new JSONArray(imgList);
+    root.put("images", itemImages);
+    db.close();
 
     root.put("productionDate", productionDate);
     root.put("category", category);

@@ -46,5 +46,4 @@ public class Client extends Person
   {
     return this.registered;
   }
-
 }

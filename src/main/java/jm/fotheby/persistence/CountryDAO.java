@@ -60,12 +60,13 @@ public class CountryDAO
     Database db = new Database();
     db.connect();
 
-    TypedQuery<Country> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Country c WHERE shortCode = :shortCode", Country.class);
+    TypedQuery<Country> query = db.getEntityManager().createQuery("SELECT DISTINCT c FROM Country c WHERE c.shortCode = :shortCode", Country.class);
     query.setParameter("shortCode", shortCode);
-    List<Country> list = query.getResultList();
-    country = list.get(0);
-
-    db.close();
+    try {
+      country = query.getSingleResult();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+    }
 
     return country;
   }

@@ -2,6 +2,7 @@ package jm.fotheby.services;
 
 import jm.fotheby.entities.*;
 import jm.fotheby.persistence.*;
+import jm.fotheby.factories.*;
 import jm.fotheby.util.*;
 
 import java.lang.reflect.Field;
@@ -21,7 +22,7 @@ public class LotItemResource
   @Consumes("application/json")
   public Response createLotItem(String json)
   {
-    Item item = this.buildItem(json);
+    Item item = ItemFactory.buildItem(json);
 
     JSONObject obj = new JSONObject(item);
     System.out.println(obj.toString());
@@ -89,88 +90,6 @@ public class LotItemResource
         }
       }
     };
-  }
-
-  private Item buildItem(String json)
-  {
-    Item item = new Item();
-    JSONObject obj = new JSONObject(json);
-
-    if ( obj.has("category") )
-    {
-      CategoryDAO catDAO = new CategoryDAO();
-      Category category = catDAO.get(obj.getJSONObject("category"));
-      item.setCategory(category);
-    }
-
-    if ( obj.has("classifications") )
-    {
-      JSONArray classifications = obj.getJSONArray("classifications");
-      ClassificationDAO clsDAO = new ClassificationDAO();
-      List<Classification> list = new ArrayList<Classification>();
-
-      for ( int i = 0; i < classifications.length(); i++ )
-      {
-        Classification classification = clsDAO.get(classifications.getJSONObject(i));
-        list.add(classification);
-      }
-
-      item.setClassifications(list);
-    }
-
-    if ( obj.has("attributes") )
-    {
-      Map<String, String> attributes = new HashMap<String, String>();
-      JSONArray attrs = obj.getJSONArray("attributes");
-
-      for ( int i = 0; i < attrs.length(); i++ )
-      {
-        String name = attrs.getJSONObject(i).getString("name");
-        String value = attrs.getJSONObject(i).getString("value");
-        attributes.put(name, value);
-      }
-      System.out.println("FIX SET ATTRIBUTES");
-      // item.setAttributes(attributes);
-    }
-
-    if ( obj.has("dimensions") )
-    {
-      ItemDimensions dimensions = new ItemDimensions(obj.getJSONObject("dimensions"));
-      item.setDimensions(dimensions);
-    }
-
-    if ( obj.has("productionDate") )
-    {
-      DatePeriod dp = new DatePeriod(obj.getJSONObject("productionDate"));
-      item.setProductionDate(dp);
-    }
-
-    if ( obj.has("itemName") )
-    {
-      item.setItemName(obj.getString("itemName"));
-    }
-
-    if ( obj.has("textualDescription") )
-    {
-      item.setTextualDescription("textualDescription");
-    }
-
-    if ( obj.has("provenanceDetails") )
-    {
-      item.setProvenanceDetails(obj.getString("provenanceDetails"));
-    }
-
-    if ( obj.has("authenticated") )
-    {
-      item.setAuthenticated(obj.getBoolean("authenticated"));
-    }
-
-    if ( obj.has("estimatedPrice") )
-    {
-      item.setEstimatedPrice(obj.getDouble("estimatedPrice"));
-    }
-
-    return item;
   }
 
 }

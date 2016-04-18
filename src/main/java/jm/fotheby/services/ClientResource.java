@@ -2,12 +2,12 @@ package jm.fotheby.services;
 
 // me
 import jm.fotheby.entities.*;
+import jm.fotheby.factories.*;
 import jm.fotheby.util.*;
 
 // java
 import java.lang.reflect.Field;
 import java.lang.annotation.Annotation;
-
 import java.lang.StringBuilder;
 import java.util.*;
 
@@ -33,8 +33,10 @@ public class ClientResource
 
   @POST
   @Consumes("application/json")
-  public Response createClient(Client client)
+  public Response createClient(String clientString)
   {
+    Client client = ClientFactory.buildBasicClient(clientString);
+
     Database db = new Database();
     db.connect();
     EntityManager em = db.getEntityManager();
@@ -54,10 +56,16 @@ public class ClientResource
   @Produces("application/json")
   public StreamingOutput getClient(@PathParam("id") int id)
   {
+    Database db = new Database();
+    db.connect();
+    Client client = db.getEntityManager().find(Client.class, id);
+
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
         PrintStream writer = new PrintStream(ops);
+        JSONObject c = new JSONObject(client);
+        writer.println(c.toString());
       }
     };
   }
@@ -87,6 +95,33 @@ public class ClientResource
         writer.println(out.toString());
       }
     };
+  }
+
+  @PUT
+  @Path("{id}")
+  @Consumes("application/json")
+  public Response updateClient(@PathParam("id") int id, String input)
+  {
+    try {
+      Database db = new Database();
+      db.connect();
+      Client current = db.getEntityManager().find(Client.class, id);
+      Client update = ClientFactory.buildBasicClient(input);
+      db.getEntityManager().getTransaction().begin();
+      current.setTitle(update.getTitle());
+      current.setFirstName(update.getFirstName());
+      current.setSurname(update.getSurname());
+      current.setTelNumber(update.getTelNumber());
+      current.setContactAddress(update.getContactAddress());
+      current.setEmailAddress(update.getEmailAddress());
+      current.setCountry(update.getCountry());
+      db.getEntityManager().getTransaction().commit();
+      db.close();
+    } catch (PersistenceException e) {
+      return Response.serverError().build();
+    }
+
+    return Response.noContent().build();
   }
 
   @GET
