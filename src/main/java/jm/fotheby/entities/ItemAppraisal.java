@@ -34,12 +34,12 @@ public class ItemAppraisal // extends.
     this.appraisalDate = appraisalDate;
   }
 
-  private void setAdditionNotes(String additionalNotes)
+  public void setAdditionalNotes(String additionalNotes)
   {
     this.additionalNotes = additionalNotes;
   }
 
-  private void setAgreement(boolean agreement)
+  public void setAgreement(boolean agreement)
   {
     this.agreement = agreement;
   }
@@ -59,12 +59,12 @@ public class ItemAppraisal // extends.
     return this.appraisalDate;
   }
 
-  private String getAdditionNotes()
+  public String getAdditionalNotes()
   {
     return this.additionalNotes;
   }
 
-  private boolean getAgreement()
+  public boolean getAgreement()
   {
     return this.agreement;
   }

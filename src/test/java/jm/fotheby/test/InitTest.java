@@ -60,28 +60,28 @@ public class InitTest
     JSONArray attributes = new JSONArray();
     JSONObject attribute = new JSONObject();
     attribute.put("name", "Artist");
-    attribute.put("type", "Text");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
 
     attribute = new JSONObject();
     attribute.put("name", "Medium");
-    attribute.put("type", "Text");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
 
     attribute = new JSONObject();
     attribute.put("name", "Material");
-    attribute.put("type", "Text");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
 
     attribute = new JSONObject();
     attribute.put("name", "Weight");
-    attribute.put("type", "Text");
+    attribute.put("type", "number");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
