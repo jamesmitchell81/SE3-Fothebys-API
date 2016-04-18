@@ -2,10 +2,11 @@ package jm.fotheby.entities;
 
 import javax.persistence.*;
 
-@Entity
+// @Entity
+@Embeddable
 public class ItemImage
 {
-  @Column(name="REFERENCE_ID")
+  // @Column(name="REFERENCE_ID")
   private Long itemReference;
   private String altText;
 

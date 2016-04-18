@@ -35,10 +35,7 @@ public class LotItemResource
       return Response.status(422).build();
     }
 
-    JSONObject obj = new JSONObject(json);
-
-
-
+    db.close();
     return Response.created(URI.create("/lot-item/" + item.getId())).build();
   }
 

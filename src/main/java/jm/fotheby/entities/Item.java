@@ -28,8 +28,11 @@ public class Item
   )
   private List<Classification> classifications;
 
-  @OneToMany(orphanRemoval=true)
-  @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
+  // @OneToMany
+  // @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
+  // @ElementCollection(fetch=FetchType.EAGER)
+  @Embedded
+  @ElementCollection(fetch=FetchType.EAGER)
   private List<ItemImage> images;
 
   private String itemName;
