@@ -81,26 +81,11 @@ public class LotItemResourceTest
     classification.put(c1);
     classification.put(c2);
 
-    // Images.
-    ArrayList<ItemImage> imgList = new ArrayList();
-    ItemImage itemImage = new ItemImage();
-    Database db = new Database();
-    db.connect();
-    Image image = db.getEntityManager().find(Image.class, 0);
-    itemImage.setImage(image);
-    imgList.add(itemImage);
-
-    itemImage = new ItemImage();
-    image = db.getEntityManager().find(Image.class, 1);
-    itemImage.setImage(image);
-    imgList.add(itemImage);
-    itemImage = new ItemImage();
-    image = db.getEntityManager().find(Image.class, 2);
-    itemImage.setImage(image);
-    imgList.add(itemImage);
-    JSONArray itemImages = new JSONArray(imgList);
-    root.put("images", itemImages);
-    db.close();
+    JSONArray imageIds = new JSONArray();
+    imageIds.put("1");
+    imageIds.put("2");
+    imageIds.put("3");
+    root.put("images", imageIds);
 
     root.put("productionDate", productionDate);
     root.put("category", category);

@@ -23,10 +23,6 @@ public class LotItemResource
   public Response createLotItem(String json)
   {
     Item item = ItemFactory.buildItem(json);
-
-    JSONObject obj = new JSONObject(item);
-    System.out.println(obj.toString());
-
     Database db = new Database();
     db.connect();
 
@@ -39,7 +35,11 @@ public class LotItemResource
       return Response.status(422).build();
     }
 
-    return Response.created(URI.create("/lot-items/" + item.getId())).build();
+    JSONObject obj = new JSONObject(json);
+
+
+
+    return Response.created(URI.create("/lot-item/" + item.getId())).build();
   }
 
   @GET

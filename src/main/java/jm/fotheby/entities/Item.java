@@ -41,7 +41,7 @@ public class Item
   private String provenanceDetails;
   private boolean authenticated = false;
   private double estimatedPrice;
-
+  @Embedded
   private Set<ItemAttribute> attributes;
 
   public Long getId()

@@ -50,9 +50,18 @@ public class ItemFactory
         Image image = db.getEntityManager().find(Image.class, id);
         ItemImage itemImage = new ItemImage();
         itemImage.setImage(image);
+
+        System.out.println(id);
+        System.out.println(itemImage.getImage().getFilename());
+
+        db.getEntityManager().getTransaction().begin();
+        db.getEntityManager().persist(itemImage);
+        db.getEntityManager().getTransaction().commit();
+
         imageList.add(itemImage);
       }
       item.setImages(imageList);
+
       db.close();
     }
 

@@ -12,13 +12,19 @@ public class ClientFactory
     Client client = new Client();
 
     if ( in.has("title") )
+    {
       client.setTitle(in.getString("title"));
+    }
 
     if ( in.has("firstName") )
+    {
       client.setTitle(in.getString("firstName"));
+    }
 
     if ( in.has("surname") )
+    {
       client.setTitle(in.getString("surname"));
+    }
 
     if ( in.has("contactAddress") )
     {
@@ -27,10 +33,14 @@ public class ClientFactory
     }
 
     if ( in.has("telNumber") )
+    {
       client.setTitle(in.getString("telNumber"));
+    }
 
     if ( in.has("emailAddress") )
+    {
       client.setTitle(in.getString("emailAddress"));
+    }
 
     if ( in.has("country") )
     {

@@ -1,5 +1,8 @@
 package jm.fotheby.entities;
 
+import javax.persistence.*;
+
+@Embeddable
 public class ItemAttribute<T>
 {
   private String name;
