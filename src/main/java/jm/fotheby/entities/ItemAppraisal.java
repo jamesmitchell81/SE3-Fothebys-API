@@ -2,22 +2,30 @@ package jm.fotheby.entities;
 
 import java.util.Set;
 import java.sql.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
 @Entity
-public class ItemAppraisal // extends.
+public class ItemAppraisal
 {
-  // @Id @GeneratedValue private Long id;
-  @ManyToOne private Client client;
-  @ManyToOne private Expert expert;
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private Long id;
+  @ManyToOne
+  private Item item;
+  @ManyToOne
+  private Client client;
+  @ManyToOne
+  private Expert expert;
+
   private Date appraisalDate;
   private String additionalNotes;
   private boolean agreement;
+  private double estimatedPrice;
+  private double agreedPrice;
+
+  public void setItem(Item item)
+  {
+    this.item = item;
+  }
 
   public void setClient(Client client)
   {
@@ -44,6 +52,21 @@ public class ItemAppraisal // extends.
     this.agreement = agreement;
   }
 
+  public void setEstimatedPrice(double estimatedPrice)
+  {
+    this.estimatedPrice = estimatedPrice;
+  }
+
+  public void setAgreedPrice(double agreedPrice)
+  {
+    this.agreedPrice = agreedPrice;
+  }
+
+  public Item getItem()
+  {
+    return this.item;
+  }
+
   public Client getClient()
   {
     return client;
@@ -67,5 +90,15 @@ public class ItemAppraisal // extends.
   public boolean getAgreement()
   {
     return this.agreement;
+  }
+
+  public double getEstimatedPrice()
+  {
+    return this.estimatedPrice;
+  }
+
+  public double getAgreedPrice()
+  {
+    return this.agreedPrice;
   }
 }

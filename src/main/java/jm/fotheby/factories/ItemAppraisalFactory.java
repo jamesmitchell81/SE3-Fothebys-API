@@ -30,7 +30,7 @@ public class ItemAppraisalFactory
     if ( in.has("appraisalDate") )
     {
       // make date
-      // ia.setAppraisalData();
+      // ia.setAppraisalDate();
     }
 
     if ( in.has("additionalNotes") )
@@ -41,6 +41,16 @@ public class ItemAppraisalFactory
     if ( in.has("agreement") )
     {
       ia.setAgreement(in.getBoolean("agreement"));
+    }
+
+    if ( in.has("estimatedPrice") )
+    {
+      ia.setEstimatedPrice(in.getDouble("estimatedPrice"));
+    }
+
+    if ( in.has("agreedPrice") )
+    {
+      ia.setAgreedPrice(in.getDouble("agreedPrice"));
     }
 
     return ia;

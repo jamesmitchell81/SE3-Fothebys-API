@@ -47,6 +47,7 @@ public class InitTest
     this.initCountries();
     this.initLocation();
     this.initExpert();
+    this.initClient();
   }
 
   public void initCategory()
@@ -478,9 +479,7 @@ public class InitTest
    response = this.client.target("http://localhost:8080/services/location")
                             .request()
                             .post(Entity.json(root.toString()));
-
     response.close();
-
   }
 
   public void initExpert()
@@ -522,6 +521,54 @@ public class InitTest
     Response response = this.client.target("http://localhost:8080/services/expert")
                                    .request()
                                    .post(Entity.json(expert.toString()));
+    response.close();
+  }
+
+  public void initClient()
+  {
+    JSONObject root = new JSONObject();
+    root.put("title", "Mr.");
+    root.put("firstName", "Owen");
+    root.put("surname", "Router");
+    root.put("emailAddress", "owen@router.co.uk");
+    root.put("telNumber", "07754 112 357");
+    root.put("registered", false);
+
+    JSONObject address = new JSONObject();
+    address.put("firstLine", "23 The Lane");
+    address.put("secondLine", "Hunsbury");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN4 AAA");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    Response response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
+
+    root = new JSONObject();
+    root.put("title", "Miss");
+    root.put("firstName", "Isla");
+    root.put("surname", "Router");
+    root.put("emailAddress", "isla@router.co.uk");
+    root.put("telNumber", "07754 112 357");
+    root.put("registered", false);
+
+    address = new JSONObject();
+    address.put("firstLine", "23 The Grange");
+    address.put("secondLine", "Hunsbury");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN4 A7P");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
   }
 
 }

@@ -38,9 +38,12 @@ public class LotItemResourceTest
     JSONObject root = new JSONObject();
     root.put("itemName", "Test Item");
     root.put("textualDescription", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
+    root.put("additionalNotes", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
     root.put("estimatedPrice", 1.054);
+    root.put("agreedPrice", 1.054);
     root.put("provenanceDetails", "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas id dolorum, ratione porro itaque? Consectetur ratione, saepe dolore sunt aspernatur nesciunt cum suscipit rerum a architecto quidem esse maiores provident!");
     root.put("authenticated", true);
+    root.put("agreement", true);
 
     LocalDate date = LocalDate.of(2015, 6, 22);
     JSONObject productionDate = new JSONObject();
@@ -93,7 +96,8 @@ public class LotItemResourceTest
     root.put("dimensions", dimensions);
     root.put("classifications", classification);
 
-    System.out.println(root.toString());
+    root.put("client", 1);
+    root.put("expert", 1);
 
     Response response = this.client.target("http://localhost:8080/services/lot-item")
                             .request()

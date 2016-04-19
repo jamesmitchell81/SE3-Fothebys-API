@@ -18,12 +18,12 @@ public class ClientFactory
 
     if ( in.has("firstName") )
     {
-      client.setTitle(in.getString("firstName"));
+      client.setFirstName(in.getString("firstName"));
     }
 
     if ( in.has("surname") )
     {
-      client.setTitle(in.getString("surname"));
+      client.setSurname(in.getString("surname"));
     }
 
     if ( in.has("contactAddress") )
@@ -34,18 +34,19 @@ public class ClientFactory
 
     if ( in.has("telNumber") )
     {
-      client.setTitle(in.getString("telNumber"));
+      client.setTelNumber(in.getString("telNumber"));
     }
 
     if ( in.has("emailAddress") )
     {
-      client.setTitle(in.getString("emailAddress"));
+      client.setEmailAddress(in.getString("emailAddress"));
     }
 
     if ( in.has("country") )
     {
       CountryDAO dao = new CountryDAO();
       Country country = dao.getByShortCode(in.getString("country"));
+      client.setCountry(country);
     }
 
     return client;

@@ -30,7 +30,6 @@ public class Item
 
   // @OneToMany
   // @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
-  // @ElementCollection(fetch=FetchType.EAGER)
   @Embedded
   @ElementCollection(fetch=FetchType.EAGER)
   private List<ItemImage> images;
@@ -43,7 +42,6 @@ public class Item
   private ItemDimensions dimensions;
   private String provenanceDetails;
   private boolean authenticated = false;
-  private double estimatedPrice;
   @Embedded
   private Set<ItemAttribute> attributes;
 
@@ -97,11 +95,6 @@ public class Item
     this.dimensions = dimensions;
   }
 
-  public void setEstimatedPrice(double estimatedPrice)
-  {
-    this.estimatedPrice = estimatedPrice;
-  }
-
   public void setProvenanceDetails(String provenanceDetails)
   {
     this.provenanceDetails = provenanceDetails;
@@ -114,7 +107,6 @@ public class Item
 
   public void setAttributes(Set<ItemAttribute> attributes)
   {
-    // check category allows attribute.
     this.attributes = attributes;
   }
 
@@ -156,11 +148,6 @@ public class Item
   public ItemDimensions getDimensions()
   {
     return this.dimensions;
-  }
-
-  public double getEstimatedPrice()
-  {
-    return this.estimatedPrice;
   }
 
   public String getProvenanceDetails()

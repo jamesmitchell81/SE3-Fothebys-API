@@ -35,6 +35,18 @@ public class LotItemResource
       return Response.status(422).build();
     }
 
+    ItemAppraisal itemAppraisal = ItemAppraisalFactory.buildAppraisal(json);
+    itemAppraisal.setItem(item);
+
+    try {
+      db.getEntityManager().getTransaction().begin();
+      db.getEntityManager().persist(itemAppraisal);
+      db.getEntityManager().getTransaction().commit();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+      return Response.status(422).build();
+    }
+
     db.close();
     return Response.created(URI.create("/lot-item/" + item.getId())).build();
   }

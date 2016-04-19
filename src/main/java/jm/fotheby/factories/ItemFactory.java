@@ -105,11 +105,6 @@ public class ItemFactory
       item.setAuthenticated(obj.getBoolean("authenticated"));
     }
 
-    if ( obj.has("estimatedPrice") )
-    {
-      item.setEstimatedPrice(obj.getDouble("estimatedPrice"));
-    }
-
     return item;
 
   }
