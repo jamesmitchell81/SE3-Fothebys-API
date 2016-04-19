@@ -11,20 +11,9 @@ public class ClientFactory
     JSONObject in = new JSONObject(clientString);
     Client client = new Client();
 
-    if ( in.has("title") )
-    {
-      client.setTitle(in.getString("title"));
-    }
-
-    if ( in.has("firstName") )
-    {
-      client.setFirstName(in.getString("firstName"));
-    }
-
-    if ( in.has("surname") )
-    {
-      client.setSurname(in.getString("surname"));
-    }
+    client.setTitle(in.optString("title"));
+    client.setFirstName(in.optString("firstName"));
+    client.setSurname(in.optString("surname"));
 
     if ( in.has("contactAddress") )
     {
@@ -32,22 +21,12 @@ public class ClientFactory
       client.setContactAddress(address);
     }
 
-    if ( in.has("telNumber") )
-    {
-      client.setTelNumber(in.getString("telNumber"));
-    }
+    client.setTelNumber(in.optString("telNumber"));
+    client.setEmailAddress(in.optString("emailAddress"));
 
-    if ( in.has("emailAddress") )
-    {
-      client.setEmailAddress(in.getString("emailAddress"));
-    }
-
-    if ( in.has("country") )
-    {
-      CountryDAO dao = new CountryDAO();
-      Country country = dao.getByShortCode(in.getString("country"));
-      client.setCountry(country);
-    }
+    CountryDAO dao = new CountryDAO();
+    Country country = dao.getByShortCode(in.optString("country"));
+    client.setCountry(country);
 
     return client;
   }

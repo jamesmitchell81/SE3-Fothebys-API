@@ -23,21 +23,11 @@ public class DatePeriod
 
   public DatePeriod(JSONObject json)
   {
-    if ( json.has("productionDate") )
-      this.productionDate = json.getString("productionDate");
-
-    this.dateDescription = json.has("dateDescription") ? json.getString("dateDescription") : "";
-
-    if ( json.has("year") ) {
-      this.year = json.getInt("year");
-    }
-
-    if ( json.has("yearBetweenStart") )
-      this.yearBetweenStart = json.getInt("yearBetweenStart");
-
-    if ( json.has("yearBetweenEnd") )
-      this.yearBetweenEnd = json.getInt("yearBetweenEnd");
-
+    this.productionDate = json.optString("productionDate");
+    this.dateDescription = json.optString("dateDescription");
+    this.year = json.optInt("year", -1);
+    this.yearBetweenStart = json.optInt("yearBetweenStart", -1);
+    this.yearBetweenEnd = json.optInt("yearBetweenEnd", -1);
   }
 
   public void setProductionDate(String productionDate)

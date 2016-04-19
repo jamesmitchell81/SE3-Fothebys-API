@@ -65,7 +65,7 @@ public class ItemFactory
       for ( int i = 0; i < attrs.length(); i++ )
       {
         String name = attrs.getJSONObject(i).getString("name");
-        String value = attrs.getJSONObject(i).getString("value");
+        Object value = attrs.getJSONObject(i).get("value");
 
         ItemAttribute attr = new ItemAttribute(name, value);
         attributes.add(attr);
@@ -85,25 +85,10 @@ public class ItemFactory
       item.setProductionDate(dp);
     }
 
-    if ( obj.has("itemName") )
-    {
-      item.setItemName(obj.getString("itemName"));
-    }
-
-    if ( obj.has("textualDescription") )
-    {
-      item.setTextualDescription("textualDescription");
-    }
-
-    if ( obj.has("provenanceDetails") )
-    {
-      item.setProvenanceDetails(obj.getString("provenanceDetails"));
-    }
-
-    if ( obj.has("authenticated") )
-    {
-      item.setAuthenticated(obj.getBoolean("authenticated"));
-    }
+    item.setItemName(obj.optString("itemName"));
+    item.setTextualDescription(obj.optString("textualDescription"));
+    item.setProvenanceDetails(obj.optString("provenanceDetails"));
+    item.setAuthenticated(obj.optBoolean("authenticated", false));
 
     return item;
 

@@ -26,9 +26,9 @@ public class ItemDimensions
 
   public ItemDimensions(JSONObject json)
   {
-    this.width =  json.has("width")  ? json.getInt("width") : 0;
-    this.height = json.has("height") ? json.getInt("height") : 0;
-    this.length = json.has("length") ? json.getInt("length") : 0;
+    this.width =  json.optInt("width");
+    this.height = json.optInt("height");
+    this.length = json.optInt("length");
     this.baseMeasure = json.has("baseMeasure") ? json.getString("baseMeasure") : "";
   }
 

@@ -217,21 +217,21 @@ public class InitTest
 
     attribute = new JSONObject();
     attribute.put("name", "Artist");
-    attribute.put("type", "number");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
 
     attribute = new JSONObject();
     attribute.put("name", "Material");
-    attribute.put("type", "number");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
 
     attribute = new JSONObject();
     attribute.put("name", "Weight");
-    attribute.put("type", "number");
+    attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);

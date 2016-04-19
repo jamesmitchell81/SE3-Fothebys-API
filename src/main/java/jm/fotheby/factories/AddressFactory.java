@@ -11,25 +11,10 @@ public class AddressFactory
     JSONObject in = new JSONObject(addressString);
     Address address = new Address();
 
-    if ( in.has("firstLine") )
-    {
-      address.setFirstLine(in.getString("firstLine"));
-    }
-
-    if ( in.has("secondLine") )
-    {
-      address.setSecondLine(in.getString("secondLine"));
-    }
-
-    if ( in.has("townCity") )
-    {
-      address.setTownCity(in.getString("townCity"));
-    }
-
-    if ( in.has("postalCode") )
-    {
-      address.setPostalCode(in.getString("postalCode"));
-    }
+    address.setFirstLine(in.optString("firstLine"));
+    address.setSecondLine(in.optString("secondLine"));
+    address.setTownCity(in.optString("townCity"));
+    address.setPostalCode(in.optString("postalCode"));
 
     return address;
   }

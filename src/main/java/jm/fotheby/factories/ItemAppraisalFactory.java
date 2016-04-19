@@ -33,25 +33,10 @@ public class ItemAppraisalFactory
       // ia.setAppraisalDate();
     }
 
-    if ( in.has("additionalNotes") )
-    {
-      ia.setAdditionalNotes(in.getString("additionalNotes"));
-    }
-
-    if ( in.has("agreement") )
-    {
-      ia.setAgreement(in.getBoolean("agreement"));
-    }
-
-    if ( in.has("estimatedPrice") )
-    {
-      ia.setEstimatedPrice(in.getDouble("estimatedPrice"));
-    }
-
-    if ( in.has("agreedPrice") )
-    {
-      ia.setAgreedPrice(in.getDouble("agreedPrice"));
-    }
+    ia.setAdditionalNotes(in.optString("additionalNotes"));
+    ia.setAgreement(in.optBoolean("agreement", false));
+    ia.setEstimatedPrice(in.optDouble("estimatedPrice"));
+    ia.setAgreedPrice(in.optDouble("agreedPrice"));
 
     return ia;
   }
