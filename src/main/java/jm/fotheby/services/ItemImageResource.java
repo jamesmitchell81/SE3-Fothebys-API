@@ -89,7 +89,7 @@ public class ItemImageResource
     Database db = new Database();
     db.connect();
     Image image = db.getEntityManager().find(Image.class, id);
-    db.close();
+    // db.close();
     String encoded = Base64.getEncoder().encodeToString(image.getImage());
 
     return new StreamingOutput() {
@@ -98,10 +98,12 @@ public class ItemImageResource
         PrintStream writer = new PrintStream(ops);
         JSONObject data = new JSONObject();
 
+        String dataURL = "data:image/" + image.getExtension() + ";base64, " + encoded;
         data.put("id", image.getId());
         data.put("filename", image.getFilename());
-        data.put("data", encoded);
+        // data.put("data", encoded);
         data.put("extension", image.getExtension());
+        data.put("dataURL", dataURL);
 
         writer.println(data.toString());
       }

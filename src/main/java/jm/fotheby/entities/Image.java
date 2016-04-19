@@ -25,7 +25,6 @@ public class Image
   public void setFilename(String filename)
   {
     this.filename = filename;
-    // set extension
   }
 
   public void setSize(long size)

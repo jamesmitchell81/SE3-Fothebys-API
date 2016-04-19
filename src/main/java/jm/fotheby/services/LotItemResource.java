@@ -52,14 +52,13 @@ public class LotItemResource
   }
 
   @GET
-  @Path("{id}")
-  @Produces("application/json")
-  public StreamingOutput getLotItem(@PathParam("id") long id)
+  @Path("/search")
+  @Consumes("application/json")
+  public StreamingOutput searchLotItems(String searchCriteria)
   {
     Database db = new Database();
     db.connect();
-
-    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();
+    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();;
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -72,6 +71,25 @@ public class LotItemResource
 
           writer.println(out.toString());
         }
+      }
+    };
+  }
+
+  @GET
+  @Path("{id}")
+  @Produces("application/json")
+  public StreamingOutput getLotItem(@PathParam("id") long id)
+  {
+    Database db = new Database();
+    db.connect();
+    Item item = db.getEntityManager().find(Item.class, id);
+
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        PrintStream writer = new PrintStream(ops);
+        JSONObject out = new JSONObject(item);
+        writer.println(out.toString());
       }
     };
   }
@@ -90,15 +108,37 @@ public class LotItemResource
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
         PrintStream writer = new PrintStream(ops);
+        JSONArray out = new JSONArray();
 
         for ( Item item : items)
         {
-          JSONObject out = new JSONObject(item);
-
-          writer.println(out.toString());
+          JSONObject obj = new JSONObject(item);
+          out.put(obj);
         }
+
+        writer.println(out.toString());
       }
     };
+  }
+
+  @DELETE
+  @Path("{id}")
+  public Response deleteItem(@PathParam("id") int id)
+  {
+    try {
+      Database db = new Database();
+      db.connect();
+      Item item = db.getEntityManager().find(Item.class, id);
+      db.getEntityManager().getTransaction().begin();
+      db.getEntityManager().remove(item);
+      db.getEntityManager().getTransaction().commit();
+      db.close();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+      return Response.status(422).build();
+    }
+
+    return Response.ok().build();
   }
 
 }
