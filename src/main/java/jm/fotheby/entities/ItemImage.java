@@ -5,10 +5,6 @@ import javax.persistence.*;
 @Entity
 public class ItemImage
 {
-  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Long id;
-
-  private Long itemReference;
   private String altText;
 
   @ManyToOne
@@ -21,7 +17,7 @@ public class ItemImage
 
   public Long getId()
   {
-    return this.id;
+    return this.image.getId();
   }
 
   public void setAltText(String altText)

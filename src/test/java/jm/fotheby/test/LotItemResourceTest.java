@@ -31,7 +31,7 @@ public class LotItemResourceTest
     this.client = ClientBuilder.newClient();
   }
 
-  // @Ignore
+  @Ignore
   @Test
   public void testCreateLotItem()
   {
@@ -49,7 +49,7 @@ public class LotItemResourceTest
     JSONObject productionDate = new JSONObject();
     productionDate.put("dateDescription", "18th Century");
     productionDate.put("productionDate", date.toString());
-    productionDate.put("year", 2015);
+    productionDate.put("year", 1980);
 
     JSONObject category = new JSONObject();
     category.put("name", "Drawings");
@@ -96,7 +96,7 @@ public class LotItemResourceTest
     root.put("dimensions", dimensions);
     root.put("classifications", classification);
 
-    root.put("client", 1);
+    root.put("client", 3);
     root.put("expert", 1);
 
     Response response = this.client.target("http://localhost:8080/services/lot-item")

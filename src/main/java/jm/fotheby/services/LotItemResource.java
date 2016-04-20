@@ -51,6 +51,95 @@ public class LotItemResource
     return Response.created(URI.create("/lot-item/" + item.getId())).build();
   }
 
+  @PUT
+  @Path("{id}")
+  @Consumes("application/json")
+  public Response createLotItem(@PathParam("id") int id, String json)
+  {
+    Item update = ItemFactory.buildItem(json);
+    Database db = new Database();
+    db.connect();
+
+    Item current = db.getEntityManager().find(Item.class, id);
+
+    try {
+      db.getEntityManager().getTransaction().begin();
+      current.setCategory(update.getCategory());
+      current.setClassifications(update.getClassifications());
+      current.setImages(update.getImages());
+      current.setAttributes(update.getAttributes());
+      current.setDimensions(update.getDimensions());
+      current.setProductionDate(update.getProductionDate());
+      current.setItemName(update.getItemName());
+      current.setTextualDescription(update.getTextualDescription());
+      current.setProvenanceDetails(update.getProvenanceDetails());
+      current.setAuthenticated(update.getAuthenticated());
+      db.getEntityManager().getTransaction().commit();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+      return Response.status(422).build();
+    }
+
+    ItemAppraisal iaUpdate = ItemAppraisalFactory.buildAppraisal(json);
+    ItemAppraisal iaCurrent = new ItemAppraisal();
+    TypedQuery<ItemAppraisal> query = db.getEntityManager()
+                                        .createQuery("SELECT DISTINCT ia FROM ItemAppraisal ia WHERE ia.item.id = :id", ItemAppraisal.class);
+    query.setParameter("id", id);
+    try {
+      iaCurrent = query.getSingleResult();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+    }
+
+    iaCurrent.setItem(current);
+
+    try {
+      db.getEntityManager().getTransaction().begin();
+      iaCurrent.setClient(iaUpdate.getClient());
+      iaCurrent.setExpert(iaUpdate.getExpert());
+      iaCurrent.setAdditionalNotes(iaUpdate.getAdditionalNotes());
+      iaCurrent.setAgreement(iaUpdate.getAgreement());
+      iaCurrent.setEstimatedPrice(iaUpdate.getEstimatedPrice());
+      iaCurrent.setAgreedPrice(iaUpdate.getAgreedPrice());
+      db.getEntityManager().getTransaction().commit();
+    } catch (PersistenceException e) {
+      System.out.println(e.getMessage());
+      return Response.status(422).build();
+    }
+
+    db.close();
+
+    return Response.noContent().build();
+  }
+
+  @GET
+  @Path("/item-appraisal/{id}")
+  @Consumes("application/json")
+  public StreamingOutput searchLotItems(@PathParam("id") int id)
+  {
+
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        Database db = new Database();
+        db.connect();
+        ItemAppraisal itemAppraisal = new ItemAppraisal();
+        TypedQuery<ItemAppraisal> query = db.getEntityManager()
+                                            .createQuery("SELECT DISTINCT ia FROM ItemAppraisal ia WHERE ia.item.id = :id", ItemAppraisal.class);
+        query.setParameter("id", id);
+        try {
+          itemAppraisal = query.getSingleResult();
+        } catch (PersistenceException e) {
+          System.out.println(e.getMessage());
+        }
+
+        PrintStream writer = new PrintStream(ops);
+        JSONObject out = new JSONObject(itemAppraisal);
+        writer.println(out.toString());
+      }
+    };
+  }
+
   @GET
   @Path("/search")
   @Consumes("application/json")
