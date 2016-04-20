@@ -23,31 +23,25 @@ public class LotItemResource
   public Response createLotItem(String json)
   {
     Item item = ItemFactory.buildItem(json);
-    Database db = new Database();
-    db.connect();
+    ItemDAO dao = new ItemDAO();
 
     try {
-      db.getEntityManager().getTransaction().begin();
-      db.getEntityManager().persist(item);
-      db.getEntityManager().getTransaction().commit();
+      dao.insert(item)
     } catch (PersistenceException e) {
-      System.out.println(e.getMessage());
       return Response.status(422).build();
     }
 
     ItemAppraisal itemAppraisal = ItemAppraisalFactory.buildAppraisal(json);
+    ItemAppraisalDAO iaDAO = new ItemAppraisalDAO();
     itemAppraisal.setItem(item);
 
     try {
-      db.getEntityManager().getTransaction().begin();
-      db.getEntityManager().persist(itemAppraisal);
-      db.getEntityManager().getTransaction().commit();
+      iaDAO.insert(iaDAO);
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
     }
 
-    db.close();
     return Response.created(URI.create("/lot-item/" + item.getId())).build();
   }
 
@@ -57,54 +51,21 @@ public class LotItemResource
   public Response createLotItem(@PathParam("id") int id, String json)
   {
     Item update = ItemFactory.buildItem(json);
-    Database db = new Database();
-    db.connect();
-
-    Item current = db.getEntityManager().find(Item.class, id);
-
-    try {
-      db.getEntityManager().getTransaction().begin();
-      current.setCategory(update.getCategory());
-      current.setClassifications(update.getClassifications());
-      current.setImages(update.getImages());
-      current.setAttributes(update.getAttributes());
-      current.setDimensions(update.getDimensions());
-      current.setProductionDate(update.getProductionDate());
-      current.setItemName(update.getItemName());
-      current.setTextualDescription(update.getTextualDescription());
-      current.setProvenanceDetails(update.getProvenanceDetails());
-      current.setAuthenticated(update.getAuthenticated());
-      db.getEntityManager().getTransaction().commit();
-    } catch (PersistenceException e) {
-      System.out.println(e.getMessage());
-      return Response.status(422).build();
-    }
-
     ItemAppraisal iaUpdate = ItemAppraisalFactory.buildAppraisal(json);
-    ItemAppraisal iaCurrent = new ItemAppraisal();
-    TypedQuery<ItemAppraisal> query = db.getEntityManager()
-                                        .createQuery("SELECT DISTINCT ia FROM ItemAppraisal ia WHERE ia.item.id = :id", ItemAppraisal.class);
-    query.setParameter("id", id);
+    Item current = new Item();
+    ItemDAO dao = new ItemDAO();
+    ItemAppraisalDAO iaDAO = new ItemAppraisalDAO();
+
     try {
-      iaCurrent = query.getSingleResult();
+      current = dao.update(id, update);
     } catch (PersistenceException e) {
-      System.out.println(e.getMessage());
+      return Response.status(422).build();
     }
 
-    iaCurrent.setItem(current);
-
     try {
-      db.getEntityManager().getTransaction().begin();
-      iaCurrent.setClient(iaUpdate.getClient());
-      iaCurrent.setExpert(iaUpdate.getExpert());
-      iaCurrent.setAdditionalNotes(iaUpdate.getAdditionalNotes());
-      iaCurrent.setAgreement(iaUpdate.getAgreement());
-      iaCurrent.setEstimatedPrice(iaUpdate.getEstimatedPrice());
-      iaCurrent.setAgreedPrice(iaUpdate.getAgreedPrice());
-      db.getEntityManager().getTransaction().commit();
+      iaDAO.update(id, iaUpdate);
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
-      return Response.status(422).build();
     }
 
     db.close();
@@ -117,18 +78,14 @@ public class LotItemResource
   @Consumes("application/json")
   public StreamingOutput searchLotItems(@PathParam("id") int id)
   {
-
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
-        Database db = new Database();
-        db.connect();
         ItemAppraisal itemAppraisal = new ItemAppraisal();
-        TypedQuery<ItemAppraisal> query = db.getEntityManager()
-                                            .createQuery("SELECT DISTINCT ia FROM ItemAppraisal ia WHERE ia.item.id = :id", ItemAppraisal.class);
-        query.setParameter("id", id);
+        ItemAppraisalDAO iaDAO = new ItemAppraisalDAO();
+
         try {
-          itemAppraisal = query.getSingleResult();
+          itemAppraisal = iaDAO.get(id);
         } catch (PersistenceException e) {
           System.out.println(e.getMessage());
         }
@@ -145,21 +102,21 @@ public class LotItemResource
   @Consumes("application/json")
   public StreamingOutput searchLotItems(String searchCriteria)
   {
-    Database db = new Database();
-    db.connect();
-    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();;
+    ItemDAO iaDAO = new ItemDAO();
+    List<Item> items = iaDAO.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
       {
         PrintStream writer = new PrintStream(ops);
+        JSONArray out = new JSONArray();
 
         for ( Item item : items)
         {
-          JSONObject out = new JSONObject(item);
-
-          writer.println(out.toString());
+          JSONObject obj = new JSONObject(item);
+          out.put(obj);
         }
+        writer.println(out.toString());
       }
     };
   }
@@ -169,9 +126,8 @@ public class LotItemResource
   @Produces("application/json")
   public StreamingOutput getLotItem(@PathParam("id") long id)
   {
-    Database db = new Database();
-    db.connect();
-    Item item = db.getEntityManager().find(Item.class, id);
+    ItemDAO dao = new ItemDAO();
+    Item item = dao.get(id);
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -188,10 +144,8 @@ public class LotItemResource
   @Produces("application/json")
   public StreamingOutput getLotItems()
   {
-    Database db = new Database();
-    db.connect();
-
-    List<Item> items = db.getEntityManager().createQuery("SELECT i FROM Item i", Item.class).getResultList();
+    ItemDAO dao = new ItemDAO();
+    List<Item> items = dao.get();
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException
@@ -215,13 +169,8 @@ public class LotItemResource
   public Response deleteItem(@PathParam("id") int id)
   {
     try {
-      Database db = new Database();
-      db.connect();
-      Item item = db.getEntityManager().find(Item.class, id);
-      db.getEntityManager().getTransaction().begin();
-      db.getEntityManager().remove(item);
-      db.getEntityManager().getTransaction().commit();
-      db.close();
+      ItemDAO dao = new ItemDAO();
+      dao.delete(id);
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
