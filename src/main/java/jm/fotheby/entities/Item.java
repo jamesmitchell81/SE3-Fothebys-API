@@ -32,7 +32,7 @@ public class Item
   // @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
   @Embedded
   @ElementCollection(fetch=FetchType.EAGER)
-  private List<ItemImage> images;
+  private List<Long> images;
 
   private String itemName;
   @Embedded
@@ -65,14 +65,14 @@ public class Item
     this.classifications = classifications;
   }
 
-  public void setImages(List<ItemImage> images)
+  public void setImages(List<Long> imageids)
   {
-    this.images = images;
+    this.images = imageids;
   }
 
-  public void addImage(ItemImage image)
+  public void addImage(Long id)
   {
-    this.images.add(image);
+    this.images.add(id);
   }
 
   public void setItemName(String itemName)
@@ -120,12 +120,12 @@ public class Item
     return this.classifications;
   }
 
-  public List<ItemImage> getImages()
+  public List<Long> getImages()
   {
     return this.images;
   }
 
-  public ItemImage getImage(int id)
+  public Long getImage(int id)
   {
     return this.images.get(id);
   }

@@ -79,14 +79,6 @@ public class InitTest
     attribute.put("required", true);
     attribute.put("active", true);
     attributes.put(attribute);
-
-    attribute = new JSONObject();
-    attribute.put("name", "Weight");
-    attribute.put("type", "number");
-    attribute.put("required", true);
-    attribute.put("active", true);
-    attributes.put(attribute);
-
     root.put("attributes", attributes);
 
     response = this.client.target("http://localhost:8080/services/category")
@@ -191,13 +183,6 @@ public class InitTest
     attribute.put("active", true);
     attributes.put(attribute);
 
-    attribute = new JSONObject();
-    attribute.put("name", "Weight");
-    attribute.put("type", "number");
-    attribute.put("required", true);
-    attribute.put("active", true);
-    attributes.put(attribute);
-
     root.put("attributes", attributes);
 
     response = this.client.target("http://localhost:8080/services/category")
@@ -224,13 +209,6 @@ public class InitTest
 
     attribute = new JSONObject();
     attribute.put("name", "Material");
-    attribute.put("type", "text");
-    attribute.put("required", true);
-    attribute.put("active", true);
-    attributes.put(attribute);
-
-    attribute = new JSONObject();
-    attribute.put("name", "Weight");
     attribute.put("type", "text");
     attribute.put("required", true);
     attribute.put("active", true);
@@ -522,6 +500,45 @@ public class InitTest
                                    .request()
                                    .post(Entity.json(expert.toString()));
     response.close();
+
+    expert = new JSONObject();
+    expert.put("title", "Mr.");
+    expert.put("firstName", "Chris");
+    expert.put("surname", "Powell");
+    expert.put("emailAddress", "chris@powell.co.uk");
+    expert.put("telNumber", "07759 642 215");
+    expert.put("role", "expert");
+
+    address = new JSONObject();
+    address.put("firstLine", "92 The Valley");
+    address.put("secondLine", "Charlton");
+    address.put("townCity", "Charlton");
+    address.put("postalCode", "SE7 6GH");
+
+    expert.put("contactAddress", address);
+
+    location = new JSONObject();
+    location.put("id", 2);
+
+    category = new JSONObject();
+    category.put("id", 2);
+
+    classification = new JSONArray();
+    c1 = new JSONObject();
+    c1.put("id", 3);
+    c2 = new JSONObject();
+    c2.put("id", 4);
+    classification.put(c1);
+    classification.put(c2);
+
+    expert.put("location", location);
+    expert.put("category", category);
+    expert.put("specialties", classification);
+
+    response = this.client.target("http://localhost:8080/services/expert")
+                                   .request()
+                                   .post(Entity.json(expert.toString()));
+    response.close();
   }
 
   public void initClient()
@@ -569,6 +586,93 @@ public class InitTest
                             .request()
                             .post(Entity.json(root.toString()));
     response.close();
-  }
 
+    root = new JSONObject();
+    root.put("title", "Mrs");
+    root.put("firstName", "Sally");
+    root.put("surname", "Router");
+    root.put("emailAddress", "sally@router.co.uk");
+    root.put("telNumber", "07754 112 357");
+    root.put("registered", false);
+
+    address = new JSONObject();
+    address.put("firstLine", "29 The Lane");
+    address.put("secondLine", "Duston");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN5 5FP");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
+
+    root = new JSONObject();
+    root.put("title", "Mr");
+    root.put("firstName", "Adam");
+    root.put("surname", "Router");
+    root.put("emailAddress", "adam@router.co.uk");
+    root.put("telNumber", "07754 112 357");
+    root.put("registered", false);
+
+    address = new JSONObject();
+    address.put("firstLine", "56 The Park");
+    address.put("secondLine", "Abington");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN2 5HG");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
+
+    root = new JSONObject();
+    root.put("title", "Mr");
+    root.put("firstName", "Simon");
+    root.put("surname", "Mitchell");
+    root.put("emailAddress", "simon@mitchell.co.uk");
+    root.put("telNumber", "07785 665 954");
+    root.put("registered", false);
+
+    address = new JSONObject();
+    address.put("firstLine", "48 The Gardens");
+    address.put("secondLine", "Husbury");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN4 9GH");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
+
+    root = new JSONObject();
+    root.put("title", "Mrs");
+    root.put("firstName", "Sue");
+    root.put("surname", "Mitchell");
+    root.put("emailAddress", "sue@mitchell.co.uk");
+    root.put("telNumber", "07786 452 682");
+    root.put("registered", false);
+
+    address = new JSONObject();
+    address.put("firstLine", "99 The Hill");
+    address.put("secondLine", "Camp Hill");
+    address.put("townCity", "Northampton");
+    address.put("postalCode", "NN4 9GH");
+
+    root.put("contactAddress", address);
+    root.put("country", "GBR");
+
+    response = this.client.target("http://localhost:8080/services/clients")
+                            .request()
+                            .post(Entity.json(root.toString()));
+    response.close();
+  }
 }

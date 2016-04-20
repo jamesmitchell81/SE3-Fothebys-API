@@ -1,24 +1,26 @@
 package jm.fotheby.entities;
 
-public class ClientSearchResult
+public class ExpertSearchResult
 {
   private Long id;
   private String title;
   private String firstName;
   private String surname;
   private String emailAddress;
-  private String addressFirstLine;
+  private Category category;
+  private Location location;
   private String name;
 
-  public ClientSearchResult(Long id, String title, String firstName,
-                            String surname, String emailAddress, String firstLine)
+  public ExpertSearchResult(Long id, String title, String firstName,
+                            String surname, String emailAddress, Location location, Category category)
   {
     this.id = id;
     this.title = title;
     this.firstName = firstName;
     this.surname = surname;
     this.emailAddress = emailAddress;
-    this.addressFirstLine = firstLine;
+    this.location = location;
+    this.category = category;
     this.name = this.title + " " + this.firstName + " " + this.surname;
   }
 
@@ -32,13 +34,18 @@ public class ClientSearchResult
     return this.name;
   }
 
-  public String getAddressFirstLine()
+  public Category getCategory()
   {
-    return this.addressFirstLine;
+    return this.category;
   }
 
   public String getEmailAddress()
   {
     return this.emailAddress;
+  }
+
+  public Location getLocation()
+  {
+    return this.location;
   }
 }

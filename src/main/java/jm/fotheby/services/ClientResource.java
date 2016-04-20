@@ -128,60 +128,27 @@ public class ClientResource
   @Path("/search-client")
   @Consumes("application/json")
   @Produces("application/json")
-  public StreamingOutput clientSearch(@DefaultValue("") @QueryParam("emailAddress") String emailAddress,
-                                      @DefaultValue("") @QueryParam("surname") String surname,
-                                      @DefaultValue("") @QueryParam("telNumber") String telNumber)
+  public StreamingOutput clientSearch(@DefaultValue("") @QueryParam("emailAddress") String emailAddress)
   {
-    // HashSet<String> whitelist = new HashSet();
-    // whitelist.add("emailAddress")
-    // whitelist.add("surname");
-    // whitelist.add("telNumber");
-
-    // MultivaluedMap<String, String> data = queryString.getQueryParameters();
-    // HashMap<String, String> input = new HashMap();
-    // Iterator iterator = data.keySet().iterator();
-
-    // while ( iterator.hasNext() )
-    // {
-    //   String key = (String)iterator.next();
-    //   if ( whitelist.contains(key) && data.getFirst(key) != "" )
-    //   {
-    //     input.put(key, data.getFirst(key));
-    //   }
-    // }
-
     Database db = new Database();
     db.connect();
     EntityManager em = db.getEntityManager();
-
     CriteriaBuilder cb = em.getCriteriaBuilder();
-
     ParameterExpression<String> emailParam = cb.parameter(String.class);
-    ParameterExpression<String> surnameParam = cb.parameter(String.class);
-    ParameterExpression<String> telParam = cb.parameter(String.class);
-
     CriteriaQuery<ClientSearchResult> cq = cb.createQuery(ClientSearchResult.class);
     Root<Client> client = cq.from(Client.class);
-
     CompoundSelection<ClientSearchResult> selection = cb.construct(ClientSearchResult.class,
                                                                    client.get("id"),
                                                                    client.get("title"),
                                                                    client.get("firstName"),
                                                                    client.get("surname"),
+                                                                   client.get("emailAddress"),
                                                                    client.get("contactAddress").get("firstLine"));
-
-    Predicate[] or = new Predicate[3];
-    or[0] = cb.equal(client.get("emailAddress"), emailParam);
-    or[1] = cb.equal(client.get("surname"), surnameParam);
-    or[2] = cb.equal(client.get("telNumber"), telParam);
-
+    Predicate predicate = cb.like(client.get("emailAddress"), emailParam);
     cq.select(selection);
-    cq.where(cb.or(or));
-
-    TypedQuery<ClientSearchResult> query = em.createQuery(cq);
-    query.setParameter(emailParam, emailAddress.trim());
-    query.setParameter(surnameParam, surname.trim());
-    query.setParameter(telParam, telNumber.trim());
+    cq.where(predicate);
+    TypedQuery<ClientSearchResult> query = em.createQuery(cq).setMaxResults(5);
+    query.setParameter(emailParam, "%" + emailAddress.trim() + "%");
 
     return new StreamingOutput() {
       public void write(OutputStream ops) throws IOException, WebApplicationException

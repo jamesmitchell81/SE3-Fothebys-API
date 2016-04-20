@@ -41,7 +41,7 @@ public class ItemFactory
     {
       JSONArray imageIds = obj.getJSONArray("images");
       int id = imageIds.getInt(0);
-      ArrayList<ItemImage> imageList = new ArrayList();
+      ArrayList<Long> imageList = new ArrayList();
       Database db = new Database();
       db.connect();
       for ( int i = 0; i < imageIds.length(); i++ )
@@ -50,10 +50,14 @@ public class ItemFactory
         Image image = db.getEntityManager().find(Image.class, id);
         ItemImage itemImage = new ItemImage();
         itemImage.setImage(image);
-        imageList.add(itemImage);
+
+        db.getEntityManager().getTransaction().begin();
+        db.getEntityManager().persist(itemImage);
+        db.getEntityManager().getTransaction().commit();
+
+        imageList.add(itemImage.getId());
       }
       item.setImages(imageList);
-
       db.close();
     }
 

@@ -2,6 +2,7 @@ package jm.fotheby.services;
 
 import jm.fotheby.entities.*;
 import jm.fotheby.persistence.*;
+import jm.fotheby.util.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -12,8 +13,10 @@ import java.util.List;
 import java.net.URI;
 import javax.ws.rs.core.*;
 import javax.ws.rs.*;
+import javax.ws.rs.Path;
 import java.io.*;
 import javax.persistence.*;
+import javax.persistence.criteria.*;
 
 // JSON
 import org.json.*;
@@ -91,12 +94,47 @@ public class ExpertResource
 
   @GET
   @Path("/search")
+  @Consumes("application/json")
   @Produces("application/json")
-  public StreamingOutput searchExperts(@QueryParam("data") String data)
+  public StreamingOutput searchExperts(@DefaultValue("") @QueryParam("emailAddress") String emailAddress)
   {
-    System.out.println(data);
+    Database db = new Database();
+    db.connect();
+    EntityManager em = db.getEntityManager();
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    ParameterExpression<String> emailParam = cb.parameter(String.class);
+    CriteriaQuery<ExpertSearchResult> cq = cb.createQuery(ExpertSearchResult.class);
+    Root<Expert> expert = cq.from(Expert.class);
+    CompoundSelection<ExpertSearchResult> selection = cb.construct(ExpertSearchResult.class,
+                                                                   expert.get("id"),
+                                                                   expert.get("title"),
+                                                                   expert.get("firstName"),
+                                                                   expert.get("surname"),
+                                                                   expert.get("emailAddress"),
+                                                                   expert.get("location"),
+                                                                   expert.get("category"));
+    Predicate predicate = cb.like(expert.get("emailAddress"), emailParam);
+    cq.select(selection);
+    cq.where(predicate);
+    TypedQuery<ExpertSearchResult> query = em.createQuery(cq).setMaxResults(5);
+    query.setParameter(emailParam, "%" + emailAddress.trim() + "%");
 
-    return this.getExperts();
+    return new StreamingOutput() {
+      public void write(OutputStream ops) throws IOException, WebApplicationException
+      {
+        JSONArray out = new JSONArray();
+        PrintStream writer = new PrintStream(ops);
+        List<ExpertSearchResult> results = query.getResultList();
+
+        for ( ExpertSearchResult result : results )
+        {
+          JSONObject e = new JSONObject(result);
+          out.put(e);
+        }
+
+        writer.println(out.toString());
+      }
+    };
   }
 
 

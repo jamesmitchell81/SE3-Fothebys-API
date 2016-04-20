@@ -2,11 +2,12 @@ package jm.fotheby.entities;
 
 import javax.persistence.*;
 
-// @Entity
-@Embeddable
+@Entity
 public class ItemImage
 {
-  // @Column(name="REFERENCE_ID")
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private Long id;
+
   private Long itemReference;
   private String altText;
 
@@ -18,14 +19,9 @@ public class ItemImage
   private int frameX;
   private int frameY;
 
-  public void setItemReference(Long itemReference)
+  public Long getId()
   {
-    this.itemReference = itemReference;
-  }
-
-  public Long getItemReference()
-  {
-    return this.itemReference;
+    return this.id;
   }
 
   public void setAltText(String altText)
