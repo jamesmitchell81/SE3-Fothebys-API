@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Embeddable
 public class ItemBid
 {
-
   @ManyToOne private Client client;
   private double bidValue;
 

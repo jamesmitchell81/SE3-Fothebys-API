@@ -11,8 +11,7 @@ public class AuctionSession
 {
   @Id @GeneratedValue
   private int id;
-
-  private String sessionName; // morning, evening, afternoon.
+  private String sessionName;
   private Time sessionStart;
   private Time sessionEnd;
 }

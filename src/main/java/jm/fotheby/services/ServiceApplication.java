@@ -8,7 +8,6 @@ import java.util.Set;
 @ApplicationPath("/services")
 public class ServiceApplication extends Application {
    private Set<Object> singletons = new HashSet<Object>();
-   // private Set<Object> classes = new HashSet<Object>();
 
    public ServiceApplication()
    {
@@ -29,10 +28,4 @@ public class ServiceApplication extends Application {
    {
       return singletons;
    }
-
-   // @Override
-   // public Set<Object> getClasses()
-   // {
-   //    return classes;
-   // }
 }

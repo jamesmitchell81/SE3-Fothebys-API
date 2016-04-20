@@ -26,7 +26,7 @@ public class LotItemResource
     ItemDAO dao = new ItemDAO();
 
     try {
-      dao.insert(item)
+      dao.insert(item);
     } catch (PersistenceException e) {
       return Response.status(422).build();
     }
@@ -36,7 +36,7 @@ public class LotItemResource
     itemAppraisal.setItem(item);
 
     try {
-      iaDAO.insert(iaDAO);
+      iaDAO.insert(itemAppraisal);
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
       return Response.status(422).build();
@@ -67,8 +67,6 @@ public class LotItemResource
     } catch (PersistenceException e) {
       System.out.println(e.getMessage());
     }
-
-    db.close();
 
     return Response.noContent().build();
   }
@@ -124,7 +122,7 @@ public class LotItemResource
   @GET
   @Path("{id}")
   @Produces("application/json")
-  public StreamingOutput getLotItem(@PathParam("id") long id)
+  public StreamingOutput getLotItem(@PathParam("id") int id)
   {
     ItemDAO dao = new ItemDAO();
     Item item = dao.get(id);

@@ -1,6 +1,6 @@
 package jm.fotheby.persistence;
 
-import jm.fotheby.entities.Category;
+import jm.fotheby.entities.*;
 import jm.fotheby.util.*;
 
 import javax.persistence.*;

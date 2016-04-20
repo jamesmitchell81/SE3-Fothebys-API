@@ -1,6 +1,6 @@
 package jm.fotheby.persistence;
 
-import jm.fotheby.entities.Category;
+import jm.fotheby.entities.*;
 import jm.fotheby.util.*;
 
 import javax.persistence.*;
@@ -23,16 +23,16 @@ public class ItemAppraisalDAO
   public void update(int id, ItemAppraisal update) throws PersistenceException
   {
     Database db = new Database();
+    ItemAppraisal ia = this.get(id);
     db.connect();
 
-
     db.getEntityManager().getTransaction().begin();
-    ia.setClient(iaUpdate.getClient());
-    ia.setExpert(iaUpdate.getExpert());
-    ia.setAdditionalNotes(iaUpdate.getAdditionalNotes());
-    ia.setAgreement(iaUpdate.getAgreement());
-    ia.setEstimatedPrice(iaUpdate.getEstimatedPrice());
-    ia.setAgreedPrice(iaUpdate.getAgreedPrice());
+    ia.setClient(update.getClient());
+    ia.setExpert(update.getExpert());
+    ia.setAdditionalNotes(update.getAdditionalNotes());
+    ia.setAgreement(update.getAgreement());
+    ia.setEstimatedPrice(update.getEstimatedPrice());
+    ia.setAgreedPrice(update.getAgreedPrice());
     db.getEntityManager().getTransaction().commit();
     db.close();
   }
@@ -56,7 +56,7 @@ public class ItemAppraisalDAO
                                         .createQuery("SELECT DISTINCT ia FROM ItemAppraisal ia WHERE ia.item.id = :id", ItemAppraisal.class);
     query.setParameter("id", id);
     ItemAppraisal ia = query.getSingleResult();
-    return item;
+    return ia;
   }
 
 }

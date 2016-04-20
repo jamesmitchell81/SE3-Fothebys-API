@@ -17,14 +17,15 @@ public class ItemFactory
 
     if ( obj.has("category") )
     {
+      JSONObject co = new JSONObject(obj.getString("category"));
       CategoryDAO catDAO = new CategoryDAO();
-      Category category = catDAO.get(obj.getJSONObject("category"));
+      Category category = catDAO.get(co);
       item.setCategory(category);
     }
 
     if ( obj.has("classifications") )
     {
-      JSONArray classifications = obj.getJSONArray("classifications");
+      JSONArray classifications = new JSONArray(obj.getString("classifications"));
       ClassificationDAO clsDAO = new ClassificationDAO();
       List<Classification> list = new ArrayList<Classification>();
 
@@ -39,7 +40,7 @@ public class ItemFactory
 
     if ( obj.has("images") )
     {
-      JSONArray imageIds = obj.getJSONArray("images");
+      JSONArray imageIds = new JSONArray(obj.getString("images"));
       int id = imageIds.getInt(0);
       ArrayList<Long> imageList = new ArrayList();
       Database db = new Database();
@@ -64,7 +65,7 @@ public class ItemFactory
     if ( obj.has("attributes") )
     {
       Set<ItemAttribute> attributes = new HashSet<ItemAttribute>();
-      JSONArray attrs = obj.getJSONArray("attributes");
+      JSONArray attrs = new JSONArray(obj.getString("attributes"));
 
       for ( int i = 0; i < attrs.length(); i++ )
       {
@@ -79,13 +80,15 @@ public class ItemFactory
 
     if ( obj.has("dimensions") )
     {
-      ItemDimensions dimensions = new ItemDimensions(obj.getJSONObject("dimensions"));
+      JSONObject dim = new JSONObject(obj.getString("dimensions"));
+      ItemDimensions dimensions = new ItemDimensions(dim);
       item.setDimensions(dimensions);
     }
 
     if ( obj.has("productionDate") )
     {
-      DatePeriod dp = new DatePeriod(obj.getJSONObject("productionDate"));
+      JSONObject d = new JSONObject(obj.getString("productionDate"));
+      DatePeriod dp = new DatePeriod(d);
       item.setProductionDate(dp);
     }
 

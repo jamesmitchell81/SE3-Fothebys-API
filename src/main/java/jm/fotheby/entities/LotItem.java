@@ -8,13 +8,11 @@ import javax.persistence.*;
 public class LotItem
 {
   private boolean sold;
-  private double reservePrice;
   private double salePrice;
   @Embedded private List<ItemBid> bids;
   @ManyToOne private Client buyer;
 
-  // ????
-  @ManyToOne private Item item;
+  @ManyToOne private ItemAppraisal itemAppraisal;
 
   @ManyToOne(cascade=CascadeType.ALL)
   @JoinColumn(name="COLLECTION_ID")
@@ -28,11 +26,6 @@ public class LotItem
   public void setSold(boolean sold)
   {
     this.sold = sold;
-  }
-
-  public void setReservePrice(double reservePrice)
-  {
-    this.reservePrice = reservePrice;
   }
 
   public void setSalePrice(double salePrice)
@@ -62,7 +55,7 @@ public class LotItem
 
   public double getReservePrice()
   {
-    return this.reservePrice;
+    return this.itemAppraisal.getAgreedPrice();
   }
 
   public double getSalePrice()
@@ -80,7 +73,7 @@ public class LotItem
     return this.bids;
   }
 
-  public Client setBuyer()
+  public Client getBuyer()
   {
     return this.buyer;
   }
