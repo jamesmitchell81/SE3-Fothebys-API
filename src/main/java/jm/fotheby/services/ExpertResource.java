@@ -21,6 +21,11 @@ import javax.persistence.criteria.*;
 // JSON
 import org.json.*;
 
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @Path("/expert")
 public class ExpertResource
 {

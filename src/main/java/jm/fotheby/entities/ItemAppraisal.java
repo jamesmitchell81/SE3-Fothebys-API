@@ -22,6 +22,13 @@ public class ItemAppraisal
   private double estimatedPrice;
   private double agreedPrice;
 
+  // public ItemAppraisal(Item item, Client client, Expert expert)
+  // {
+  //   this.item = item;
+  //   this.client = client;
+  //   this.expert = expert;
+  // }
+
   public void setItem(Item item)
   {
     this.item = item;

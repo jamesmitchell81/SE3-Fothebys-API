@@ -15,7 +15,7 @@ public class Person
   protected String firstName;
   protected String surname;
   protected String telNumber;
-  protected String emailAddress;
+  @Unique protected String emailAddress;
   @Embedded protected Address contactAddress;
   @ManyToOne protected Country country;
 

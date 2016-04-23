@@ -13,6 +13,11 @@ import javax.persistence.*;
 
 import org.json.*;
 
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @Path("/countries")
 public class CountryResource
 {

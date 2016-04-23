@@ -13,40 +13,16 @@ import javax.persistence.*;
 
 import org.json.*;
 
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @Path("/item-images")
 public class ItemImageResource
 {
   private EntityManager em;
 
-  public ItemImageResource() {}
-
-  // Reference: http://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-array-in-java
-  private byte[] readImage(InputStream ipstream, int length)
-  {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    int read;
-    int offset = 0;
-    byte[] data = new byte[length];
-
-    try {
-    // java: https://docs.oracle.com/javase/7/docs/api/java/io/InputStream.html
-    // read(byte[] b, int offset, int length)
-    // Reads up to len bytes of data from the input stream into an array of bytes.
-    while ( (read = ipstream.read(data, offset, length)) != -1 )
-    {
-      // java: https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayOutputStream.html
-      // write(byte[] data, int offset, int length)
-      // Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
-      out.write(data, offset, read);
-    }
-    // out.flush();
-
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
-    }
-
-    return out.toByteArray();
-  }
 
   @POST
   @Consumes("*/*")

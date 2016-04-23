@@ -38,9 +38,9 @@ public class InitTest
 
   }
 
-  @Ignore
+  // @Ignore
   @Test
-  public void testName()
+  public void init()
   {
     this.initCategory();
     this.initClassification();
@@ -306,6 +306,7 @@ public class InitTest
     String countries = "";
 
     try {
+      // REFERENCE: data from: https://restcountries.eu
       String file = "/Users/jm/Development/SE3/SE3-Fothebys-API/countries.json";
       BufferedReader br = new BufferedReader(new FileReader(file));
       StringBuilder sb = new StringBuilder();

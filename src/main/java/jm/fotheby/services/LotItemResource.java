@@ -15,9 +15,15 @@ import java.io.*;
 import javax.persistence.*;
 import org.json.*;
 
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @Path("/lot-item")
 public class LotItemResource
 {
+
   @POST
   @Consumes("application/json")
   public Response createLotItem(String json)

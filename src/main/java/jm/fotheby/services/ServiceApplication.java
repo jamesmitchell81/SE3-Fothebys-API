@@ -5,6 +5,12 @@ import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @ApplicationPath("/services")
 public class ServiceApplication extends Application {
    private Set<Object> singletons = new HashSet<Object>();

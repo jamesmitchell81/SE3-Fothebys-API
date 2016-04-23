@@ -18,6 +18,11 @@ import javax.persistence.*;
 // JSON
 import org.json.*;
 
+/*
+REFERENCE:
+JAX-RS implementation based on instruction from: (Burke, 2013)
+*/
+
 @Path("/location")
 public class LocationResource
 {

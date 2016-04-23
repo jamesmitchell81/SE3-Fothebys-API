@@ -13,13 +13,8 @@ public class Item
   @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="ITEM_ID")
   private Long id;
-
-  @Version
-  private Long version;
-
-  @ManyToOne
-  private Category category;
-
+  @Version private Long version;
+  @ManyToOne private Category category;
   @ManyToMany
   @JoinTable(
     name="ITEM_CLASSIFICATIONS",
@@ -28,6 +23,8 @@ public class Item
   )
   private List<Classification> classifications;
 
+  @Embedded private DatePeriod productionDate;
+
   // @OneToMany
   // @JoinColumn(name="REFERENCE_ID", referencedColumnName="ITEM_ID")
   @Embedded
@@ -35,8 +32,6 @@ public class Item
   private List<Long> images;
 
   private String itemName;
-  @Embedded
-  private DatePeriod productionDate;
   private String textualDescription;
   @Embedded
   private ItemDimensions dimensions;
